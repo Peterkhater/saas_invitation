@@ -1,7 +1,6 @@
 from django.contrib import admin
-from .models import Invitation, InvitationType, invitedPerson
+from .models import Invitation, InvitationType, Guest
 
 admin.site.register(Invitation)
 admin.site.register(InvitationType)
-admin.site.register(invitedPerson)
-# Register your models here.
+admin.site.register(Guest)
