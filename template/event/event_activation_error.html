@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1 style="color:red;">Something went wrong 😢</h1>
+  <p>{{ error }}</p>
+  <a href="{% url 'invitation_create' %}">Go back to Invitation Form</a>
+{% endblock %}

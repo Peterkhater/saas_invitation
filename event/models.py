@@ -2,7 +2,7 @@ from django.db import models
 from invitation.models import Invitation
 
 class Event(models.Model):
-    invitation = models.OneToOneField(Invitation, on_delete=models.CASCADE, related_name="event")
+    invitation = models.OneToOneField(Invitation, on_delete=models.CASCADE, related_name="event",blank=True, null=True, default=None)
     name = models.CharField(max_length=255)
     location = models.CharField(max_length=255, blank=True, null=True)
     description = models.TextField(blank=True, null=True)

@@ -26,6 +26,7 @@ class Invitation(models.Model):
         null=True,
         validators=[FileExtensionValidator(allowed_extensions=['mp3', 'wav', 'flac'])]
     )
+    has_music_file = models.BooleanField(default=False)
 
     def __str__(self):
         return f"Invitation for {self.event_for}"

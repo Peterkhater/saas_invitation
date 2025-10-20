@@ -1,0 +1,407 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 py-8">
+    <div class="max-w-7xl mx-auto px-4 mt-40">
+        <!-- Header -->
+        <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-8">
+            <div class="mb-6 lg:mb-0">
+                <div class="flex items-center mb-4">
+                    <div class="w-12 h-12 bg-gradient-to-r from-green-500 to-blue-600 rounded-xl flex items-center justify-center mr-4">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="text-3xl font-elegant font-bold text-gray-900">Guest Management</h1>
+                        <p class="text-gray-600">{{ invitation.event_for }}</p>
+                    </div>
+                </div>
+                <div class="flex flex-wrap gap-4 mt-4">
+                    <div class="bg-white rounded-xl px-4 py-2 shadow-sm border">
+                        <div class="text-sm text-gray-500">Total Guests</div>
+                        <div class="text-xl font-bold text-gray-900">{{ guests.count }}</div>
+                    </div>
+                    <div class="bg-white rounded-xl px-4 py-2 shadow-sm border">
+                        <div class="text-sm text-gray-500">Confirmed</div>
+                        <div class="text-xl font-bold text-green-600">{{ confirmed_guests }}</div>
+                    </div>
+                    <div class="bg-white rounded-xl px-4 py-2 shadow-sm border">
+                        <div class="text-sm text-gray-500">Pending</div>
+                        <div class="text-xl font-bold text-orange-600">{{ pending_guests }}</div>
+                    </div>
+                    <div class="bg-white rounded-xl px-4 py-2 shadow-sm border">
+                        <div class="text-sm text-gray-500">Total People</div>
+                        <div class="text-xl font-bold text-blue-600">{{ total_people }}</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex flex-col sm:flex-row gap-4">
+                <button onclick="openBulkInviteModal()" class="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-xl font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-200 flex items-center">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                    </svg>
+                    Bulk Import
+                </button>
+                <button onclick="openAddGuestModal()" class="px-6 py-3 bg-gradient-to-r from-green-500 to-blue-600 text-white rounded-xl font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-200 flex items-center">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
+                    </svg>
+                    Add Guest
+                </button>
+            </div>
+        </div>
+
+        <!-- Action Bar -->
+        <div class="bg-white rounded-2xl shadow-lg p-6 mb-6">
+            <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+                <div class="flex flex-col sm:flex-row gap-4 flex-1">
+                    <!-- Search -->
+                    <div class="relative flex-1">
+                        <input type="text" id="searchGuests" placeholder="Search guests..." class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
+                        <svg class="w-5 h-5 text-gray-400 absolute left-3 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </div>
+                    
+                    <!-- Filters -->
+                    <select id="statusFilter" class="px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
+                        <option value="all">All Status</option>
+                        <option value="confirmed">Confirmed</option>
+                        <option value="pending">Pending</option>
+                    </select>
+                </div>
+                
+                <div class="flex gap-3">
+                    <button onclick="exportGuests()" class="px-4 py-3 border border-gray-300 text-gray-700 rounded-xl font-semibold hover:border-gray-400 transition-colors duration-200 flex items-center">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                        </svg>
+                        Export
+                    </button>
+                    <button onclick="sendReminders()" class="px-4 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-xl font-semibold hover:shadow-lg transition-all duration-200 flex items-center">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                        </svg>
+                        Send Reminders
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Guests Table -->
+        <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead>
+                        <tr class="bg-gray-50 border-b border-gray-200">
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="selectAll" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-3">
+                                    Guest
+                                </div>
+                            </th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Contact</th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">People</th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Notes</th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        {% for guest in guests %}
+                        <tr class="hover:bg-gray-50 transition-colors duration-150 guest-row" data-status="{% if guest.rsvp %}confirmed{% else %}pending{% endif %}">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <input type="checkbox" class="guest-checkbox rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-3">
+                                    <div class="flex items-center">
+                                        <div class="w-10 h-10 bg-gradient-to-r from-purple-400 to-pink-500 rounded-full flex items-center justify-center text-white font-semibold text-sm mr-3">
+                                            {{ guest.name|slice:":2"|upper }}
+                                        </div>
+                                        <div>
+                                            <div class="text-sm font-medium text-gray-900">{{ guest.name }}</div>
+                                            {% if guest.full_family %}
+                                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                                Family
+                                            </span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">{{ guest.email|default:"No email" }}</div>
+                                <div class="text-sm text-gray-500">{{ guest.phone_number|default:"No phone" }}</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <span class="text-sm font-medium text-gray-900">{{ guest.person_count }}</span>
+                                    <svg class="w-4 h-4 text-gray-400 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                                    </svg>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                {% if guest.rsvp %}
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                                    <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    Confirmed
+                                </span>
+                                {% else %}
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-yellow-100 text-yellow-800">
+                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    Pending
+                                </span>
+                                {% endif %}
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="text-sm text-gray-500 max-w-xs truncate">
+                                    {{ guest.notes|default:"No notes" }}
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <div class="flex items-center space-x-2">
+                                    <button onclick="editGuest({{ guest.id }})" class="text-blue-600 hover:text-blue-900 transition-colors duration-200 p-1 rounded hover:bg-blue-50">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                        </svg>
+                                    </button>
+                                    <button onclick="sendInvitation({{ guest.id }})" class="text-green-600 hover:text-green-900 transition-colors duration-200 p-1 rounded hover:bg-green-50">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                                        </svg>
+                                    </button>
+                                    <button onclick="deleteGuest({{ guest.id }})" class="text-red-600 hover:text-red-900 transition-colors duration-200 p-1 rounded hover:bg-red-50">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="6" class="px-6 py-12 text-center">
+                                <div class="text-gray-400 mb-4">
+                                    <svg class="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                                    </svg>
+                                </div>
+                                <h3 class="text-lg font-medium text-gray-900 mb-2">No guests added yet</h3>
+                                <p class="text-gray-500 mb-4">Start by adding guests to your invitation</p>
+                                <button onclick="openAddGuestModal()" class="px-6 py-2 bg-gradient-to-r from-green-500 to-blue-600 text-white rounded-lg font-semibold hover:shadow-lg transition-all duration-200">
+                                    Add Your First Guest
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Bulk Actions Bar -->
+        <div id="bulkActions" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-white rounded-xl shadow-2xl border border-gray-200 px-6 py-4 hidden transition-all duration-300">
+            <div class="flex items-center space-x-4">
+                <span class="text-sm font-medium text-gray-700" id="selectedCount">0 guests selected</span>
+                <div class="flex space-x-2">
+                    <button onclick="bulkSendInvitations()" class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-semibold hover:bg-blue-700 transition-colors duration-200">
+                        Send Invitations
+                    </button>
+                    <button onclick="bulkUpdateStatus()" class="px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-semibold hover:bg-green-700 transition-colors duration-200">
+                        Mark Confirmed
+                    </button>
+                    <button onclick="bulkDelete()" class="px-4 py-2 bg-red-600 text-white rounded-lg text-sm font-semibold hover:bg-red-700 transition-colors duration-200">
+                        Delete
+                    </button>
+                    <button onclick="clearSelection()" class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg text-sm font-semibold hover:border-gray-400 transition-colors duration-200">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Guest Modal -->
+<div id="addGuestModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+        <div class="p-6 border-b border-gray-200">
+            <h3 class="text-xl font-semibold text-gray-900">Add New Guest</h3>
+        </div>
+        <form method="post" class="p-6 space-y-4">
+            {% csrf_token %}
+            <input type="hidden" name="invitation" value="{{ invitation.id }}">
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Full Name *</label>
+                <input type="text" name="name" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" placeholder="Enter guest name">
+            </div>
+            
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                    <input type="email" name="email" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" placeholder="email@example.com">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Phone</label>
+                    <input type="tel" name="phone_number" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" placeholder="+1 (555) 000-0000">
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Number of People</label>
+                    <input type="number" name="person_count" value="1" min="1" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
+                </div>
+                <div class="flex items-center justify-center">
+                    <label class="flex items-center mt-6">
+                        <input type="checkbox" name="full_family" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                        <span class="ml-2 text-sm text-gray-700">Full Family</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Notes</label>
+                <textarea name="notes" rows="3" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" placeholder="Any special notes..."></textarea>
+            </div>
+            
+            <div class="flex justify-end space-x-3 pt-4">
+                <button type="button" onclick="closeAddGuestModal()" class="px-6 py-3 border border-gray-300 text-gray-700 rounded-xl font-semibold hover:border-gray-400 transition-colors duration-200">
+                    Cancel
+                </button>
+                <button type="submit" class="px-6 py-3 bg-gradient-to-r from-green-500 to-blue-600 text-white rounded-xl font-semibold hover:shadow-lg transition-all duration-200">
+                    Add Guest
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+// Guest Management JavaScript
+let selectedGuests = new Set();
+
+function openAddGuestModal() {
+    document.getElementById('addGuestModal').classList.remove('hidden');
+}
+
+function closeAddGuestModal() {
+    document.getElementById('addGuestModal').classList.add('hidden');
+}
+
+function editGuest(guestId) {
+    // Implementation for editing guest
+    console.log('Edit guest:', guestId);
+}
+
+function sendInvitation(guestId) {
+    // Implementation for sending invitation
+    console.log('Send invitation to:', guestId);
+}
+
+function deleteGuest(guestId) {
+    if (confirm('Are you sure you want to delete this guest?')) {
+        // Implementation for deleting guest
+        console.log('Delete guest:', guestId);
+    }
+}
+
+function exportGuests() {
+    // Implementation for exporting guests
+    console.log('Export guests');
+}
+
+function sendReminders() {
+    // Implementation for sending reminders
+    console.log('Send reminders');
+}
+
+// Bulk selection functionality
+document.getElementById('selectAll').addEventListener('change', function(e) {
+    const checkboxes = document.querySelectorAll('.guest-checkbox');
+    checkboxes.forEach(checkbox => {
+        checkbox.checked = e.target.checked;
+        updateBulkActions();
+    });
+});
+
+document.querySelectorAll('.guest-checkbox').forEach(checkbox => {
+    checkbox.addEventListener('change', updateBulkActions);
+});
+
+function updateBulkActions() {
+    const checkboxes = document.querySelectorAll('.guest-checkbox:checked');
+    selectedGuests = new Set(Array.from(checkboxes).map(cb => cb.closest('tr').dataset.guestId));
+    
+    const bulkActions = document.getElementById('bulkActions');
+    const selectedCount = document.getElementById('selectedCount');
+    
+    if (checkboxes.length > 0) {
+        selectedCount.textContent = `${checkboxes.length} guest${checkboxes.length > 1 ? 's' : ''} selected`;
+        bulkActions.classList.remove('hidden');
+    } else {
+        bulkActions.classList.add('hidden');
+    }
+}
+
+function clearSelection() {
+    document.querySelectorAll('.guest-checkbox').forEach(cb => cb.checked = false);
+    document.getElementById('selectAll').checked = false;
+    updateBulkActions();
+}
+
+function bulkSendInvitations() {
+    console.log('Bulk send to:', Array.from(selectedGuests));
+}
+
+function bulkUpdateStatus() {
+    console.log('Bulk update status for:', Array.from(selectedGuests));
+}
+
+function bulkDelete() {
+    if (confirm(`Are you sure you want to delete ${selectedGuests.size} guests?`)) {
+        console.log('Bulk delete:', Array.from(selectedGuests));
+    }
+}
+
+// Search and filter functionality
+document.getElementById('searchGuests').addEventListener('input', filterGuests);
+document.getElementById('statusFilter').addEventListener('change', filterGuests);
+
+function filterGuests() {
+    const searchTerm = document.getElementById('searchGuests').value.toLowerCase();
+    const statusFilter = document.getElementById('statusFilter').value;
+    
+    document.querySelectorAll('.guest-row').forEach(row => {
+        const name = row.querySelector('.text-sm.font-medium').textContent.toLowerCase();
+        const status = row.dataset.status;
+        const matchesSearch = name.includes(searchTerm);
+        const matchesStatus = statusFilter === 'all' || status === statusFilter;
+        
+        row.style.display = (matchesSearch && matchesStatus) ? '' : 'none';
+    });
+}
+</script>
+
+<style>
+.guest-row {
+    transition: all 0.2s ease-in-out;
+}
+
+.guest-row:hover {
+    transform: translateY(-1px);
+}
+
+#bulkActions {
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+</style>
+{% endblock %}

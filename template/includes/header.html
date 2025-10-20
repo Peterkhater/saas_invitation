@@ -1,0 +1,47 @@
+<header class="fixed w-full bg-white/90 backdrop-blur-md z-50 border-b border-gray-100 mb-20">
+    <nav class="container mx-auto px-6 py-4">
+        <div class="flex items-center justify-between">
+            <!-- Logo -->
+            <div class="flex items-center space-x-2">
+                <div class="w-10 h-10 bg-gradient-to-r from-elegant-purple to-elegant-pink rounded-lg flex items-center justify-center">
+                    <span class="text-white font-bold text-xl">IF</span>
+                </div>
+                <span class="text-2xl font-elegant font-bold text-gray-900">InviteFlow</span>
+            </div>
+
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#features" class="text-gray-700 hover:text-elegant-purple transition-colors font-medium">Features</a>
+                <a href="#templates" class="text-gray-700 hover:text-elegant-purple transition-colors font-medium">Templates</a>
+                <a href="#pricing" class="text-gray-700 hover:text-elegant-purple transition-colors font-medium">Pricing</a>
+                <a href="#testimonials" class="text-gray-700 hover:text-elegant-purple transition-colors font-medium">Testimonials</a>
+            </div>
+
+            <!-- CTA Buttons -->
+            <div class="flex items-center space-x-4">
+                <a href="#" class="text-gray-700 hover:text-elegant-purple transition-colors font-medium hidden md:block">Sign In</a>
+                <a href="#pricing" class="bg-gradient-to-r from-elegant-purple to-elegant-pink text-white px-6 py-2.5 rounded-full font-medium hover:shadow-lg transition-all duration-300 hover:scale-105">
+                    Get Started Free
+                </a>
+                
+                <!-- Mobile Menu Button -->
+                <button class="md:hidden text-gray-700" id="mobile-menu-button">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div class="md:hidden hidden pt-4" id="mobile-menu">
+            <div class="flex flex-col space-y-4">
+                <a href="#features" class="text-gray-700 hover:text-elegant-purple transition-colors font-medium">Features</a>
+                <a href="#templates" class="text-gray-700 hover:text-elegant-purple transition-colors font-medium">Templates</a>
+                <a href="#pricing" class="text-gray-700 hover:text-elegant-purple transition-colors font-medium">Pricing</a>
+                <a href="#testimonials" class="text-gray-700 hover:text-elegant-purple transition-colors font-medium">Testimonials</a>
+                <a href="#" class="text-gray-700 hover:text-elegant-purple transition-colors font-medium">Sign In</a>
+            </div>
+        </div>
+    </nav>
+</header>
