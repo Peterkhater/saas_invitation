@@ -1,0 +1,352 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-gray-900 to-purple-900">
+    <!-- Header -->
+    <div class="relative overflow-hidden">
+        <div class="absolute inset-0 bg-black/40 z-0"></div>
+        <div class="relative z-10 pt-20 pb-16 px-4 text-center">
+            <div class="max-w-4xl mx-auto">
+                <h1 class="text-5xl font-elegant font-bold text-white mb-4">{{ event.name }} Gallery</h1>
+                <p class="text-xl text-gray-300 mb-8">Share your memories from this beautiful event</p>
+                
+                <!-- QR Code Section -->
+                <div class="inline-flex flex-col items-center bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20">
+                    <div class="w-48 h-48 bg-white rounded-lg p-4 mb-4">
+                        <img src="{{qr_code_data}}" alt="" class="w-full h-full rounded flex items-center justify-center">
+                        <!-- QR Code would be generated here -->
+                        <!-- <div class="w-full h-full bg-gradient-to-br from-purple-400 to-pink-500 rounded flex items-center justify-center">
+                            <span class="text-white font-bold text-center text-sm">QR Code<br>Scan to Upload</span>
+                        </div> -->
+                    </div>
+                    <p class="text-white text-sm">Scan to contribute photos</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Upload Section for Mobile -->
+    <div class="lg:hidden fixed bottom-6 right-6 z-50">
+        <button onclick="openUploadModal()" class="w-14 h-14 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-transform duration-200">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Gallery Content -->
+    <div class="relative z-10 -mt-8 px-4 pb-20">
+        <div class="max-w-7xl mx-auto">
+            <!-- Stats Bar -->
+            <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6 mb-8 border border-white/20">
+                <div class="flex flex-wrap justify-between items-center">
+                    <div class="flex items-center space-x-6">
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-white">{{ total_photos }}</div>
+                            <div class="text-sm text-gray-300">Total Photos</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-white">{{ total_contributors }}</div>
+                            <div class="text-sm text-gray-300">Contributors</div>
+                        </div>
+                        <!-- <div class="text-center">
+                            <div class="text-2xl font-bold text-white">{{ total_likes }}</div>
+                            <div class="text-sm text-gray-300">Likes</div>
+                        </div> -->
+                    </div>
+                    
+                    <div class="flex space-x-4 mt-4 lg:mt-0">
+                        <button onclick="openUploadModal()" class="hidden lg:flex items-center px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-200">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
+                            </svg>
+                            Upload Photo
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Messages -->
+            {% if messages %}
+            <div class="mb-6">
+                {% for message in messages %}
+                <div class="{% if message.tags == 'success' %}bg-green-500/20 border border-green-500/30{% else %}bg-red-500/20 border border-red-500/30{% endif %} rounded-xl p-4 text-white backdrop-blur-lg">
+                    <div class="flex items-center">
+                        {% if message.tags == 'success' %}
+                        <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                        </svg>
+                        {% else %}
+                        <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+                        </svg>
+                        {% endif %}
+                        {{ message }}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <!-- Gallery Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="galleryGrid">
+                {% for photo in gallery_images %}
+                <div class="group relative bg-white/5 backdrop-blur-lg rounded-2xl overflow-hidden border border-white/10 hover:border-white/20 transition-all duration-300 hover:scale-105">
+                    <!-- Image -->
+                    <div class="aspect-square overflow-hidden">
+                        <img src="{{ photo.image.url }}" alt="{{ photo.caption }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    
+                    <!-- Overlay -->
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <div class="absolute bottom-0 left-0 right-0 p-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <div class="flex items-center">
+                                    {% if photo.image_owner %}
+                                    <div class="w-8 h-8 bg-gradient-to-r from-purple-400 to-pink-500 rounded-full flex items-center justify-center text-white text-xs font-bold mr-2">
+                                        {{ photo.image_owner.name|slice:":2"|upper }}
+                                    </div>
+                                    <span class="text-white text-sm font-medium">{{ photo.image_owner.name }}</span>
+                                    {% else %}
+                                    <div class="w-8 h-8 bg-gradient-to-r from-blue-400 to-green-500 rounded-full flex items-center justify-center text-white text-xs font-bold mr-2">
+                                        AN
+                                    </div>
+                                    <span class="text-white text-sm font-medium">Anonymous</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            {% if photo.caption %}
+                            <p class="text-white/90 text-sm line-clamp-2">{{ photo.caption }}</p>
+                            {% endif %}
+                            <div class="text-xs text-white/60 mt-2">
+                                {{ photo.uploaded_at|timesince }} ago
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Quick Actions -->
+                    <div class="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <div class="flex space-x-2">
+                            <a href="{{ photo.image.url }}" download class="w-8 h-8 bg-black/50 rounded-full flex items-center justify-center text-white hover:bg-black/70 transition-colors duration-200">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <!-- Empty State -->
+                <div class="col-span-full text-center py-16">
+                    <div class="w-32 h-32 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-16 h-16 text-white/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-2">No Photos Yet</h3>
+                    <p class="text-gray-300 mb-6">Be the first to share a memory from this event!</p>
+                    <button onclick="openUploadModal()" class="px-8 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-200">
+                        Upload First Photo
+                    </button>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Load More -->
+            {% if has_more %}
+            <div class="text-center mt-12">
+                <a href="?page={{ next_page }}" class="px-8 py-3 bg-white/10 text-white rounded-xl font-semibold hover:bg-white/20 transition-all duration-200 border border-white/20">
+                    Load More Photos
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Upload Modal -->
+<div id="uploadModal" class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center p-4 z-50 hidden">
+    <div class="bg-gray-900 rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+        <div class="p-6 border-b border-gray-700 flex justify-between items-center">
+            <h3 class="text-xl font-semibold text-white">Upload Photo</h3>
+            <button onclick="closeUploadModal()" class="text-gray-400 hover:text-white transition-colors duration-200">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+        
+        <form method="POST" enctype="multipart/form-data" class="p-6 space-y-4">
+            {% csrf_token %}
+            <input type="hidden" name="event" value="{{ event.id }}">
+            
+            <!-- File Upload Options -->
+            <div class="space-y-4">
+                <!-- Camera Option for Mobile -->
+                <div class="lg:hidden">
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Take Photo</label>
+                    <div class="border-2 border-dashed border-gray-600 rounded-xl p-6 text-center hover:border-purple-500 transition-colors duration-200">
+                        <input type="file" name="image" accept="image/*" capture="camera" class="hidden" id="cameraInput" onchange="previewImage(this)" required>
+                        <label for="cameraInput" class="cursor-pointer block">
+                            <svg class="w-12 h-12 text-gray-400 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            </svg>
+                            <p class="text-gray-300">Take Photo with Camera</p>
+                            <p class="text-sm text-gray-500 mt-1">Opens your device camera</p>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- File Upload Option -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Upload from Device</label>
+                    <div class="border-2 border-dashed border-gray-600 rounded-xl p-6 text-center hover:border-purple-500 transition-colors duration-200">
+                        <input type="file" name="image" accept="image/*" class="hidden" id="fileInput" onchange="previewImage(this)" >
+                        <label for="fileInput" class="cursor-pointer block">
+                            <svg class="w-12 h-12 text-gray-400 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            </svg>
+                            <p class="text-gray-300">Choose from Gallery</p>
+                            <p class="text-sm text-gray-500 mt-1">JPG, PNG up to 10MB</p>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Image Preview -->
+            <div id="uploadPreview" class="hidden aspect-video bg-black rounded-lg overflow-hidden border border-gray-600">
+                <img id="previewImage" class="w-full h-full object-contain">
+            </div>
+            
+            <!-- Caption -->
+            <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2">Caption (optional)</label>
+                <input type="text" name="caption" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" placeholder="Add a description..." maxlength="255">
+            </div>
+
+            <!-- Guest Name (for anonymous uploads) -->
+            <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2">Your Name (optional)</label>
+                <input type="text" name="guest_name" value="{{event.invitation.guests.name}}" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" placeholder="How should we credit you?">
+            </div>
+            
+            <!-- Submit -->
+            <button type="submit" class="w-full px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl font-semibold hover:shadow-lg transition-all duration-200 flex items-center justify-center">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
+                </svg>
+                Upload to Gallery
+            </button>
+        </form>
+    </div>
+</div>
+
+<script>
+// Minimal JavaScript for UI interactions only
+function openUploadModal() {
+    document.getElementById('uploadModal').classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeUploadModal() {
+    document.getElementById('uploadModal').classList.add('hidden');
+    document.body.style.overflow = 'auto';
+    // Reset preview
+    document.getElementById('uploadPreview').classList.add('hidden');
+    document.getElementById('previewImage').src = '';
+}
+
+function previewImage(input) {
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('previewImage').src = e.target.result;
+            document.getElementById('uploadPreview').classList.remove('hidden');
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+// Close modal when clicking outside
+document.getElementById('uploadModal').addEventListener('click', function(e) {
+    if (e.target.id === 'uploadModal') {
+        closeUploadModal();
+    }
+});
+
+// Close modal with Escape key
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeUploadModal();
+    }
+});
+
+// Auto-hide messages after 5 seconds
+setTimeout(function() {
+    const messages = document.querySelectorAll('[class*="bg-"]');
+    messages.forEach(message => {
+        if (message.textContent.includes('success') || message.textContent.includes('error')) {
+            message.style.opacity = '0';
+            message.style.transition = 'opacity 0.5s ease';
+            setTimeout(() => message.remove(), 500);
+        }
+    });
+}, 5000);
+</script>
+
+<style>
+.line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Smooth scrolling for the gallery */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+    .min-h-screen {
+        min-height: 100vh;
+        min-height: 100dvh;
+    }
+}
+
+/* Focus styles for accessibility */
+button:focus-visible,
+input:focus-visible {
+    outline: 2px solid #8b5cf6;
+    outline-offset: 2px;
+}
+
+/* Smooth transitions */
+* {
+    transition-property: color, background-color, border-color, transform, opacity;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 200ms;
+}
+</style>
+{% endblock %}

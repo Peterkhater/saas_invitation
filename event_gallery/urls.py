@@ -1,5 +1,5 @@
 from django.urls import path
 from . import views
 urlpatterns = [
-# path('',views.gallery,name="invitation_create"),
+path('<int:id>/<str:key>/',views.gallery_show,name="event_gallery_images_show"),
 ]

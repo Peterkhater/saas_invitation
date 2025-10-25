@@ -144,7 +144,15 @@
                         </div>
                     </div>
                 </div>
-
+                <div class="messages">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="mt-4 p-4 rounded-lg {% if message.tags == 'error' %}bg-red-100 text-red-700{% elif message.tags == 'success' %}bg-green-100 text-green-700{% else %}bg-gray-100 text-gray-700{% endif %}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
                 <!-- Form Actions -->
                 <div class="flex justify-between items-center mt-12 pt-8 border-t border-gray-200">
                     <a href="" class="px-8 py-3 border border-gray-300 text-gray-700 rounded-xl font-semibold hover:border-gray-400 transition-colors duration-200">

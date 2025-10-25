@@ -5,6 +5,7 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Guest
 from django.contrib import messages
+from django.http import JsonResponse, HttpResponse
 
 
 @login_required
@@ -19,6 +20,11 @@ def invitation_create(request):
         notes = request.POST.get('notes')
         has_music = 'has_music' in request.POST  
 
+        if not invitation_type_id or not event_for or not event_date or not event_end_date :
+            messages.error(request, "Please fill in all required fields.")
+            return render(request,'invitation/invitation_create.html', {'invitation_types': invitation_types})
+            
+
         request.session['invitation_data'] = {
             'invitation_owner': request.user.id,
             'invitation_type_id': invitation_type_id,
@@ -28,7 +34,7 @@ def invitation_create(request):
             'notes': notes,
             'has_music_file': has_music, 
         }
-
+        
         return redirect('event_create')
 
     return render(request,'invitation/invitation_create.html', {'invitation_types': invitation_types})
@@ -76,3 +82,54 @@ def guest_management(request, invitation_id):
     }
     
     return render(request, 'invitation/guest_management.html', context)
+
+def redirect_view_to_main(request):
+    return redirect('home')
+
+
+
+def delete_guest(request, invitation_id, key):
+    invitation = get_object_or_404(Invitation, id=invitation_id)
+    
+    if request.user != invitation.invitation_owner:
+        return HttpResponse('Permission denied', status=403)
+    
+    guest = get_object_or_404(Guest, invitation=invitation, guest_secret_key=key)
+    
+    if request.method == "DELETE":
+        guest.delete()
+        return HttpResponse('deleted')
+    
+    return HttpResponse('Method not allowed', status=405)
+
+
+
+def edit_guest(request, invitation_id, guest_key):
+    invitation = get_object_or_404(Invitation, id=invitation_id)
+    
+    if request.user != invitation.invitation_owner:
+        return HttpResponse('Permission denied', status=403)
+    
+    guest = get_object_or_404(Guest,invitation=invitation,guest_secret_key=guest_key)
+    
+    if request.method == "POST":
+        # Update guest information
+        guest.name = request.POST.get('name')
+        guest.email = request.POST.get('email')
+        guest.phone_number = request.POST.get('phone_number')
+        guest.person_count = request.POST.get('person_count', 1)
+        guest.full_family = request.POST.get('full_family') == 'on'
+        guest.rsvp = request.POST.get('rsvp') == 'true'
+        guest.notes = request.POST.get('notes')
+        
+        guest.save()
+        messages.success(request, f"{guest.name}'s information has been updated successfully!")
+        return redirect('guest_management', invitation_id=invitation_id)
+    
+    context = {
+        'guest': guest,
+        'invitation': invitation,
+    }
+    
+    return render(request, 'invitation/guest_edit.html', context)
+

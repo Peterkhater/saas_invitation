@@ -167,20 +167,24 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                 <div class="flex items-center space-x-2">
-                                    <button onclick="editGuest({{ guest.id }})" class="text-blue-600 hover:text-blue-900 transition-colors duration-200 p-1 rounded hover:bg-blue-50">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                                        </svg>
-                                    </button>
+                                    <a style="text-decoration: none; color: inherit;" href="{% url 'edit_guest' invitation.id guest.guest_secret_key %}">
+                                        <button class="text-blue-600 hover:text-blue-900 transition-colors duration-200 p-1 rounded hover:bg-blue-50">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                            </svg>
+                                        </button>
+                                    </a>
                                     <button onclick="sendInvitation({{ guest.id }})" class="text-green-600 hover:text-green-900 transition-colors duration-200 p-1 rounded hover:bg-green-50">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
                                         </svg>
                                     </button>
-                                    <button onclick="deleteGuest({{ guest.id }})" class="text-red-600 hover:text-red-900 transition-colors duration-200 p-1 rounded hover:bg-red-50">
+                                    <button onclick="deleteGuest('{{ invitation.id }}', '{{ guest.guest_secret_key }}')" class="text-red-600 hover:text-red-900 transition-colors duration-200 p-1 rounded hover:bg-red-50">
+                                    {% comment %} <button onclick="deleteGuest(7, 'z20NChf6ulZUzOeoOLBFfKjfcAh20ylKs2i32Ojh8XOOXwStCP')" class="text-red-600 hover:text-red-900 transition-colors duration-200 p-1 rounded hover:bg-red-50"> {% endcomment %}
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                                         </svg>
+                                        
                                     </button>
                                 </div>
                             </td>
@@ -307,10 +311,33 @@ function sendInvitation(guestId) {
     console.log('Send invitation to:', guestId);
 }
 
-function deleteGuest(guestId) {
+function deleteGuest(invitation_id, guest_secret_key, guest_id) {
     if (confirm('Are you sure you want to delete this guest?')) {
-        // Implementation for deleting guest
-        console.log('Delete guest:', guestId);
+        let url = `{% url 'delete_guest' 0 "key_placeholder" %}`
+            .replace('0', invitation_id)
+            .replace("key_placeholder", guest_secret_key);
+        
+        fetch(url, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+            },
+        })
+        .then(response => {
+            if (response.ok) {
+                // Remove from UI
+                document.querySelector(`[data-guest-id="${guest_id}"]`).remove();
+                alert('Guest deleted successfully!');
+                window.location.reload();
+            } else {
+                window.location.reload();
+                alert('Error deleting guest');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+             window.location.reload();
+        });
     }
 }
 
