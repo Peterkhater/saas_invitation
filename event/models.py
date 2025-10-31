@@ -17,6 +17,13 @@ class Event(models.Model):
     gallery_event_featured = models.BooleanField(default=False)
     event_secret_key = models.CharField(max_length=100, blank=True, null=True)
     
+    audio_file = models.FileField(upload_to='event_audios/', blank=True, null=True)
+    beginningStory = models.TextField(blank=True, null=True)
+    location_embed = models.TextField(blank=True, null=True)
+    journeyStory = models.TextField(blank=True, null=True)
+    proposalStory = models.TextField(blank=True, null=True)
+
+    
 
     def __str__(self):
         return self.name
@@ -40,12 +47,9 @@ class Event(models.Model):
 
     def generate_qr_code(self, request=None):
         """Generate QR code with automatic URL detection"""
-        # Get the current site domain
         if request:
-            # current_site = get_current_site(request)
             base_url = f"http://192.168.1.20"
         else:
-            # Fallback to settings or try to detect
             from django.conf import settings
             base_url = getattr(settings, 'BASE_URL', 'http://localhost:8000')
         

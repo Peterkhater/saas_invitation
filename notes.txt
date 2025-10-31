@@ -1,0 +1,6 @@
+things to do:
+add the field beginningStory in event table (optional field) 
+add the field location_embed in event table (optional field)
+add the field journeyStory in event table (optional field)
+add the field proposalStory in event table (optional field)
+add the field audio_file in event table (optional field) (filetype)

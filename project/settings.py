@@ -9,7 +9,7 @@ SECRET_KEY = 'django-insecure-dsrg#fglb-ypf!7rt$!7&68o794#&z8tchvsbj1ojoj1or$z*i
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.1.20']
 
 
 INSTALLED_APPS = [
@@ -136,3 +136,12 @@ MEDIA_URL = '/media/'
 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+#Email Configuration
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'follow.software.engineer@gmail.com'       
+EMAIL_HOST_PASSWORD = 'hhzs beiy rqiv ipay'
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER

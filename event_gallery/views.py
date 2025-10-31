@@ -3,6 +3,7 @@ from invitation.models import Invitation
 from django.shortcuts import get_object_or_404
 from event.models import Event
 from .models import Gallery
+import qrcode
 
 
 
@@ -48,3 +49,6 @@ def gallery_show(request, id,key):
     
 
     return render(request, 'event_gallery/gallery_show.html', context)
+
+
+

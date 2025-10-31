@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
-from invitation.models import Invitation, InvitationType
+from invitation.models import Invitation, InvitationType, Invitation_theme
 from .models import Event
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
@@ -40,7 +40,8 @@ def my_event_invitation_activate(request):
         
         user = get_object_or_404(User, id=invitation_data['invitation_owner'])
         invitation_type = get_object_or_404(InvitationType, id=invitation_data['invitation_type_id'])
-
+        invitation_theme = get_object_or_404(Invitation_theme, id=invitation_data['invitation_theme_id'])
+        print(invitation_theme)
         # Create the Invitation
         invitation = Invitation.objects.create(
             invitation_owner=user,
@@ -48,8 +49,9 @@ def my_event_invitation_activate(request):
             event_for=invitation_data['event_for'],
             event_date=invitation_data['event_date'],
             event_end_date=invitation_data['event_end_date'],
+            invitation_theme=invitation_theme,
             notes=invitation_data.get('notes', ''),
-            has_music_file=invitation_data.get('has_music_file', False)
+            has_music_file=invitation_data.get('has_music_file', False),
         )
 
         # Create the Event

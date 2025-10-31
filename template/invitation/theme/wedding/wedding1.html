@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{invitation.event_for}} - Wedding Invitation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --gold: #D4AF37;
+            --soft-gold: #E8D9B4;
+            --blush-pink: #F8E9E9;
+            --pastel-beige: #F5F1E8;
+            --white: #FFFFFF;
+            --dark-text: #2C2C2C;
+            --light-text: #666666;
+            --ivory: #FFFFF0;
+            --rose-gold: #B76E79;
+            --deep-navy: #1A1F2C;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--dark-text);
+            background: var(--white);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        .elegant-font {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .script-font {
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,233,233,0.85) 100%), 
+                        url('https://images.unsplash.com/photo-1519225421980-715cb0215aed?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><path fill="%23D4AF37" opacity="0.05" d="M500,200 Q600,100 700,200 T900,200 T1100,300 T1300,400 T1500,500 T1300,600 T1100,700 T900,800 T700,900 T500,1000 T300,900 T100,800 T-100,700 T-300,600 T-500,500 T-300,400 T-100,300 T100,200 T300,100 T500,200Z"/></svg>');
+            background-size: cover;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            padding: 2rem;
+        }
+
+        .ornamental-divider {
+            width: 150px;
+            height: 1px;
+            background: var(--gold);
+            margin: 2rem auto;
+            position: relative;
+        }
+
+        .ornamental-divider::before,
+        .ornamental-divider::after {
+            content: '❦';
+            position: absolute;
+            top: -12px;
+            color: var(--gold);
+            font-size: 1.2rem;
+        }
+
+        .ornamental-divider::before {
+            left: -25px;
+        }
+
+        .ornamental-divider::after {
+            right: -25px;
+        }
+
+        .hero h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 5rem;
+            font-weight: 300;
+            color: var(--dark-text);
+            margin-bottom: 1rem;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s ease 0.5s forwards;
+            letter-spacing: 3px;
+        }
+
+        .hero h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 400;
+            color: var(--gold);
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s ease 0.8s forwards;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: var(--light-text);
+            margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s ease 1.1s forwards;
+            letter-spacing: 1px;
+        }
+
+        .date-display {
+            font-size: 1.8rem;
+            color: var(--gold);
+            margin-bottom: 3rem;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s ease 1.4s forwards;
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 500;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1.4rem 3.5rem;
+            background: var(--gold);
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 50px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            font-size: 1.2rem;
+            transition: all 0.4s ease;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s ease 1.7s forwards;
+            border: 2px solid var(--gold);
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: all 0.6s;
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
+        }
+
+        .cta-button:hover {
+            background: transparent;
+            color: var(--gold);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(212, 175, 55, 0.4);
+        }
+
+        /* Section Styling */
+        .section {
+            padding: 8rem 2rem;
+            position: relative;
+        }
+
+        .section-light {
+            background: var(--white);
+        }
+
+        .section-soft {
+            background: var(--pastel-beige);
+        }
+
+        .section-blush {
+            background: var(--blush-pink);
+        }
+
+        .section-dark {
+            background: var(--deep-navy);
+            color: var(--white);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 5rem;
+        }
+
+        .section-title h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            font-weight: 400;
+            color: var(--dark-text);
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: var(--gold);
+        }
+
+        .section-dark .section-title h2 {
+            color: var(--white);
+        }
+
+        .section-title .divider {
+            width: 80px;
+            height: 2px;
+            background: var(--gold);
+            margin: 0 auto;
+        }
+
+        /* Event Details */
+        .event-card {
+            background: var(--white);
+            padding: 4rem;
+            border-radius: 25px;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.08);
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto;
+            position: relative;
+            border: 1px solid rgba(212, 175, 55, 0.1);
+        }
+
+        .event-card::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            right: 15px;
+            bottom: 15px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 15px;
+            pointer-events: none;
+        }
+
+        .event-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2.5rem;
+            padding: 1.5rem 0;
+            position: relative;
+        }
+
+        .event-item::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--soft-gold), transparent);
+        }
+
+        .event-item:last-child::after {
+            display: none;
+        }
+
+        .event-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--soft-gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 2.5rem;
+            flex-shrink: 0;
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .event-icon:hover {
+            transform: scale(1.1);
+            box-shadow: 0 15px 40px rgba(212, 175, 55, 0.3);
+        }
+
+        .event-icon svg {
+            width: 30px;
+            height: 30px;
+            color: var(--gold);
+        }
+
+        .event-text {
+            text-align: left;
+            flex: 1;
+        }
+
+        .event-text h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark-text);
+        }
+
+        .event-text p {
+            color: var(--light-text);
+            font-size: 1.2rem;
+        }
+
+        /* Our Story */
+        .story-timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 5rem;
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .story-timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 2px;
+            background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+            transform: translateX(-50%);
+        }
+
+        .story-item {
+            display: flex;
+            align-items: center;
+            gap: 4rem;
+            opacity: 0;
+            transform: translateX(-50px);
+            position: relative;
+        }
+
+        .story-item:nth-child(even) {
+            flex-direction: row-reverse;
+            transform: translateX(50px);
+        }
+
+        .story-item::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            background: var(--gold);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+            box-shadow: 0 0 0 8px var(--pastel-beige);
+        }
+
+        .story-image {
+            flex: 1;
+            height: 350px;
+            background: linear-gradient(45deg, var(--soft-gold), var(--blush-pink));
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+        }
+
+        .story-image::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            right: 15px;
+            bottom: 15px;
+            border: 2px solid var(--gold);
+            border-radius: 10px;
+            opacity: 0.2;
+        }
+
+        .story-content {
+            flex: 1;
+            padding: 2rem;
+            background: var(--white);
+            border-radius: 15px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.08);
+            position: relative;
+        }
+
+        .story-content::before {
+            content: '';
+            position: absolute;
+            top: 30px;
+            width: 30px;
+            height: 30px;
+            background: var(--white);
+            transform: rotate(45deg);
+        }
+
+        .story-item:nth-child(odd) .story-content::before {
+            right: -15px;
+        }
+
+        .story-item:nth-child(even) .story-content::before {
+            left: -15px;
+        }
+
+        .story-content h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            margin-bottom: 1.5rem;
+            color: var(--dark-text);
+            position: relative;
+            display: inline-block;
+        }
+
+        .story-content h3::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background: var(--gold);
+        }
+
+        .story-content p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: var(--light-text);
+        }
+
+        /* Photo Gallery */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+            margin-top: 4rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            height: 450px;
+            border-radius: 20px;
+            overflow: hidden;
+            background: linear-gradient(45deg, var(--soft-gold), var(--blush-pink));
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            transition: all 0.4s ease;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 80px rgba(0,0,0,0.15);
+        }
+
+        .gallery-item::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            right: 15px;
+            bottom: 15px;
+            border: 2px solid var(--gold);
+            border-radius: 10px;
+            opacity: 0.2;
+            z-index: 1;
+            transition: all 0.4s ease;
+        }
+
+        .gallery-item:hover::before {
+            opacity: 0.4;
+            transform: scale(0.98);
+        }
+
+        /* RSVP Form */
+        .rsvp-form {
+            max-width: 700px;
+            margin: 0 auto;
+            background: var(--white);
+            padding: 4rem;
+            border-radius: 25px;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.08);
+            position: relative;
+            border: 1px solid rgba(212, 175, 55, 0.1);
+        }
+
+        .rsvp-form::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            right: 15px;
+            bottom: 15px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 15px;
+            pointer-events: none;
+        }
+
+        .form-group {
+            margin-bottom: 2.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.8rem;
+            font-weight: 500;
+            color: var(--dark-text);
+            font-size: 1.1rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 1.2rem;
+            border: 2px solid var(--pastel-beige);
+            border-radius: 12px;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            background: var(--white);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.1);
+        }
+
+        .attending-toggle {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .toggle-option {
+            flex: 1;
+            text-align: center;
+            padding: 1.5rem;
+            border: 2px solid var(--pastel-beige);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            background: var(--white);
+        }
+
+        .toggle-option:hover {
+            border-color: var(--soft-gold);
+        }
+
+        .toggle-option.active {
+            border-color: var(--gold);
+            background: var(--soft-gold);
+            color: var(--gold);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.2);
+        }
+
+        /* Countdown */
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-top: 4rem;
+        }
+
+        .countdown-item {
+            text-align: center;
+            position: relative;
+        }
+
+        .countdown-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: -1.5rem;
+            width: 1px;
+            background: linear-gradient(to bottom, transparent, var(--soft-gold), transparent);
+        }
+
+        .countdown-item:last-child::before {
+            display: none;
+        }
+
+        .countdown-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            font-weight: 600;
+            color: var(--gold);
+            display: block;
+            text-shadow: 0 5px 15px rgba(212, 175, 55, 0.2);
+        }
+
+        .countdown-label {
+            font-size: 1rem;
+            color: var(--light-text);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 0.5rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--deep-navy);
+            color: var(--white);
+            text-align: center;
+            padding: 6rem 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><path fill="%23D4AF37" opacity="0.03" d="M500,200 Q600,100 700,200 T900,200 T1100,300 T1300,400 T1500,500 T1300,600 T1100,700 T900,800 T700,900 T500,1000 T300,900 T100,800 T-100,700 T-300,600 T-500,500 T-300,400 T-100,300 T100,200 T300,100 T500,200Z"/></svg>');
+            background-size: cover;
+        }
+
+        .footer-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .footer h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer p {
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .signature {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            margin-top: 3rem;
+            color: var(--soft-gold);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(1deg); }
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Music Player */
+        .music-player {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: var(--gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .music-player:hover {
+            transform: scale(1.1);
+        }
+
+        .music-player i {
+            font-size: 1.5rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 3rem;
+            }
+
+            .hero h2 {
+                font-size: 2.2rem;
+            }
+
+            .section-title h2 {
+                font-size: 2.5rem;
+            }
+
+            .story-timeline::before {
+                display: none;
+            }
+
+            .story-item,
+            .story-item:nth-child(even) {
+                flex-direction: column;
+                transform: none;
+            }
+
+            .story-item::before {
+                display: none;
+            }
+
+            .story-content::before {
+                display: none;
+            }
+
+            .event-item {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .event-icon {
+                margin-right: 0;
+                margin-bottom: 1.5rem;
+            }
+
+            .event-text {
+                text-align: center;
+            }
+
+            .countdown {
+                gap: 1.5rem;
+            }
+
+            .countdown-number {
+                font-size: 2.5rem;
+            }
+
+            .countdown-item::before {
+                right: -0.75rem;
+            }
+
+            .attending-toggle {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Music Player -->
+    <div class="music-player" id="musicToggle">
+        <i class="fas fa-music"></i>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>You're Invited</h1>
+            <div class="ornamental-divider"></div>
+            <h2>{{invitation.event_for|default:"Sarah & John"}}</h2>
+            <p>With joy in our hearts, we invite you to witness and celebrate our union</p>
+            <div class="date-display">{% if invitation.event_date %}{{invitation.event_date|date:"jS F Y"}}{% else %}June 21, 2025{% endif %}</div>
+            <a href="#rsvp" class="cta-button">RSVP Now</a>
+        </div>
+    </section>
+
+    <!-- Event Details -->
+    <section class="section section-light" id="details">
+        <div class="container">
+            <div class="section-title">
+                <h2>Wedding Details</h2>
+                <div class="divider"></div>
+            </div>
+            <div class="event-card">
+                <div class="event-item">
+                    <div class="event-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
+                    <div class="event-text">
+                        <h3>Date & Time</h3>
+                        {% if invitation.event_date %}
+                        <p>{{invitation.event_date|date:"jS F Y"}} -- {{invitation.event_date|time:"H:i A"}}</p>
+                        {% else %}
+                        <p>June 21, 2025 — 4:00 PM</p>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="event-item">
+                    <div class="event-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                            <path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                    </div>
+                    <div class="event-text">
+                        <h3>Venue</h3>
+                        <p>{{event.location|default:"La Belle Garden, Beirut, Lebanon"}}</p>
+                    </div>
+                </div>
+                <div class="event-item">
+                    <div class="event-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <div class="event-text">
+                        <h3>Duration</h3>
+                        <p>Ceremony & Reception: 5 hours</p>
+                    </div>
+                </div>
+                <a href="{% if event.location_embed %}{{event.location_embed}}{% else %}#{% endif %}" class="cta-button" style="margin-top: 2rem;">View Location</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Story -->
+    <section class="section section-soft" id="story">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Love Story</h2>
+                <div class="divider"></div>
+            </div>
+            <div class="story-timeline">
+                <div class="story-item fade-in">
+                    <div class="story-image"></div>
+                    <div class="story-content">
+                        <h3>The Beginning</h3>
+                        {% if event.beginningStory %}
+                        {{event.beginningStory}}
+                        {% else %}
+                        <p>Our story began in 2018 when fate brought us together at a cozy coffee shop in downtown Beirut. Little did we know that a spilled latte would lead to a lifetime of love and laughter.</p>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="story-item fade-in">
+                    <div class="story-image"></div>
+                    <div class="story-content">
+                        <h3>The Journey</h3>
+                        {% if event.journeyStory %}
+                        {{event.journeyStory}}
+                        {% else %}
+                        <p>Through sunset walks along the Corniche and countless adventures around Lebanon, our love grew stronger with each passing day, building memories that will last a lifetime.</p>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="story-item fade-in">
+                    <div class="story-image"></div>
+                    <div class="story-content">
+                        <h3>The Proposal</h3>
+                        {% if event.proposalStory %}
+                        {{event.proposalStory}}
+                        {% else %}
+                        <p>On a starlit night at Harissa, with the city lights twinkling below, John got down on one knee and asked the most important question of our lives. The answer was always yes.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Photo Gallery -->
+    <section class="section section-light" id="gallery">
+        <div class="container">
+            <div class="section-title">
+                <h2>Shared Memories</h2>
+                <div class="divider"></div>
+            </div>
+            <div class="gallery-grid">
+                <div class="gallery-item fade-in"></div>
+                <div class="gallery-item fade-in"></div>
+                <div class="gallery-item fade-in"></div>
+                <div class="gallery-item fade-in"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Countdown -->
+    <section class="section section-blush" id="countdown">
+        <div class="container">
+            <div class="section-title">
+                <h2>Counting the Moments</h2>
+                <div class="divider"></div>
+            </div>
+            <div class="countdown">
+                <div class="countdown-item">
+                    <span class="countdown-number" id="days">00</span>
+                    <span class="countdown-label">Days</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="hours">00</span>
+                    <span class="countdown-label">Hours</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="minutes">00</span>
+                    <span class="countdown-label">Minutes</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="seconds">00</span>
+                    <span class="countdown-label">Seconds</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- RSVP Section -->
+    <section class="section section-light" id="rsvp">
+        <div class="container">
+            <div class="section-title">
+                <h2>RSVP</h2>
+                <div class="divider"></div>
+                <p style="color: var(--light-text); margin-top: 1.5rem;">Kindly respond by May 21, 2025</p>
+            </div>
+            <div class="rsvp-form">
+                <form id="wedding-rsvp">
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" class="form-control" required value="{% if guest.full_family %}Mr-s {{guest.name}} & My Familly{% else %}{{guest.name|default:''}}{% endif %}" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" class="form-control" required placeholder="example@gmail.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="guests">Number of Guests</label>
+                        <select id="guests" class="form-control" required>
+                            {% if guest.person_count == 1 %}
+                                <option value="1" selected>1 Person</option>
+                            {% else %}
+                                {% for count in person_range %}
+                                    <option value="{{ count }}">{{ count }} People</option>
+                                {% endfor %}
+                            {% endif %}
+
+                            
+                            {% comment %} <option value="1">1 Person</option>
+                            <option value="2" selected>2 People</option>
+                            <option value="3">3 People</option>
+                            <option value="4">4 People</option>
+                            <option value="5">5+ People</option> {% endcomment %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Will you be attending?</label>
+                        <div class="attending-toggle">
+                            <div class="toggle-option" data-value="yes">Yes, I'll be there!</div>
+                            <div class="toggle-option" data-value="no">Sorry, can't make it</div>
+                        </div>
+                        <input type="hidden" id="attending" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message for the Couple (Optional)</label>
+                        <textarea id="message" class="form-control" rows="4"></textarea>
+                    </div>
+                    <button type="submit" class="cta-button" style="width: 100%; margin-top: 2rem;">Confirm Attendance</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <h3>{{invitation.event_for|default:"Sarah & John"}}</h3>
+                <p>With love and gratitude, we invite you to share in our special day. Your presence is the greatest gift we could ask for.</p>
+                <div class="signature">With Love, {{invitation.event_for}}</div>
+                <p style="font-size: 0.9rem; opacity: 0.5; margin-top: 3rem;">Crafted with elegance by our invitation platform</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Countdown Timer
+        function updateCountdown() {
+            const django_date = "{% if invitation.event_date %}{{invitation.event_date|date:'F j, Y H:i:s'}}{% else %}June 21, 2025 16:00:00{% endif %}";
+            const weddingDate = new Date(django_date).getTime();
+            const now = new Date().getTime();
+            const distance = weddingDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById('days').textContent = days.toString().padStart(2, '0');
+            document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+        }
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // Scroll Animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // RSVP Form Handling
+        document.querySelectorAll('.toggle-option').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.toggle-option').forEach(opt => {
+                    opt.classList.remove('active');
+                });
+                this.classList.add('active');
+                document.getElementById('attending').value = this.dataset.value;
+            });
+        });
+
+        document.getElementById('wedding-rsvp').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (!document.getElementById('attending').value) {
+                alert('Please select if you will be attending');
+                return;
+            }
+
+            // Simulate form submission
+            const formData = new FormData(this);
+            const name = formData.get('name') || document.getElementById('name').value;
+            
+            alert(`Thank you, ${name}! Your RSVP has been received. We look forward to celebrating with you!`);
+            this.reset();
+            document.querySelectorAll('.toggle-option').forEach(opt => {
+                opt.classList.remove('active');
+            });
+        });
+
+        // Smooth scrolling for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Music Player
+        const musicToggle = document.getElementById('musicToggle');
+        let django_audio_file = "{% if event.audio_file %}{{ event.audio_file.url }}{% else %}https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3{% endif %}";
+        let audio = new Audio(django_audio_file);
+        audio.loop = true;
+        let isPlaying = false;
+
+        musicToggle.addEventListener('click', function() {
+            if (isPlaying) {
+                audio.pause();
+                musicToggle.innerHTML = '<i class="fas fa-music"></i>';
+            } else {
+                audio.play();
+                musicToggle.innerHTML = '<i class="fas fa-pause"></i>';
+            }
+            isPlaying = !isPlaying;
+        });
+    </script>
+</body>
+</html>

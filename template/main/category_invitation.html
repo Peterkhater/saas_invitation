@@ -1,0 +1,268 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-slate-50 via-white to-purple-50/30">
+
+  <!-- Enhanced Hero Section with Parallax -->
+  <section class="relative h-96 overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-r from-purple-900/80 via-pink-800/70 to-blue-900/80 z-10"></div>
+    
+    <!-- Background Image with Parallax -->
+    {% if invitation_type.image %}
+    <div class="absolute inset-0 transform group">
+      <img src="{{ invitation_type.image.url }}" alt="{{ invitation_type.name }}"
+           class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
+    </div>
+    {% endif %}
+    
+    <!-- Animated Background Elements -->
+    <div class="absolute inset-0 z-0">
+      <div class="absolute top-10 left-10 w-20 h-20 bg-white/10 rounded-full animate-pulse"></div>
+      <div class="absolute top-32 right-20 w-16 h-16 bg-pink-300/20 rounded-full animate-bounce"></div>
+      <div class="absolute bottom-20 left-1/4 w-24 h-24 bg-purple-300/20 rounded-full animate-ping"></div>
+    </div>
+
+    <!-- Hero Content -->
+    <div class="relative z-20 h-full flex items-center justify-center text-center px-4">
+      <div class="max-w-4xl">
+        <h1 class="text-5xl md:text-7xl font-black text-white mb-6 drop-shadow-2xl">
+          {{ invitation_type.name }}
+        </h1>
+        <p class="text-xl md:text-2xl text-white/90 font-light mb-8 drop-shadow-lg">
+          Curated themes for your perfect celebration
+        </p>
+        
+        <!-- Stats Bar -->
+        <div class="flex justify-center space-x-8 text-white/80">
+          <div class="text-center">
+            <div class="text-2xl font-bold">{{ invitation_themes_list|length }}+</div>
+            <div class="text-sm font-light">Premium Themes</div>
+          </div>
+          <div class="text-center">
+            <div class="text-2xl font-bold">100%</div>
+            <div class="text-sm font-light">Customizable</div>
+          </div>
+          <div class="text-center">
+            <div class="text-2xl font-bold">24/7</div>
+            <div class="text-sm font-light">Support</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scroll Indicator -->
+    <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 animate-bounce">
+      <div class="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center">
+        <div class="w-1 h-3 bg-white/70 rounded-full mt-2"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Advanced Filter & Search Section -->
+  <section class="sticky top-0 z-40 bg-white/80 backdrop-blur-lg border-b border-gray-200/60 shadow-sm">
+    <div class="max-w-7xl mx-auto px-6 py-4">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
+        <div class="flex-1">
+          <h2 class="text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+            Explore Themes
+          </h2>
+          <p class="text-gray-600 mt-1">Find the perfect design for your special day</p>
+        </div>
+        
+        <div class="flex flex-wrap gap-4">
+          <!-- Search -->
+          <div class="relative">
+            <input type="text" placeholder="Search themes..." 
+                   class="pl-10 pr-4 py-2.5 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white/50 backdrop-blur-sm transition-all duration-300">
+            <svg class="w-5 h-5 absolute left-3 top-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+          </div>
+
+          <!-- Filter Dropdown -->
+          <div class="relative">
+            <select class="appearance-none pl-4 pr-10 py-2.5 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white/50 backdrop-blur-sm transition-all duration-300">
+              <option>All Categories</option>
+              <option>Modern</option>
+              <option>Classic</option>
+              <option>Minimal</option>
+              <option>Luxury</option>
+            </select>
+            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Enhanced Themes Grid -->
+  <section class="max-w-7xl mx-auto px-6 py-16">
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 auto-rows-fr">
+      {% for theme in invitation_themes_list %}
+      <div class="group relative bg-white rounded-3xl shadow-2xl overflow-hidden transform transition-all duration-500 hover:scale-105 hover:shadow-3xl">
+        
+        <!-- Premium Badge -->
+        {% if theme.premium %}
+        <div class="absolute top-4 left-4 z-20">
+          <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-gradient-to-r from-amber-400 to-orange-500 text-white shadow-lg">
+            <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M5 2a1 1 0 011 1v1h1a1 1 0 010 2H6v1a1 1 0 01-2 0V6H3a1 1 0 010-2h1V3a1 1 0 011-1zm0 10a1 1 0 011 1v1h1a1 1 0 110 2H6v1a1 1 0 11-2 0v-1H3a1 1 0 110-2h1v-1a1 1 0 011-1z" clip-rule="evenodd"/>
+            </svg>
+            PREMIUM
+          </span>
+        </div>
+        {% endif %}
+
+        <!-- Gender Badge -->
+        {% if theme.gendare %}
+        <div class="absolute top-4 right-4 z-20">
+          <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold {% if theme.gendare == 'male' %}bg-blue-500/20 text-blue-700 border border-blue-200{% else %}bg-pink-500/20 text-pink-700 border border-pink-200{% endif %} backdrop-blur-sm">
+            {{ theme.get_gendare_display }}
+          </span>
+        </div>
+        {% endif %}
+
+        <!-- Image Container with Overlay -->
+        <div class="relative h-80 overflow-hidden">
+          {% if theme.image %}
+          <img src="{{ theme.image.url }}" alt="{{ theme.name }}"
+               class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
+          {% else %}
+          <div class="w-full h-full bg-gradient-to-br from-purple-100 to-pink-100 flex items-center justify-center">
+            <svg class="w-16 h-16 text-purple-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+            </svg>
+          </div>
+          {% endif %}
+          
+          <!-- Gradient Overlay -->
+          <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          
+          <!-- Quick Actions on Hover -->
+          <div class="absolute bottom-4 left-4 right-4 transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+            <div class="flex space-x-2">
+              <button class="flex-1 bg-white/20 backdrop-blur-sm text-white text-sm font-medium py-2 rounded-lg border border-white/30 hover:bg-white/30 transition-all duration-300">
+                Quick Preview
+              </button>
+              <button class="w-10 h-10 bg-white/20 backdrop-blur-sm text-white rounded-lg border border-white/30 hover:bg-white/30 transition-all duration-300 flex items-center justify-center">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Content -->
+        <div class="p-6">
+          <div class="flex items-start justify-between mb-3">
+            <h3 class="text-xl font-bold text-gray-900 group-hover:text-purple-600 transition-colors duration-300">
+              {{ theme.name }}
+            </h3>
+            {% if theme.price %}
+            <div class="text-right">
+              <div class="text-lg font-bold text-purple-600">{{ theme.price }}</div>
+              {% if theme.original_price %}
+              <div class="text-sm text-gray-500 line-through">{{ theme.original_price }}</div>
+              {% endif %}
+            </div>
+            {% endif %}
+          </div>
+
+          <p class="text-gray-600 leading-relaxed mb-4 line-clamp-2">
+            {{ theme.description|default:"A beautifully crafted theme for your special occasion" }}
+          </p>
+
+          <!-- Features Tags -->
+          <div class="flex flex-wrap gap-2 mb-6">
+            {% for feature in theme.features_list|slice:":3" %}
+            <span class="inline-block px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-full font-medium">
+              {{ feature }}
+            </span>
+            {% endfor %}
+            {% if theme.features_list|length > 3 %}
+            <span class="inline-block px-2 py-1 bg-gray-100 text-gray-500 text-xs rounded-full font-medium">
+              +{{ theme.features_list|length|add:"-3" }} more
+            </span>
+            {% endif %}
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="flex space-x-3">
+            <a href="{% url 'theme_preview' theme.id %}"
+               class="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 text-white text-center font-semibold py-3 px-4 rounded-xl hover:from-purple-700 hover:to-pink-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl">
+              View Theme
+            </a>
+            <button class="w-12 h-12 border-2 border-gray-300 rounded-xl hover:border-purple-500 hover:bg-purple-50 transition-all duration-300 flex items-center justify-center group">
+              <svg class="w-5 h-5 text-gray-400 group-hover:text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Hover Effect Border -->
+        <div class="absolute inset-0 rounded-3xl border-2 border-transparent group-hover:border-purple-500/30 transition-all duration-500 pointer-events-none"></div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Empty State -->
+    {% if not invitation_themes_list %}
+    <div class="text-center py-16">
+      <div class="w-24 h-24 bg-gradient-to-r from-purple-100 to-pink-100 rounded-full flex items-center justify-center mx-auto mb-6">
+        <svg class="w-12 h-12 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path>
+        </svg>
+      </div>
+      <h3 class="text-2xl font-bold text-gray-900 mb-2">No Themes Available</h3>
+      <p class="text-gray-600 max-w-md mx-auto">We're working on adding amazing themes for this category. Check back soon!</p>
+    </div>
+    {% endif %}
+  </section>
+
+  <!-- CTA Section -->
+  <section class="bg-gradient-to-r from-purple-600 to-pink-600 text-white py-16">
+    <div class="max-w-4xl mx-auto text-center px-6">
+      <h2 class="text-4xl font-bold mb-4">Can't Find Your Perfect Theme?</h2>
+      <p class="text-xl text-purple-100 mb-8">Let our design team create a custom theme just for you</p>
+      <button class="bg-white text-purple-600 font-bold py-4 px-8 rounded-2xl hover:bg-gray-100 transform hover:scale-105 transition-all duration-300 shadow-2xl">
+        Request Custom Design
+      </button>
+    </div>
+  </section>
+
+</div>
+
+<!-- Floating Action Button -->
+<div class="fixed bottom-8 right-8 z-50">
+  <button class="w-14 h-14 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-full shadow-2xl hover:shadow-3xl transform hover:scale-110 transition-all duration-300 flex items-center justify-center group">
+    <svg class="w-6 h-6 transform group-hover:rotate-90 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+    </svg>
+  </button>
+</div>
+
+<style>
+  .shadow-3xl {
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  }
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>
+{% endblock %}
