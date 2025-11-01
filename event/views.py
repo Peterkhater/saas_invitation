@@ -7,6 +7,7 @@ from django.shortcuts import get_object_or_404
 
 def event_create(request):
     invitation_data = request.session.get('invitation_data')
+    
     if not invitation_data:
         return redirect('invitation_create')
 
@@ -16,13 +17,15 @@ def event_create(request):
         description = request.POST.get('description')
         gallery_featured = 'gallery_event_featured' in request.POST
 
+        print(f"Event Name: {event_name} Location: {location} Description: {description} Gallery Featured: {gallery_featured}")
+
         request.session['event_data'] = {
             'name': event_name,
             'location': location,
             'description': description,
             'gallery_event_featured': gallery_featured
         }
-
+        
         return redirect('my_event_invitation_activate')
 
     return render(request, 'event/event_create.html')
@@ -33,6 +36,9 @@ def my_event_invitation_activate(request):
     invitation_data = request.session.get('invitation_data')
     event_data = request.session.get('event_data')
 
+    # print("Invitation Data:", invitation_data)
+    print("Event Data:", event_data)
+
     if not invitation_data or not event_data:
         return redirect('invitation_create')
 
@@ -41,7 +47,7 @@ def my_event_invitation_activate(request):
         user = get_object_or_404(User, id=invitation_data['invitation_owner'])
         invitation_type = get_object_or_404(InvitationType, id=invitation_data['invitation_type_id'])
         invitation_theme = get_object_or_404(Invitation_theme, id=invitation_data['invitation_theme_id'])
-        print(invitation_theme)
+        
         # Create the Invitation
         invitation = Invitation.objects.create(
             invitation_owner=user,

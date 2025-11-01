@@ -23,10 +23,8 @@ def invitation_create(request):
         has_music = 'has_music' in request.POST 
         theme_id = request.POST.get('theme_') 
 
-        print(f"invitation_type_id: {invitation_type_id}, event_for: {event_for}, event_date: {event_date}, event_end_date: {event_end_date}, notes: {notes}, has_music: {has_music}, theme_id: {theme_id}")
-
-
-        if not invitation_type_id or not event_for or not event_date or not event_end_date or not theme_id:
+        
+        if not invitation_type_id or not event_for or not event_date or not theme_id:
             messages.error(request, "Please fill in all required fields.")
             return render(request,'invitation/invitation_create.html', {'invitation_types': invitation_types})
             
@@ -36,7 +34,7 @@ def invitation_create(request):
             'invitation_type_id': invitation_type_id,
             'event_for': event_for,
             'event_date': event_date,
-            'event_end_date': event_end_date,
+            'event_end_date': event_end_date or None,
             'notes': notes,
             'has_music_file': has_music, 
             'invitation_theme_id': theme_id,
