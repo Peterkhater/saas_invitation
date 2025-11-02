@@ -145,3 +145,6 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'follow.software.engineer@gmail.com'       
 EMAIL_HOST_PASSWORD = 'hhzs beiy rqiv ipay'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+LOGIN_REDIRECT_URL = 'profile'
+LOGOUT_REDIRECT_URL = 'home'

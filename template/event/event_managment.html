@@ -1,0 +1,373 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-slate-50 via-white to-purple-50/20">
+    <!-- Header -->
+    <div class="bg-white border-b border-gray-200/60">
+        <div class="max-w-7xl mx-auto px-6 py-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-900">Event Management</h1>
+                    <p class="text-gray-600 mt-2">Manage your event details and invitation settings</p>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl font-semibold hover:shadow-lg transition-all duration-300">
+                        <i class="fas fa-download mr-2"></i>
+                        Export Data
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-6 py-8">
+        <!-- Stats Overview -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center mr-4">
+                        <i class="fas fa-users text-blue-600 text-xl"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600">Total Guests</p>
+                        <p class="text-2xl font-bold text-gray-900">{{ invitation.guests.count }}</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-green-50 rounded-xl flex items-center justify-center mr-4">
+                        <i class="fas fa-calendar-check text-green-600 text-xl"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600">Confirmed RSVPs</p>
+                        <p class="text-2xl font-bold text-gray-900">{{ confirmed_guests_count }}</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-purple-50 rounded-xl flex items-center justify-center mr-4">
+                        <i class="fas fa-image text-purple-600 text-xl"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600">Gallery Images</p>
+                        <p class="text-2xl font-bold text-gray-900">{{ event.gallery_images.count }}</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-amber-50 rounded-xl flex items-center justify-center mr-4">
+                        <i class="fas fa-music text-amber-600 text-xl"></i>
+                        
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600">Status</p>
+                        <p class="text-lg font-bold text-amber-600">{{ invitation.active|yesno:"Active,Paused" }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+            <!-- Left Column - Event Details -->
+            <div class="xl:col-span-2 space-y-8">
+                <!-- Event Information Card -->
+                <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+                    <div class="bg-gradient-to-r from-purple-600 to-pink-600 px-6 py-4">
+                        <h2 class="text-xl font-bold text-white">Event Information</h2>
+                    </div>
+                    <div class="p-6">
+                        <form method="POST" action="{% url 'event_management' invitation.id %}">
+                        {% csrf_token %}
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Event Name</label>
+                                <div class="bg-gray-50 rounded-xl p-4 border border-gray-200">
+                                    <input type="text" name="event_name" value="{{ event.name }}" class="w-full bg-white border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-purple-500 edit_mode_inputs hidden" />
+                                    <p class="text-gray-900 font-medium edit_mode_p">{{ event.name }}</p>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Event For</label>
+                                <div class="bg-gray-50 rounded-xl p-4 border border-gray-200">
+                                    <input type="text" name="event_for" value="{{ invitation.event_for }}" class="w-full bg-white border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-purple-500 edit_mode_inputs hidden" />
+                                    <p class="text-gray-900 font-medium edit_mode_p">{{ invitation.event_for }}</p>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Event Date & Time</label>
+                                <div class="bg-gray-50 rounded-xl p-4 border border-gray-200">
+                                    <input type="datetime" name="event_date" value="{{ invitation.event_date }}" class="w-full bg-white border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-purple-500 edit_mode_inputs hidden" />
+                                    <p class="text-gray-900 font-medium edit_mode_p">{{ invitation.event_date|date:"F j, Y" }} at {{ invitation.event_date|time:"g:i A" }}</p>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Event End</label>
+                                <div class="bg-gray-50 rounded-xl p-4 border border-gray-200">
+                                    <input type="datetime" name="event_end_date" value="{{ invitation.event_end_date }}" class="w-full bg-white border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-purple-500 edit_mode_inputs hidden" />
+                                    <p class="text-gray-900 font-medium edit_mode_p">{{ invitation.event_end_date|date:"F j, Y" }} at {{ invitation.event_end_date|time:"g:i A" }}</p>
+                                </div>
+                            </div>
+                            <div class="md:col-span-2">
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Location</label>
+                                <div class="bg-gray-50 rounded-xl p-4 border border-gray-200">
+                                    <input type="text" name="location" value="{{ event.location }}" class="w-full bg-white border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-purple-500 edit_mode_inputs hidden" />
+                                    <p class="text-gray-900 font-medium edit_mode_p">{{ event.location }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Event Description -->
+                        <div class="mt-6">
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Event Description</label>
+                            <div class="bg-gray-50 rounded-xl p-4 border border-gray-200 min-h-32">
+                                <input type="text" name="description" value="{{ event.description }}" class="w-full bg-white border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-purple-500 edit_mode_inputs hidden" />
+                                <p class="text-gray-700 leading-relaxed edit_mode_p">{{ event.description|default:"No description provided" }}</p>
+                            </div>
+                        </div>
+                        <input type="submit" value="Save Changes" class="mt-6 px-6 py-3 bg-purple-600 text-white rounded-xl font-semibold hover:shadow-lg transition-all duration-300 hidden edit_mode_inputs" />
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Stories Section -->
+                <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+                    <div class="bg-gradient-to-r from-blue-600 to-cyan-600 px-6 py-4">
+                        <h2 class="text-xl font-bold text-white">Love Stories</h2>
+                    </div>
+                    <div class="p-6 space-y-6">
+                         <form method="POST" action="{% url 'event_management' invitation.id %}">
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-3">Beginning Story</label>
+                            <div class="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl p-5 border border-blue-200">
+                                <p class="text-gray-700 leading-relaxed edit_mode_p">{{ event.beginningStory|default:"Share the beautiful beginning of your love story..." }}</p>
+                                <input type="text" name="beginningStory" value="{{ event.beginningStory }}" class="leading-relaxed w-full bg-white border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-purple-500 edit_mode_inputs hidden mt-3 bg-gradient-to-br from-blue-50 to-cyan-50" placeholder="Share the beautiful beginning of your love story..."/>
+                            </div>
+                        </div>
+                        
+                        <!-- Journey Story -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-3">Journey Story</label>
+                            <div class="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-5 border border-purple-200">
+                                <input type="text" name="journeyStory" value="{{ event.journeyStory }}" class="bg-gradient-to-br from-purple-50 to-pink-50 leading-relaxed w-full bg-white border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-purple-500 edit_mode_inputs hidden mb-3" placeholder="Tell the story of your journey together..."/>
+                                <p class="text-gray-700 leading-relaxed edit_mode_p">{{ event.journeyStory|default:"Tell the story of your journey together..." }}</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Proposal Story -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-3">Proposal Story</label>
+                            <div class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-5 border border-amber-200">
+                                <input type="text" name="proposalStory" value="{{ event.proposalStory }}" class="leading-relaxed w-full bg-gradient-to-br from-amber-50 to-orange-50 border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-purple-500 edit_mode_inputs hidden mb-3" placeholder="Add Your Proposal Story"/>
+                                <p class="text-gray-700 leading-relaxed edit_mode_p">{{ event.proposalStory|default:"Describe the magical proposal moment..." }}</p>
+                            </div>
+                        </div>
+                        <input type="submit" value="Save Stories" class="rounded-xl mt-4 px-6 py-3 bg-blue-600 text-white font-semibold hover:shadow-lg transition-all duration-300 hidden edit_mode_inputs"/>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Gallery Management -->
+                <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+                    <div class="bg-gradient-to-r from-green-600 to-emerald-600 px-6 py-4">
+                        <div class="flex items-center justify-between">
+                            <h2 class="text-xl font-bold text-white">Event Gallery</h2>
+                            <span class="bg-white/20 text-white text-sm px-3 py-1 rounded-full">
+                                {{ event.gallery_image.count }} images
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        {% if event.gallery_image.all %}
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                            {% for gallery_image in event.gallery_image.all %}
+                            <div class="relative group">
+                                <div class="aspect-square bg-gray-200 rounded-xl overflow-hidden">
+                                    <img src="{{ gallery_image.image.url }}" alt="{{ gallery_image.caption }}" class="w-full h-full object-cover">
+                                </div>
+                                <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                                    <div class="text-white text-center">
+                                        <p class="text-sm font-medium">{{ gallery_image.caption|default:"No caption" }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        <div class="text-center py-12">
+                            <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-image text-gray-400 text-2xl"></i>
+                            </div>
+                            <p class="text-gray-500">No gallery images uploaded yet</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column - Settings & Actions -->
+            <div class="space-y-8">
+                <!-- Invitation Settings -->
+                <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+                    <div class="bg-gradient-to-r from-purple-600 to-pink-600 px-6 py-4">
+                        <h2 class="text-xl font-bold text-white">Invitation Settings</h2>
+                    </div>
+                    <div>
+                        <form method="POST" class="p-6 space-y-6">
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Invitation Type</label>
+                            <div class="bg-gray-50 rounded-xl p-4 border border-gray-200">
+                                <p class="text-gray-900 font-medium">{{ invitation.invitation_type.name }}</p>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Theme</label>
+                            <div class="bg-gray-50 rounded-xl p-4 border border-gray-200">
+                                <p class="text-gray-900 font-medium">{{ invitation.invitation_theme.name }}</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center justify-between p-4 bg-gray-50 rounded-xl border border-gray-200">
+                            <div>
+                                <p class="font-semibold text-gray-900">Music ♬</p>
+                                <p class="text-sm text-gray-600">{{ invitation.has_music_file|yesno:"Enabled,Not set" }}</p>
+                            </div>
+                            <div class="w-10 h-6 bg-gray-300 rounded-full relative edit_mode_p">
+                                <div class="w-4 h-4 bg-white rounded-full absolute top-1 left-1 transition-transform duration-300 {{ invitation.has_music_file|yesno:'transform translate-x-4 bg-green-500,' }}"></div>
+                            </div>
+                            <label class="inline-flex items-center cursor-pointer hidden edit_mode_inputs">
+                                <input type="checkbox" class="sr-only peer"  name="has_music_file" {% if invitation.has_music_file %}checked{% endif %}>
+                                <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600 dark:peer-checked:bg-blue-600"></div>
+                            </label>
+                        </div>
+                        {% if invitation.has_music_file %}
+                            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white mt-0" for="file_input">Upload file</label>
+                            <input style="margin: 0 !important;" name="audio_file" class=" block w-full text-sm text-white border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 bg-gradient-to-r from-purple-600 to-pink-600 disable_mode" id="file_input" type="file" disabled>
+                        {%else%}
+                            <p class="text-sm text-gray-500">No music file uploaded.</p>
+                        {%endif%}
+                        
+                        <div class="flex items-center justify-between p-4 bg-gray-50 rounded-xl border border-gray-200">
+                            <div>
+                                <p class="font-semibold text-gray-900">Status</p>
+                                <p class="text-sm text-gray-600 ">{{ invitation.active|yesno:"Active,Paused" }}</p>
+                            </div>
+                            <div class="w-10 h-6 bg-gray-300 rounded-full relative">
+                                <div class="w-4 h-4 bg-white rounded-full absolute top-1 left-1 transition-transform duration-300 {{ invitation.active|yesno:'transform translate-x-4 bg-green-500,' }} edit_mode_p"></div>
+                                <label class="inline-flex items-center cursor-pointer edit_mode_inputs hidden">
+                                    <input type="checkbox" class="sr-only peer" name="active" {% if invitation.active %}checked{% endif %}>
+                                    <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600 dark:peer-checked:bg-blue-600"></div>
+                                </label>
+                            </div>
+                        </div>
+                        <input type="submit" value="Save Settings" class="mt-4 px-6 py-3 bg-purple-600 text-white rounded-xl font-semibold hover:shadow-lg transition-all duration-300 hidden edit_mode_inputs"/>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Event Statistics -->
+                <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+                    <div class="bg-gradient-to-r from-indigo-600 to-blue-600 px-6 py-4">
+                        <h2 class="text-xl font-bold text-white">Event Statistics</h2>
+                    </div>
+                    <div class="p-6 space-y-4">
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-600">Total Invitations Sent</span>
+                            <span class="font-bold text-gray-900">{{ invitation.guests.count }}</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-600">RSVP Responses</span>
+                            <span class="font-bold text-gray-900">{{ rsvp_responses_count }}</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-600">Days Until Event</span>
+                            <span class="font-bold text-gray-900">{{ days_until_event }}</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-600">Gallery Featured</span>
+                            <span class="font-bold {{ event.gallery_event_featured|yesno:'text-green-600,text-gray-600' }}">
+                                {{ event.gallery_event_featured|yesno:"Yes,No" }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Secret Information -->
+                <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+                    <div class="bg-gradient-to-r from-red-600 to-orange-600 px-6 py-4">
+                        <h2 class="text-xl font-bold text-white">Security</h2>
+                    </div>
+                    <div class="p-6">
+                        <div class="mb-4">
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Event Secret Key</label>
+                            <div class="flex items-center space-x-2">
+                                <div class="flex-1 bg-gray-50 rounded-xl p-3 border border-gray-200">
+                                    <p class="text-gray-900 font-mono text-sm">{{ event.event_secret_key }}</p>
+                                </div>
+                                <button class="p-3 bg-gray-100 rounded-xl hover:bg-gray-200 transition-colors duration-200">
+                                    <i class="fas fa-copy text-gray-600"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-500">Keep this key secure. It's used for guest authentication.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Floating Action Button -->
+<div class="fixed bottom-8 right-8">
+    <button class="w-14 h-14 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-full shadow-2xl hover:shadow-3xl transform hover:scale-110 transition-all duration-300 flex items-center justify-center group" id="edit_mode">
+        <i class="fas fa-pencil-alt"></i>Edit
+    </button>
+    
+</div>
+
+<div id="alert-box"
+  class="hidden fixed bottom-4 left-4 z-50 bg-red-500 text-white text-sm sm:text-base px-4 py-3 rounded-lg shadow-lg flex items-center space-x-2 transition-all duration-300 ease-in-out transform translate-y-0">
+  <i class="fa-solid fa-circle-info"></i>
+  <span>🚨 You Are In Edit Mode</span>
+</div>
+
+<style>
+.shadow-3xl {
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+</style>
+
+<script>
+
+document.getElementById('edit_mode').addEventListener('click', function() {
+    const inputs = document.querySelectorAll('.edit_mode_inputs');
+    const submit_btn = document.querySelector('input[type="submit"]');
+    const edit_mode_p = document.querySelectorAll('.edit_mode_p');
+    disable_mode = document.querySelectorAll('.disable_mode');
+    alert_box = document.getElementById('alert-box');
+    alert_box.classList.toggle('hidden');
+    
+    disable_mode.forEach(d => {
+        d.disabled = !d.disabled;
+    });
+
+    edit_mode_p.forEach(p => {
+        p.classList.toggle('hidden');
+    });
+
+    inputs.forEach(input => {
+        input.classList.toggle('hidden');
+    });
+    submit_btn.forEach(input => {
+        submit_btn.classList.toggle('hidden');
+    });
+});
+</script>
+{% endblock %}

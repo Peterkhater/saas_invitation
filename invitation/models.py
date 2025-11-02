@@ -45,7 +45,7 @@ class Invitation(models.Model):
     event_for = models.CharField(max_length=255)
     event_date = models.DateTimeField()
     event_end_date = models.DateTimeField(null=True, blank=True)
-    accepted = models.BooleanField(default=False)
+    # accepted = models.BooleanField(default=False)
     notes = models.TextField(blank=True)
     active = models.BooleanField(default=True)
     # invitation_persons_count = models.PositiveIntegerField()

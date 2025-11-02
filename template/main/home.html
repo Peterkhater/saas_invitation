@@ -1,8 +1,9 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block content %}
     <!-- Hero Section -->
     <section class="pt-32 pb-20 bg-gradient-to-br from-white via-blue-50 to-purple-50">
+        <div id="particles-js"></div>
         <div class="container mx-auto px-6">
             <div class="flex flex-col lg:flex-row items-center justify-between">
                 <!-- Hero Content -->
@@ -375,4 +376,11 @@
             </div>
         </div>
     </section>
+
+    <script src="{% static 'particles/particles.min.js' %}"></script>
+<script>
+    particlesJS.load('particles-js', "{% static 'particles/particles.json' %}", function() {
+    console.log('Particles.js config loaded');
+    });
+</script>
 {% endblock %}

@@ -78,3 +78,12 @@ def my_event_invitation_activate(request):
         return render(request, 'event/event_activation_error.html', {'error': str(e)})
 
     return render(request, 'event/event_activation_success.html', {'invitation': invitation, 'event': event})
+
+def event_management(request, invitation_id):
+    invitation = get_object_or_404(Invitation, id=invitation_id)
+    event = get_object_or_404(Event, invitation=invitation)
+
+    if request.user != invitation.invitation_owner:
+        return redirect('home')
+
+    return render(request, 'event/event_managment.html', {'invitation': invitation, 'event': event})

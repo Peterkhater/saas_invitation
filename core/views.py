@@ -32,28 +32,6 @@ def theme_preview(request,id):
         return HttpResponse("no Design")
 
 
-# import bleach
-
-# def theme_preview(request, id):
-#     theme = get_object_or_404(Invitation_theme, id=id)
-#     theme_html_path = theme.template_path.strip() if theme.template_path else None
-
-#     # If HTML code is stored directly
-#     if theme.html_code:
-#         # Sanitize before rendering (if user input is possible)
-#         safe_html = bleach.clean(
-#             theme.html_code,
-#             tags=['p', 'h1', 'h2', 'div', 'img', 'span', 'strong', 'em', 'br', 'a', 'button'],
-#             attributes={'a': ['href', 'title'], 'img': ['src', 'alt'], '*': ['class', 'style']},
-#             strip=True
-#         )
-#         return HttpResponse(mark_safe(safe_html))
-
-#     elif theme_html_path and theme_html_path.startswith("themes/"):
-#         return render(request, theme_html_path, {"theme": theme})
-
-#     else:
-#         return HttpResponse("<h3>No design available for this theme.</h3>")
 
 
 def profile(request):

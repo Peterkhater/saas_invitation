@@ -18,10 +18,10 @@ class Event(models.Model):
     event_secret_key = models.CharField(max_length=100, blank=True, null=True)
     
     audio_file = models.FileField(upload_to='event_audios/', blank=True, null=True)
-    beginningStory = models.TextField(blank=True, null=True)
-    location_embed = models.TextField(blank=True, null=True)
-    journeyStory = models.TextField(blank=True, null=True)
-    proposalStory = models.TextField(blank=True, null=True)
+    beginningStory = models.TextField(blank=True, null=True, help_text="Story displayed at the beginning of the gallery.")
+    location_embed = models.TextField(blank=True, null=True, help_text="Embed code for the event location map.")
+    journeyStory = models.TextField(blank=True, null=True, help_text="Story displayed during the journey through the gallery.")
+    proposalStory = models.TextField(blank=True, null=True, help_text="Story displayed at the proposal section of the gallery.")
 
     
 
@@ -89,3 +89,12 @@ class Event(models.Model):
             from django.conf import settings
             base_url = getattr(settings, 'BASE_URL', 'http://localhost:8000')
             return f"{base_url}/gallery/{self.invitation.id}/{self.event_secret_key}/"
+
+
+class EventGalleryImage(models.Model):
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="gallery_image")
+    image = models.ImageField(upload_to='event_gallery_images/')
+    caption = models.CharField(max_length=255, blank=True, null=True)
+
+    def __str__(self):
+        return f"Image for {self.event.name}"

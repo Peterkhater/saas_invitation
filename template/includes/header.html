@@ -15,6 +15,9 @@
                 <a href="#templates" class="text-gray-700 hover:text-elegant-purple transition-colors font-medium">Templates</a>
                 <a href="#pricing" class="text-gray-700 hover:text-elegant-purple transition-colors font-medium">Pricing</a>
                 <a href="#testimonials" class="text-gray-700 hover:text-elegant-purple transition-colors font-medium">Testimonials</a>
+                {% if  request.user.is_authenticated %}
+                <a href="{% url 'profile' %}" class="text-gray-700 hover:text-elegant-purple transition-colors font-medium">My Events</a>
+                {% endif %}
             </div>
 
             <!-- CTA Buttons -->
@@ -25,7 +28,7 @@
                 <a href="{%url 'account_login'%}" class="text-gray-700 hover:text-elegant-purple transition-colors font-medium hidden md:block">Sign In</a>
                 {% endif %}
                 <a href="#pricing" class="bg-gradient-to-r from-elegant-purple to-elegant-pink text-white px-6 py-2.5 rounded-full font-medium hover:shadow-lg transition-all duration-300 hover:scale-105">
-                    Get Started Free
+                    Get Started 
                 </a>
                 
                 <!-- Mobile Menu Button -->
@@ -44,7 +47,12 @@
                 <a href="#templates" class="text-gray-700 hover:text-elegant-purple transition-colors font-medium">Templates</a>
                 <a href="#pricing" class="text-gray-700 hover:text-elegant-purple transition-colors font-medium">Pricing</a>
                 <a href="#testimonials" class="text-gray-700 hover:text-elegant-purple transition-colors font-medium">Testimonials</a>
-                <a href="#" class="text-gray-700 hover:text-elegant-purple transition-colors font-medium">Sign In</a>
+                {% if request.user.is_authenticated %} 
+                <a href="{%url 'account_logout'%}" class="text-gray-700 hover:text-elegant-purple transition-colors font-medium">LogOut</a> 
+                {% else %}
+                 <a href="{%url 'account_login'%}" class="text-gray-700 hover:text-elegant-purple transition-colors font-medium">Sign In</a>
+                {% endif %}
+                
             </div>
         </div>
     </nav>
