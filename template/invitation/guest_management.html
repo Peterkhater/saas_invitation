@@ -35,6 +35,10 @@
                         <div class="text-sm text-gray-500">Total People</div>
                         <div class="text-xl font-bold text-blue-600">{{ total_people }}</div>
                     </div>
+                    <div class="bg-white rounded-xl px-4 py-2 shadow-sm border">
+                        <div class="text-sm text-gray-500">Total Comming People</div>
+                        <div class="text-xl font-bold text-green-300">{{sum_of_comming_people}}/{{ total_people }}</div>
+                    </div>
                 </div>
             </div>
             
@@ -326,7 +330,7 @@ function deleteGuest(invitation_id, guest_secret_key, guest_id) {
             .replace("key_placeholder", guest_secret_key);
         
         fetch(url, {
-            method: 'DELETE',
+            method: 'POST',
             headers: {
                 'X-CSRFToken': '{{ csrf_token }}',
             },
@@ -339,7 +343,6 @@ function deleteGuest(invitation_id, guest_secret_key, guest_id) {
                 window.location.reload();
             } else {
                 window.location.reload();
-                alert('Error deleting guest');
             }
         })
         .catch(error => {

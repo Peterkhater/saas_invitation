@@ -45,16 +45,9 @@ class Invitation(models.Model):
     event_for = models.CharField(max_length=255)
     event_date = models.DateTimeField()
     event_end_date = models.DateTimeField(null=True, blank=True)
-    # accepted = models.BooleanField(default=False)
+    
     notes = models.TextField(blank=True)
     active = models.BooleanField(default=True)
-    # invitation_persons_count = models.PositiveIntegerField()
-    music_file = models.FileField(
-        upload_to='invitations/music/',
-        blank=True,
-        null=True,
-        validators=[FileExtensionValidator(allowed_extensions=['mp3', 'wav', 'flac'])]
-    )
     has_music_file = models.BooleanField(default=False)
 
     def __str__(self):
@@ -86,3 +79,30 @@ class Guest(models.Model):
 
     class Meta:
         ordering = ['name']
+
+
+class Rsvp(models.Model):
+    invitation = models.ForeignKey(Invitation, on_delete=models.CASCADE, related_name="rsvps")
+    guest = models.ForeignKey(Guest, on_delete=models.CASCADE, related_name="rsvps")
+    attending = models.BooleanField()
+    person_count = models.PositiveIntegerField(default=1)
+    message = models.TextField(blank=True, null=True)
+    responded_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"RSVP by {self.guest.name} - {'Attending' if self.attending else 'Not Attending'}"
+
+    class Meta:
+        ordering = ['-responded_at']
+
+
+# class Guest_member(models.Model):
+#     guest = models.ForeignKey(Guest, on_delete=models.CASCADE, related_name="members")
+#     name = models.CharField(max_length=255)
+#     age = models.PositiveIntegerField(null=True, blank=True)
+
+#     def __str__(self):
+#         return f"{self.name} (Member of {self.guest.name})"
+
+#     class Meta:
+#         ordering = ['name']

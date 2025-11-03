@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Creation Guide | Professional Platform</title>
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --primary-dark: #3a56d4;
+            --secondary-color: #f8f9fa;
+            --text-color: #333;
+            --light-text: #6c757d;
+            --border-color: #e0e0e0;
+            --success-color: #2a9d8f;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --border-radius: 8px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fb;
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .guide-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        .guide-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            padding: 40px 0;
+            border-radius: var(--border-radius);
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .guide-title {
+            font-size: 36px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .guide-subtitle {
+            font-size: 18px;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Navigation */
+        .guide-nav {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 20px;
+            margin-bottom: 30px;
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+
+        .nav-list {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .nav-item a {
+            text-decoration: none;
+            color: var(--text-color);
+            padding: 10px 20px;
+            border-radius: 25px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .nav-item a:hover {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        /* Main Content */
+        .guide-content {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 40px;
+        }
+
+        .guide-main {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .guide-sidebar {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 30px;
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+        }
+
+        /* Section Styling */
+        .guide-section {
+            padding: 40px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .guide-section:last-child {
+            border-bottom: none;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-icon {
+            font-size: 20px;
+        }
+
+        .step {
+            margin-bottom: 30px;
+        }
+
+        .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            font-weight: 600;
+            margin-right: 10px;
+        }
+
+        .step-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .step-content {
+            color: var(--light-text);
+            margin-bottom: 15px;
+        }
+
+        .example-box {
+            background: #f8f9fa;
+            border-left: 4px solid var(--primary-color);
+            padding: 20px;
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+            margin: 15px 0;
+        }
+
+        .example-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+
+        .tip-box {
+            background: rgba(67, 97, 238, 0.05);
+            border: 1px solid var(--primary-color);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .tip-title {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Form Preview */
+        .form-preview {
+            background: #f8f9fa;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            margin: 20px 0;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            font-size: 15px;
+            background: white;
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            font-size: 15px;
+            background: white;
+            color: var(--light-text);
+        }
+
+        .file-upload {
+            border: 2px dashed var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 30px;
+            text-align: center;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .file-upload:hover {
+            border-color: var(--primary-color);
+            background: rgba(67, 97, 238, 0.02);
+        }
+
+        .upload-icon {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: var(--light-text);
+        }
+
+        .upload-text {
+            color: var(--light-text);
+            font-size: 14px;
+        }
+
+        /* Sidebar */
+        .sidebar-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--text-color);
+        }
+
+        .quick-links {
+            list-style: none;
+            margin-bottom: 30px;
+        }
+
+        .quick-link {
+            margin-bottom: 12px;
+        }
+
+        .quick-link a {
+            text-decoration: none;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.3s;
+        }
+
+        .quick-link a:hover {
+            color: var(--primary-dark);
+        }
+
+        .support-card {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            padding: 25px;
+            border-radius: var(--border-radius);
+            text-align: center;
+        }
+
+        .support-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .support-btn {
+            display: inline-block;
+            background: white;
+            color: var(--primary-color);
+            padding: 12px 24px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .support-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Footer */
+        .guide-footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--light-text);
+            margin-top: 50px;
+        }
+
+        .back-to-form {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--primary-color);
+            color: white;
+            padding: 12px 24px;
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            margin-bottom: 20px;
+        }
+
+        .back-to-form:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .guide-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .guide-sidebar {
+                position: static;
+            }
+            
+            .nav-list {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .guide-section {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="guide-container">
+        <!-- Header -->
+        <header class="guide-header">
+            <div class="logo">PROFESSIONAL</div>
+            <h1 class="guide-title">Event Creation Guide</h1>
+            <p class="guide-subtitle">Learn how to create the perfect event invitation with our comprehensive guide</p>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="guide-nav">
+            <ul class="nav-list">
+                <li class="nav-item"><a href="#event-type">Event Type</a></li>
+                <li class="nav-item"><a href="#event-details">Event Details</a></li>
+                <li class="nav-item"><a href="#music-upload">Music Upload</a></li>
+                <li class="nav-item"><a href="#date-time">Date & Time</a></li>
+                <li class="nav-item"><a href="#additional-notes">Additional Notes</a></li>
+                <li class="nav-item"><a href="#best-practices">Best Practices</a></li>
+            </ul>
+        </nav>
+
+        <div class="guide-content">
+            <!-- Main Content -->
+            <main class="guide-main">
+                <!-- Event Type Section -->
+                <section id="event-type" class="guide-section">
+                    <h2 class="section-title">
+                        <span class="section-icon">🎯</span>
+                        Event Type Selection
+                    </h2>
+                    
+                    <div class="step">
+                        <div class="step-title"><span class="step-number">1</span>Choose the Right Event Type</div>
+                        <p class="step-content">Selecting the appropriate event type helps us customize the experience for you and your guests. Choose from categories like:</p>
+                        
+                        <div class="example-box">
+                            <div class="example-title">Common Event Types:</div>
+                            <ul>
+                                <li><strong>Wedding</strong> - For marriage ceremonies and receptions</li>
+                                <li><strong>Birthday Party</strong> - Personal celebrations</li>
+                                <li><strong>Corporate Event</strong> - Business meetings, conferences, team building</li>
+                                <li><strong>Social Gathering</strong> - Casual get-togethers, reunions</li>
+                                <li><strong>Special Occasion</strong> - Anniversaries, graduations, retirements</li>
+                            </ul>
+                        </div>
+
+                        <div class="tip-box">
+                            <div class="tip-title">💡 Pro Tip</div>
+                            <p>If your event doesn't fit perfectly into one category, choose the closest match. You can add more specific details in the event description.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Event Details Section -->
+                <section id="event-details" class="guide-section">
+                    <h2 class="section-title">
+                        <span class="section-icon">📝</span>
+                        Event Details
+                    </h2>
+                    
+                    <div class="step">
+                        <div class="step-title"><span class="step-number">2</span>Crafting the Perfect Event Name</div>
+                        <p class="step-content">Your event name should be clear, descriptive, and engaging. It's the first thing your guests will see!</p>
+                        
+                        <div class="form-preview">
+                            <div class="form-group">
+                                <label class="form-label">Event For</label>
+                                <input type="text" class="form-input" placeholder="e.g., Sarah & James Wedding" value="Sarah & James Wedding">
+                            </div>
+                        </div>
+
+                        <div class="example-box">
+                            <div class="example-title">Great Event Name Examples:</div>
+                            <ul>
+                                <li>✅ "Sarah & James Wedding Celebration"</li>
+                                <li>✅ "Tech Innovators 2024 Conference"</li>
+                                <li>✅ "Michael's 30th Birthday Bash"</li>
+                                <li>❌ "Party" (too vague)</li>
+                                <li>❌ "Event" (not descriptive enough)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Music Upload Section -->
+                <section id="music-upload" class="guide-section">
+                    <h2 class="section-title">
+                        <span class="section-icon">🎵</span>
+                        Music Upload
+                    </h2>
+                    
+                    <div class="step">
+                        <div class="step-title"><span class="step-number">3</span>Adding Event Music (Optional)</div>
+                        <p class="step-content">Upload music files to set the mood for your event. This could be background music, ceremony music, or reception playlists.</p>
+                        
+                        <div class="form-preview">
+                            <div class="form-group">
+                                <label class="form-label">Event Music (Optional)</label>
+                                <div class="file-upload">
+                                    <div class="upload-icon">📁</div>
+                                    <div class="upload-text">Click to upload music file<br>MP3, WAV, FLAC up to 10MB</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tip-box">
+                            <div class="tip-title">🎶 Music Tips</div>
+                            <ul>
+                                <li><strong>File Formats:</strong> MP3, WAV, FLAC are supported</li>
+                                <li><strong>File Size:</strong> Maximum 10MB per file</li>
+                                <li><strong>Quality:</strong> For best results, use 192kbps or higher bitrate</li>
+                                <li><strong>Multiple Files:</strong> You can upload multiple songs to create a playlist</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Date & Time Section -->
+                <section id="date-time" class="guide-section">
+                    <h2 class="section-title">
+                        <span class="section-icon">⏰</span>
+                        Date & Time Settings
+                    </h2>
+                    
+                    <div class="step">
+                        <div class="step-title"><span class="step-number">4</span>Setting Event Date and Time</div>
+                        <p class="step-content">Choose when your event starts and optionally when it ends. This helps guests plan their schedule.</p>
+                        
+                        <div class="form-preview">
+                            <div class="form-group">
+                                <label class="form-label">Event Date & Time</label>
+                                <input type="text" class="form-input" placeholder="mm/dd/yyyy --:-- --" value="11/15/2024 06:30 PM">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">End Date & Time (Optional)</label>
+                                <input type="text" class="form-input" placeholder="mm/dd/yyyy --:-- --" value="11/15/2024 11:00 PM">
+                            </div>
+                        </div>
+
+                        <div class="tip-box">
+                            <div class="tip-title">⏱️ Timing Tips</div>
+                            <ul>
+                                <li>Consider your guests' typical schedules when choosing event times</li>
+                                <li>For multi-day events, use the end date to indicate the final day</li>
+                                <li>Time zones are automatically set to your local time</li>
+                                <li>Guests in different time zones will see the event in their local time</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Additional Notes Section -->
+                <section id="additional-notes" class="guide-section">
+                    <h2 class="section-title">
+                        <span class="section-icon">📋</span>
+                        Additional Notes
+                    </h2>
+                    
+                    <div class="step">
+                        <div class="step-title"><span class="step-number">5</span>Writing Helpful Additional Notes</div>
+                        <p class="step-content">Use this section to provide important information that doesn't fit in other fields. This could include dress code, parking instructions, special requests, or anything else your guests should know.</p>
+                        
+                        <div class="form-preview">
+                            <div class="form-group">
+                                <label class="form-label">Additional Notes</label>
+                                <textarea class="form-input" rows="4" placeholder="Any special instructions or notes for your guests...">Semi-formal attire preferred. Valet parking available at the main entrance. Please RSVP by November 1st.</textarea>
+                            </div>
+                        </div>
+
+                        <div class="example-box">
+                            <div class="example-title">What to Include in Additional Notes:</div>
+                            <ul>
+                                <li><strong>Dress Code:</strong> "Casual attire", "Black tie optional", "Beach formal"</li>
+                                <li><strong>Parking Information:</strong> "Free parking in the west lot", "Street parking available"</li>
+                                <li><strong>Special Instructions:</strong> "Please bring a swimsuit", "Gifts are not necessary"</li>
+                                <li><strong>COVID Guidelines:</strong> "Masks optional", "Vaccination required"</li>
+                                <li><strong>Accessibility:</strong> "Wheelchair accessible entrance on the north side"</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Best Practices Section -->
+                <section id="best-practices" class="guide-section">
+                    <h2 class="section-title">
+                        <span class="section-icon">⭐</span>
+                        Best Practices
+                    </h2>
+                    
+                    <div class="step">
+                        <div class="step-title">Creating Successful Events</div>
+                        
+                        <div class="tip-box">
+                            <div class="tip-title">📅 Plan Ahead</div>
+                            <p>Create your event at least 2-3 weeks in advance to give guests enough time to RSVP and plan.</p>
+                        </div>
+
+                        <div class="tip-box">
+                            <div class="tip-title">👥 Know Your Audience</div>
+                            <p>Tailor your event details to your specific guest list. Consider their preferences, schedules, and needs.</p>
+                        </div>
+
+                        <div class="tip-box">
+                            <div class="tip-title">🔍 Be Specific</div>
+                            <p>Clear, detailed information reduces confusion and ensures guests know exactly what to expect.</p>
+                        </div>
+
+                        <div class="tip-box">
+                            <div class="tip-title">🎯 Set Clear Expectations</div>
+                            <p>Clearly communicate the event's purpose, duration, and any requirements so guests can prepare appropriately.</p>
+                        </div>
+                    </div>
+                </section>
+            </main>
+
+            <!-- Sidebar -->
+            <aside class="guide-sidebar">
+                <h3 class="sidebar-title">Quick Links</h3>
+                <ul class="quick-links">
+                    <li class="quick-link"><a href="#event-type">🎯 Event Type Guide</a></li>
+                    <li class="quick-link"><a href="#event-details">📝 Naming Your Event</a></li>
+                    <li class="quick-link"><a href="#music-upload">🎵 Music Requirements</a></li>
+                    <li class="quick-link"><a href="#date-time">⏰ Time Settings</a></li>
+                    <li class="quick-link"><a href="#additional-notes">📋 Writing Notes</a></li>
+                    <li class="quick-link"><a href="#best-practices">⭐ Best Practices</a></li>
+                </ul>
+
+                <div class="support-card">
+                    <h3 class="support-title">Need More Help?</h3>
+                    <p style="margin-bottom: 20px; opacity: 0.9;">Our support team is here to assist you with any questions.</p>
+                    <a href="/contact/" class="support-btn">Contact Support</a>
+                </div>
+            </aside>
+        </div>
+
+        <!-- Footer -->
+        <footer class="guide-footer">
+            <a href="{% url 'invitation_create' %}" class="back-to-form">
+                ← Back to Event Creation
+            </a>
+            <p>Ready to create your perfect event? Return to the form and apply what you've learned!</p>
+        </footer>
+    </div>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Highlight current section in navigation
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('.guide-section');
+            const navLinks = document.querySelectorAll('.nav-item a');
+            
+            let currentSection = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 100;
+                const sectionHeight = section.clientHeight;
+                if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
+                    currentSection = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${currentSection}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Add active class styling
+        const style = document.createElement('style');
+        style.textContent = `
+            .nav-item a.active {
+                background-color: var(--primary-color) !important;
+                color: white !important;
+                border-color: var(--primary-color) !important;
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

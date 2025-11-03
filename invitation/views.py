@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Invitation, InvitationType,Invitation_theme
+from .models import Invitation, InvitationType,Invitation_theme, Rsvp
 from django.shortcuts import redirect
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
@@ -50,6 +50,8 @@ def invitation_create(request):
 def guest_management(request, invitation_id):
     invitation = get_object_or_404(Invitation, id=invitation_id)
     event = Event.objects.get(invitation=invitation)
+    rsvp = Rsvp.objects.filter(invitation=invitation)
+
     if request.user != invitation.invitation_owner:
         messages.error(request, "You don't have permission to access this page.")
         return redirect('home')
@@ -77,6 +79,12 @@ def guest_management(request, invitation_id):
     confirmed_guests = guests.filter(rsvp=True).count()
     pending_guests = guests.filter(rsvp=False).count()
     total_people = sum(guest.person_count for guest in guests)
+    # sum_of_comming_people = sum(guest.person_count for guest in guests if guest.rsvp)
+    sum_of_comming_people = 0
+    for guest in rsvp:
+        if guest.attending:
+            sum_of_comming_people += guest.person_count
+    
     
     context = {
         'invitation': invitation,
@@ -85,7 +93,9 @@ def guest_management(request, invitation_id):
         'pending_guests': pending_guests,
         'total_people': total_people,
         'event': event,
+        'sum_of_comming_people': sum_of_comming_people,
     }
+
     
     return render(request, 'invitation/guest_management.html', context)
 
@@ -164,11 +174,29 @@ def load_themes(request, type_id):
 def invitation_preview(request, invitation_id, guest_key):
     invitation = get_object_or_404(Invitation, id=invitation_id)
     event = Event.objects.get(invitation=invitation)
+    guest = get_object_or_404(Guest, invitation=invitation, guest_secret_key=guest_key)
+
+    if request.method == 'POST':
+        person_count = request.POST.get('guests_count', 1)
+        attending_value = request.POST.get('attending')
+        rsvp = True if attending_value == 'yes' else False
+        guest.rsvp = rsvp
+        notes = request.POST.get('message')
+        guest.save()
+
+        print(person_count)
+
+        if not Rsvp.objects.filter(guest=guest, invitation=invitation).exists():
+            Rsvp.objects.create(
+                guest=guest,
+                invitation=invitation,
+                attending=rsvp,
+                person_count=person_count,
+                message=notes
+            )
+            return redirect('invitation_preview', invitation_id=invitation.id, guest_key=guest.guest_secret_key)
     
-    try:
-        guest = Guest.objects.get(invitation=invitation, guest_secret_key=guest_key)
-    except Guest.DoesNotExist:
-        raise Http404("Guest not found for this invitation")
+    
 
     person_range = range(1, guest.person_count + 1)
     template_render = invitation.invitation_theme.template_path

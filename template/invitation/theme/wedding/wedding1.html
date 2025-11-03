@@ -811,7 +811,7 @@
             <div class="ornamental-divider"></div>
             <h2>{{invitation.event_for|default:"Sarah & John"}}</h2>
             <p>With joy in our hearts, we invite you to witness and celebrate our union</p>
-            <div class="date-display">{% if invitation.event_date %}{{invitation.event_date|date:"jS F Y"}}{% else %}June 21, 2025{% endif %}</div>
+            <div class="date-display">{% if invitation.event_date %}{{invitation.event_date|date:"jS F Y"}} <br> {{invitation.event_date|time:"H:i A"}} {% else %}June 21, 2025{% endif %}</div>
             <a href="#rsvp" class="cta-button">RSVP Now</a>
         </div>
     </section>
@@ -965,32 +965,22 @@
                 <p style="color: var(--light-text); margin-top: 1.5rem;">Kindly respond by May 21, 2025</p>
             </div>
             <div class="rsvp-form">
-                <form id="wedding-rsvp">
+                <form  method="POST" id="wedding-rsvp">
+                    {% csrf_token %}
                     <div class="form-group">
                         <label for="name">Full Name</label>
-                        <input type="text" id="name" class="form-control" required value="{% if guest.full_family %}Mr-s {{guest.name}} & My Familly{% else %}{{guest.name|default:''}}{% endif %}" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email Address</label>
-                        <input type="email" id="email" class="form-control" required placeholder="example@gmail.com">
+                        <input type="text" id="name" class="form-control" required value="{% if guest.full_family %}Mr-s {{guest.name}} & My Familly{% else %}{{guest.name|default:''}}{% endif %}" readonly name="name">
                     </div>
                     <div class="form-group">
                         <label for="guests">Number of Guests</label>
-                        <select id="guests" class="form-control" required>
+                        <select id="guests" class="form-control" required name="guests_count">
                             {% if guest.person_count == 1 %}
-                                <option value="1" selected>1 Person</option>
+                                <option value="1">1 Person</option>
                             {% else %}
                                 {% for count in person_range %}
                                     <option value="{{ count }}">{{ count }} People</option>
                                 {% endfor %}
                             {% endif %}
-
-                            
-                            {% comment %} <option value="1">1 Person</option>
-                            <option value="2" selected>2 People</option>
-                            <option value="3">3 People</option>
-                            <option value="4">4 People</option>
-                            <option value="5">5+ People</option> {% endcomment %}
                         </select>
                     </div>
                     <div class="form-group">
@@ -999,13 +989,17 @@
                             <div class="toggle-option" data-value="yes">Yes, I'll be there!</div>
                             <div class="toggle-option" data-value="no">Sorry, can't make it</div>
                         </div>
-                        <input type="hidden" id="attending" required>
+                        <input type="hidden" id="attending" required name="attending">
                     </div>
                     <div class="form-group">
                         <label for="message">Message for the Couple (Optional)</label>
-                        <textarea id="message" class="form-control" rows="4"></textarea>
+                        <textarea id="message" class="form-control" rows="4" name="message"></textarea>
                     </div>
+                    {% if guest.rsvp %}
+                    <button type="button" class="cta-button disable" style="width: 100%; margin-top: 2rem;">Thanks!</button>
+                    {% else %}
                     <button type="submit" class="cta-button" style="width: 100%; margin-top: 2rem;">Confirm Attendance</button>
+                    {% endif %}
                 </form>
             </div>
         </div>
@@ -1075,17 +1069,6 @@
         });
 
         document.getElementById('wedding-rsvp').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            if (!document.getElementById('attending').value) {
-                alert('Please select if you will be attending');
-                return;
-            }
-
-            // Simulate form submission
-            const formData = new FormData(this);
-            const name = formData.get('name') || document.getElementById('name').value;
-            
             alert(`Thank you, ${name}! Your RSVP has been received. We look forward to celebrating with you!`);
             this.reset();
             document.querySelectorAll('.toggle-option').forEach(opt => {

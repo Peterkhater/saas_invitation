@@ -60,3 +60,6 @@ def profile(request):
         "active_events":active_events.count(),
         "upcoming_events":upcoming_events.count(),
     })
+
+def guidelance(request):
+    return render(request, 'main/guide.html')

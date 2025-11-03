@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Connections | Professional Platform</title>
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --primary-dark: #3a56d4;
+            --secondary-color: #f8f9fa;
+            --text-color: #333;
+            --light-text: #6c757d;
+            --border-color: #e0e0e0;
+            --error-color: #e63946;
+            --success-color: #2a9d8f;
+            --warning-color: #f4a261;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --border-radius: 8px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fb;
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .connections-container {
+            display: flex;
+            width: 100%;
+            max-width: 1000px;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            padding: 30px 0;
+        }
+
+        .sidebar-header {
+            padding: 0 25px 25px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .user-info {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .menu-item {
+            padding: 12px 25px;
+            font-size: 15px;
+            transition: all 0.3s;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: white;
+        }
+
+        .menu-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .menu-item.active {
+            background: rgba(255, 255, 255, 0.15);
+            border-left: 3px solid white;
+        }
+
+        .menu-icon {
+            margin-right: 10px;
+            width: 18px;
+            text-align: center;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 40px;
+        }
+
+        .page-header {
+            margin-bottom: 30px;
+        }
+
+        .page-title {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .page-subtitle {
+            color: var(--light-text);
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        .connections-section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--text-color);
+        }
+
+        .connections-card {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border-color);
+            padding: 30px;
+            text-align: center;
+        }
+
+        .empty-state {
+            padding: 40px 20px;
+        }
+
+        .empty-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .empty-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+
+        .empty-description {
+            color: var(--light-text);
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        .add-connections-section {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border-color);
+            padding: 30px;
+        }
+
+        .provider-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .provider-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            transition: all 0.3s;
+            text-decoration: none;
+            color: var(--text-color);
+        }
+
+        .provider-item:hover {
+            background-color: #f8f9fa;
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .provider-icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 15px;
+        }
+
+        .provider-name {
+            font-weight: 500;
+            flex: 1;
+            text-align: left;
+        }
+
+        .provider-action {
+            color: var(--primary-color);
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .connected-accounts {
+            margin-top: 30px;
+        }
+
+        .account-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            margin-bottom: 15px;
+            background: #f8f9fa;
+        }
+
+        .account-info {
+            display: flex;
+            align-items: center;
+            flex: 1;
+        }
+
+        .account-provider {
+            font-weight: 500;
+            margin-right: 15px;
+        }
+
+        .account-email {
+            color: var(--light-text);
+            font-size: 14px;
+        }
+
+        .account-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 13px;
+        }
+
+        .btn-danger {
+            background-color: var(--error-color);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #d32f2f;
+        }
+
+        .btn-outline {
+            background-color: white;
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+        }
+
+        .btn-outline:hover {
+            background-color: #f8f9fa;
+        }
+
+        .security-note {
+            background-color: rgba(67, 97, 238, 0.05);
+            border-left: 3px solid var(--primary-color);
+            padding: 15px;
+            margin-top: 25px;
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+            font-size: 14px;
+            color: var(--light-text);
+            line-height: 1.5;
+        }
+
+        @media (max-width: 768px) {
+            .connections-container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                padding: 20px;
+            }
+            
+            .sidebar-header {
+                padding: 0 0 15px;
+            }
+            
+            .main-content {
+                padding: 30px 20px;
+            }
+            
+            .account-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .account-actions {
+                width: 100%;
+                justify-content: flex-end;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="connections-container">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">PROFESSIONAL</div>
+                <div class="user-info">Account Management</div>
+            </div>
+            
+            <ul class="sidebar-menu">
+                <a href="{% url 'account_email' %}" class="menu-item">
+                    <span class="menu-icon">✉️</span>
+                    Change Email
+                </a>
+                <a href="{% url 'account_change_password' %}" class="menu-item">
+                    <span class="menu-icon">🔒</span>
+                    Change Password
+                </a>
+                <a href="{% url 'socialaccount_connections' %}" class="menu-item active">
+                    <span class="menu-icon">🔗</span>
+                    Account Connections
+                </a>
+                <a href="{% url 'account_logout' %}" class="menu-item">
+                    <span class="menu-icon">🚪</span>
+                    Sign Out
+                </a>
+            </ul>
+        </div>
+        
+        <div class="main-content">
+            <div class="page-header">
+                <h1 class="page-title">Account Connections</h1>
+                <p class="page-subtitle">Manage your connected third-party accounts for easier sign-in.</p>
+            </div>
+            
+            <div class="connections-section">
+                <h2 class="section-title">Current Connections</h2>
+                <div class="connections-card">
+                    {% if form.accounts %}
+                    <div class="connected-accounts">
+                        {% for base_account in form.accounts %}
+                        {% with base_account.get_provider_account as account %}
+                        <div class="account-item">
+                            <div class="account-info">
+                                <span class="account-provider">{{ account.get_brand.name }}</span>
+                                <span class="account-email">{{ account.account.extra_data.email|default:account.account.uid }}</span>
+                            </div>
+                            <div class="account-actions">
+                                <form method="POST" action="{% url 'socialaccount_connections' %}" style="display: inline;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="account" value="{{ base_account.id }}">
+                                    <button type="submit" class="btn btn-danger btn-sm">Disconnect</button>
+                                </form>
+                            </div>
+                        </div>
+                        {% endwith %}
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="empty-state">
+                        <div class="empty-icon">🔗</div>
+                        <h3 class="empty-title">No Connected Accounts</h3>
+                        <p class="empty-description">
+                            You currently have no third-party accounts connected to this account. 
+                            Connect your accounts for faster and easier sign-in.
+                        </p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="add-connections-section">
+                <h2 class="section-title">Add a Third-Party Account</h2>
+                <p style="color: var(--light-text); margin-bottom: 20px; line-height: 1.5;">
+                    Connect your social media accounts to enable quick and secure sign-in to your account.
+                </p>
+                
+                <div class="provider-list">
+                    {% load socialaccount %}
+                    {% get_providers as socialaccount_providers %}
+                    
+                    {% for provider in socialaccount_providers %}
+                    <a href="{% provider_login_url provider.id process='connect' %}" class="provider-item">
+                        {% if provider.id == "google" %}
+                        <svg class="provider-icon" viewBox="0 0 24 24" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
+                            <g transform="matrix(1, 0, 0, 1, 27.009001, -39.238998)">
+                                <path fill="#4285F4" d="M -3.264 51.509 C -3.264 50.719 -3.334 49.969 -3.454 49.239 L -14.754 49.239 L -14.754 53.749 L -8.284 53.749 C -8.574 55.229 -9.424 56.479 -10.684 57.329 L -10.684 60.329 L -6.824 60.329 C -4.564 58.239 -3.264 55.159 -3.264 51.509 Z"/>
+                                <path fill="#34A853" d="M -14.754 63.239 C -11.514 63.239 -8.804 62.159 -6.824 60.329 L -10.684 57.329 C -11.764 58.049 -13.134 58.489 -14.754 58.489 C -17.884 58.489 -20.534 56.379 -21.484 53.529 L -25.464 53.529 L -25.464 56.619 C -23.494 60.539 -19.444 63.239 -14.754 63.239 Z"/>
+                                <path fill="#FBBC05" d="M -21.484 53.529 C -21.734 52.809 -21.864 52.039 -21.864 51.239 C -21.864 50.439 -21.724 49.669 -21.484 48.949 L -21.484 45.859 L -25.464 45.859 C -26.284 47.479 -26.754 49.299 -26.754 51.239 C -26.754 53.179 -26.284 54.999 -25.464 56.619 L -21.484 53.529 Z"/>
+                                <path fill="#EA4335" d="M -14.754 43.989 C -12.984 43.989 -11.404 44.599 -10.154 45.789 L -6.734 42.369 C -8.804 40.429 -11.514 39.239 -14.754 39.239 C -19.444 39.239 -23.494 41.939 -25.464 45.859 L -21.484 48.949 C -20.534 46.099 -17.884 43.989 -14.754 43.989 Z"/>
+                            </g>
+                        </svg>
+                        {% else %}
+                        <div class="provider-icon">🔗</div>
+                        {% endif %}
+                        <span class="provider-name">{{ provider.name }}</span>
+                        <span class="provider-action">Connect</span>
+                    </a>
+                    {% empty %}
+                    <div class="empty-state" style="padding: 20px 0;">
+                        <div class="empty-icon">⚙️</div>
+                        <h3 class="empty-title">No Providers Available</h3>
+                        <p class="empty-description">
+                            No third-party authentication providers are currently configured.
+                        </p>
+                    </div>
+                    {% endfor %}
+                </div>
+                
+                <div class="security-note">
+                    <strong>Note:</strong> Connecting third-party accounts allows you to sign in quickly and securely. 
+                    We only access basic profile information and will never post on your behalf.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Highlight current page in sidebar
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentUrl = window.location.href;
+            const menuItems = document.querySelectorAll('.menu-item');
+            
+            menuItems.forEach(item => {
+                if (item.href === currentUrl) {
+                    item.classList.add('active');
+                }
+            });
+        });
+
+        // Confirmation for disconnect actions
+        document.querySelectorAll('form').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                if (!confirm('Are you sure you want to disconnect this account? You will need to reconnect it to use it for sign-in again.')) {
+                    e.preventDefault();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
