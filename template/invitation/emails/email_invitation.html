@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>You're Invited!</title>
+    <style>
+        /* Reset styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+            padding: 20px 0;
+        }
+
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px 30px;
+            text-align: center;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 300;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        .content {
+            padding: 40px 30px;
+        }
+
+        .greeting {
+            font-size: 1.3rem;
+            color: #666;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .event-details {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            border-left: 4px solid #667eea;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .detail-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .detail-icon {
+            width: 50px;
+            height: 50px;
+            background: #667eea;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+            flex-shrink: 0;
+        }
+
+        .detail-icon i {
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .detail-text h3 {
+            color: #333;
+            margin-bottom: 5px;
+            font-size: 1.1rem;
+        }
+
+        .detail-text p {
+            color: #666;
+            font-size: 1rem;
+        }
+
+        .cta-button {
+            display: block;
+            width: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            padding: 18px 30px;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 30px 0;
+            transition: all 0.3s ease;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .notes {
+            background: #fff9e6;
+            border: 1px solid #ffeaa7;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .notes h4 {
+            color: #e17055;
+            margin-bottom: 10px;
+        }
+
+        .footer {
+            background: #2d3436;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .footer p {
+            margin-bottom: 10px;
+            opacity: 0.8;
+        }
+
+        .footer-logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #667eea;
+        }
+
+        .social-links {
+            margin: 20px 0;
+        }
+
+        .social-links a {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            margin: 0 5px;
+            text-decoration: none;
+            color: white;
+            line-height: 40px;
+            transition: background 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background: #667eea;
+        }
+
+        /* Responsive design */
+        @media (max-width: 600px) {
+            .header {
+                padding: 30px 20px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .content {
+                padding: 30px 20px;
+            }
+
+            .detail-item {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .detail-icon {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+
+            .cta-button {
+                padding: 15px 20px;
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <!-- Header -->
+        <div class="header">
+            <h1>You're Invited!</h1>
+            <p>We're delighted to invite you to share in our special celebration</p>
+        </div>
+
+        <!-- Content -->
+        <div class="content">
+            <div class="greeting">
+                Dear <strong>{{ guest.name }}</strong>,
+            </div>
+
+            <p style="text-align: center; font-size: 1.1rem; color: #666; margin-bottom: 30px;">
+                You are cordially invited to join us for a memorable celebration
+            </p>
+
+            <!-- Event Details -->
+            <div class="event-details">
+                <div class="detail-item">
+                    <div class="detail-icon">
+                        <i>🎉</i>
+                    </div>
+                    <div class="detail-text">
+                        <h3>Event</h3>
+                        <p>{{ invitation.event_for }}</p>
+                    </div>
+                </div>
+
+                <div class="detail-item">
+                    <div class="detail-icon">
+                        <i>📅</i>
+                    </div>
+                    <div class="detail-text">
+                        <h3>Date & Time</h3>
+                        <p>{{ invitation.event_date|date:"F j, Y" }} at {{ invitation.event_date|time:"g:i A" }}</p>
+                    </div>
+                </div>
+
+                {% if event.location %}
+                <div class="detail-item">
+                    <div class="detail-icon">
+                        <i>📍</i>
+                    </div>
+                    <div class="detail-text">
+                        <h3>Location</h3>
+                        <p>{{ event.location }}</p>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if event.description %}
+                <div class="detail-item">
+                    <div class="detail-icon">
+                        <i>💫</i>
+                    </div>
+                    <div class="detail-text">
+                        <h3>Description</h3>
+                        <p>{{ event.description }}</p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Call to Action -->
+            <a href="{{ invitation_link }}" class="cta-button">
+                View Your Personal Invitation & RSVP
+            </a>
+
+            <!-- Notes -->
+            {% if invitation.notes %}
+            <div class="notes">
+                <h4>💌 Special Note</h4>
+                <p>{{ invitation.notes }}</p>
+            </div>
+            {% endif %}
+
+            <p style="text-align: center; color: #666; font-size: 0.9rem; margin-top: 30px;">
+                Please RSVP by responding to this invitation through the link above.
+            </p>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <div class="footer-logo">Elegant Invitations</div>
+            <p>Creating unforgettable moments together</p>
+            
+            <div class="social-links">
+                <a href="#">📱</a>
+                <a href="#">💻</a>
+                <a href="#">📸</a>
+            </div>
+            
+            <p style="font-size: 0.8rem; opacity: 0.6; margin-top: 20px;">
+                Sent with ❤️ via our invitation platform<br>
+                Need help? Contact us at support@elegantinvitations.com
+            </p>
+        </div>
+    </div>
+</body>
+</html>

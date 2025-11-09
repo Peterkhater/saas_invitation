@@ -94,8 +94,7 @@ DATABASES = {
 }
 
 
-# Password validation
-# https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -113,8 +112,6 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# Internationalization
-# https://docs.djangoproject.com/en/5.2/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
@@ -148,3 +145,8 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 LOGIN_REDIRECT_URL = 'profile'
 LOGOUT_REDIRECT_URL = 'home'
+
+
+WHATSAPP_ACCESS_TOKEN = "EAARLBjv1kv4BP80ZBN2LsZAXNahxKl8Nh96UCkdIFqqBrfPj277vqZCYJtcuGoysZBqiL8Vne6tKhf74DfofBMbEZApHyzjWH2AvSnmlo9LH8g4Yk2GbbsKVwnZC5M4n2Cm5QxaKnfCokHzCceWdLiZCg6arMCmkfDxTrAKZA9ICnZAiTOIdW3nAaZAG4JGQggJWyrIqfCJzSOwS3Go9TZA3cEK5IzMesd5IQPQn98ED8uJS29DgrjaNcfHvS8zLgNOKAmtIPCLqCd9E8BLUe08FM7wua54BrGrP6r1XZB6R8pAZD"
+WHATSAPP_PHONE_NUMBER_ID = "907716542416142"
+WHATSAPP_API_URL = "https://graph.facebook.com/v22.0/"

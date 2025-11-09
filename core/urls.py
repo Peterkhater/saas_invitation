@@ -7,5 +7,5 @@ urlpatterns = [
     path('theme/<int:id>/',views.theme_preview,name='theme_preview'),
     path('accounts/profile/', views.profile, name='profile'),
     path('guide/', views.guidelance, name='guidelance'),
-
+    
 ]

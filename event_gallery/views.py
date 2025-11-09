@@ -43,8 +43,7 @@ def gallery_show(request, id,key):
         'event': event,
         'total_contributors': len(contributers),
         
-        'qr_code_data': event.generate_qr_code(request),
-        'qr_code_url': event.get_qr_code_url(request),
+    
     }
     
 

@@ -515,7 +515,7 @@
             max-width: 700px;
             margin: 0 auto;
             background: var(--white);
-            padding: 4rem;
+            padding: 2rem;
             border-radius: 25px;
             box-shadow: 0 25px 80px rgba(0,0,0,0.08);
             position: relative;
@@ -965,7 +965,7 @@
                 <p style="color: var(--light-text); margin-top: 1.5rem;">Kindly respond by May 21, 2025</p>
             </div>
             <div class="rsvp-form">
-                <form  method="POST" id="wedding-rsvp">
+                <form  method="POST" style="padding:2px"  id="wedding-rsvp">
                     {% csrf_token %}
                     <div class="form-group">
                         <label for="name">Full Name</label>
@@ -974,13 +974,9 @@
                     <div class="form-group">
                         <label for="guests">Number of Guests</label>
                         <select id="guests" class="form-control" required name="guests_count">
-                            {% if guest.person_count == 1 %}
-                                <option value="1">1 Person</option>
-                            {% else %}
                                 {% for count in person_range %}
-                                    <option value="{{ count }}">{{ count }} People</option>
+                                    <option value="{{ count }}">{{ count }} Person's</option>
                                 {% endfor %}
-                            {% endif %}
                         </select>
                     </div>
                     <div class="form-group">
@@ -1070,7 +1066,7 @@
 
         document.getElementById('wedding-rsvp').addEventListener('submit', function(e) {
             alert(`Thank you, ${name}! Your RSVP has been received. We look forward to celebrating with you!`);
-            this.reset();
+            
             document.querySelectorAll('.toggle-option').forEach(opt => {
                 opt.classList.remove('active');
             });

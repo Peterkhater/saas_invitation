@@ -1,0 +1,359 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Full Screen Banner - Tailwind</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Parisienne&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        
+    .abril-fatface-regular {
+        font-family: "Abril Fatface", serif;
+        font-weight: 400;
+        font-style: normal;
+        }
+        .parisienne-regular {
+  font-family: "Parisienne", cursive;
+  font-weight: 400;
+  font-style: normal;
+}
+/* Music Player */
+        .music-player {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: var(--gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4);
+            transition: all 0.3s ease;
+            background-color: black;
+        }
+
+        .music-player:hover {
+            transform: scale(1.1);
+        }
+
+        .music-player i {
+            font-size: 1.5rem;
+        }
+
+
+</style>
+</head>
+<body>
+<div class="music-player" id="musicToggle">
+    <i class="fas fa-music"></i>
+</div>
+<section class="min-h-screen bg-[url('https://lirp.cdn-website.com/28cd0bb4/dms3rep/multi/opt/traditional+american+wedding-1920w.jpeg')] bg-cover bg-center bg-no-repeat flex items-end justify-center relative">
+    <div class="absolute inset-0 bg-black/50"></div>
+    
+    <div class="relative z-10 text-center text-white mb-20 px-6 w-full max-w-4xl mx-auto">
+        <div class="mb-12">
+            <p class="text-6xl md:text-8xl abril-fatface-regular mb-8 leading-tight">
+                Save the date
+            </p>
+        </div>
+        
+        <!-- Fixed: Keep in same line on mobile with smaller text -->
+        <div class="flex flex-row gap-1 sm:gap-6 justify-center items-center overflow-x-auto py-4" style="overflow-x: hidden;">
+            <p class="text-white text-lg sm:text-2xl md:text-3xl font-bold px-4 py-2 sm:px-6 sm:py-3 rounded-xl text-center whitespace-nowrap" style="font-weight: 200;">Lebanon<br>West Beqaa</p>
+            <div class="w-0.5 h-6 sm:h-16 bg-white/50"></div>
+            <p class="parisienne-regular text-white text-lg sm:text-2xl md:text-6xl font-bold px-4 py-2 sm:px-6 sm:py-3 rounded-xl text-center whitespace-nowrap">Joseph and Anna</p>
+            <div class="w-0.5 h-6 sm:h-16 bg-white/50"></div>
+            <p class="text-white text-lg sm:text-2xl md:text-3xl font-bold px-4 py-2 sm:px-6 sm:py-3 rounded-xl text-center whitespace-nowrap" style="font-weight: 200;">Be <br>Ready</p>
+        </div>
+    </div>
+</section>
+
+    <section class="flex items-center justify-center my-12">
+        <div class="text-center px-4">
+            <h1 class="parisienne-regular text-4xl sm:text-6xl md:text-7xl font-bold text-amber-800">Hello!</h1>
+            <p class="text-lg sm:text-xl md:text-2xl text-amber-600 mt-4 tracking-wider">We invite you to celebrate our wedding</p>
+        </div>
+    </section>
+
+    <section class="max-w-4xl mx-auto px-6 py-16">
+        <div class="mb-16">
+            <h2 class="parisienne-regular text-3xl sm:text-4xl text-amber-800 mb-6 text-center">Joseph</h2>
+            <div class="bg-white rounded-lg shadow-sm p-6 border-l-4 border-amber-500">
+                <p class="text-gray-700 text-lg leading-relaxed">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                </p>
+            </div>
+        </div>
+        <div class="aleb text-center mb-12 text-6xl">♡</div>
+        <div>
+            <h2 class="parisienne-regular text-3xl sm:text-4xl text-amber-800 mb-6 text-center">Anna</h2>
+            <div class="bg-white rounded-lg shadow-sm p-6 border-l-4 border-pink-400">
+                <p class="text-gray-700 text-lg leading-relaxed">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                </p>
+            </div>
+        </div>
+    </section>
+
+   <section class="py-16 px-6 bg-white bg-[url('https://lirp.cdn-website.com/28cd0bb4/dms3rep/multi/opt/traditional+american+wedding-1920w.jpeg')] bg-cover bg-center bg-no-repeat flex items-center justify-center relative">
+    <div class="absolute inset-0 bg-black/50"></div>
+    
+    <div class="max-w-4xl mx-auto text-center relative z-10">
+        <h2 class="text-4xl  font-light text-white mb-4 parisienne-regular">The big day</h2>
+        <p class="text-4xl text-white mb-12 parisienne-regular">28. November, 2023</p>
+        
+        <p class="text-lg text-white mb-12 max-w-2xl mx-auto leading-relaxed">
+            We are so excited to celebrate our special day with our family and friends. Thank you so much for visiting our wedding website!
+        </p>
+        
+        <div class="my-16">
+            <h3 class="text-2xl text-white mb-8 text-center">Just some hours...</h3>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8 max-w-md mx-auto">
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-amber-300" id="days">19</div>
+                    <div class="text-lg text-gray-200 mt-2">Days</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-amber-300" id="hours">22</div>
+                    <div class="text-lg text-gray-200 mt-2">Hours</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-amber-300" id="minutes">33</div>
+                    <div class="text-lg text-gray-200 mt-2">Minutes</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-amber-300" id="seconds">51</div>
+                    <div class="text-lg text-gray-200 mt-2">Seconds</div>
+                </div>
+            </div>
+            
+            <p class="text-xl text-white text-center">...until we get married!</p>
+        </div>
+    </div>
+</section>
+
+<section class="relative flex items-center justify-center my-16 h-[350px] bg-white overflow-hidden">
+  <img 
+    src="{% static 'images/invitation/theme/wedding/wedding 3/Glittery-removebg-preview.png' %}" 
+    alt="Wedding decoration" 
+    class="absolute inset-0 w-full h-full object-contain opacity-20 pointer-events-none"
+  />
+
+  <!-- Content -->
+  <div class="relative text-center px-6">
+    <h1 class="parisienne-regular text-5xl sm:text-6xl md:text-7xl font-bold text-gray-800 drop-shadow-md">
+      Wedding Events
+    </h1>
+    <p class="text-base sm:text-lg md:text-xl text-gray-600 mt-6 tracking-wide leading-relaxed max-w-xl mx-auto">
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.
+    </p>
+  </div>
+</section>
+
+<section class="grid grid-cols-1 lg:grid-cols-2 gap-5 mx-auto container mb-20">
+    <div class="container text-center max-h-[500px]">
+        <img src="https://lirp.cdn-website.com/28cd0bb4/dms3rep/multi/opt/traditional+american+wedding-1920w.jpeg" alt="">
+    </div>
+
+    <div class="container flex flex-col justify-center align-center" >
+        
+        <details class="group border border-gray-300 rounded-lg bg-white shadow-sm open:bg-gray-50 p-4 mb-5">
+            <summary class="font-semibold text-gray-800 cursor-pointer flex items-center justify-between">
+                How do I create an account?
+                <span class="transition-transform duration-300 group-open:rotate-180">▼</span>
+            </summary>
+            <p class="text-sm text-gray-600 mt-3">
+                Click the "Sign Up" button in the top right corner and follow the registration process.
+            </p>
+        </details>
+        <details class="group border border-gray-300 rounded-lg bg-white shadow-sm open:bg-gray-50 p-4 mb-5">
+            <summary class="font-semibold text-gray-800 cursor-pointer flex items-center justify-between">
+                How do I create an account?
+                <span class="transition-transform duration-300 group-open:rotate-180">▼</span>
+            </summary>
+            <p class="text-sm text-gray-600 mt-3">
+                Click the "Sign Up" button in the top right corner and follow the registration process.
+            </p>
+        </details>
+
+    </div>
+
+</section>
+
+
+<div class="w-full md:w-96 md:max-w-full mx-auto">
+  <div class="p-6 border border-gray-300 sm:rounded-md">
+    <form method="POST" action="https://herotofu.com/start">
+      <label class="block mb-6">
+        <span class="text-gray-700">Your name</span>
+        <input
+          name="name"
+          type="text"
+          class="
+            block
+            w-full
+            mt-1
+            border-gray-300
+            rounded-md
+            shadow-sm
+            focus:border-indigo-300
+            focus:ring
+            focus:ring-indigo-200
+            focus:ring-opacity-50
+          "
+          placeholder="Joe Bloggs"
+        />
+      </label>
+      <label class="block mb-6">
+        <span class="text-gray-700">Date and time</span>
+        <input
+          name="datetime"
+          type="datetime-local"
+          class="
+            block
+            w-full
+            mt-1
+            border-gray-300
+            rounded-md
+            shadow-sm
+            focus:border-indigo-300
+            focus:ring
+            focus:ring-indigo-200
+            focus:ring-opacity-50
+          "
+        />
+      </label>
+      <label class="block mb-6">
+        <span class="text-gray-700">Total number of people</span>
+        <input
+          name="people"
+          type="number"
+          class="
+            block
+            w-full
+            mt-1
+            border-gray-300
+            rounded-md
+            shadow-sm
+            focus:border-indigo-300
+            focus:ring
+            focus:ring-indigo-200
+            focus:ring-opacity-50
+          "
+          placeholder="1"
+        />
+      </label>
+      <label class="block mb-6">
+        <span class="text-gray-700">Additional Message</span>
+        <textarea
+          name="message"
+          class="
+            block
+            w-full
+            mt-1
+            border-gray-300
+            rounded-md
+            shadow-sm
+            focus:border-indigo-300
+            focus:ring
+            focus:ring-indigo-200
+            focus:ring-opacity-50
+          "
+          rows="3"
+          placeholder="Additional details?"
+        ></textarea>
+      </label>
+      <div class="mb-6">
+        <button
+          type="submit"
+          class="
+            h-10
+            px-5
+            text-indigo-100
+            bg-indigo-700
+            rounded-lg
+            transition-colors
+            duration-150
+            focus:shadow-outline
+            hover:bg-indigo-800
+          "
+        >
+          Submit RSVP
+        </button>
+      </div>
+      <div>
+        <div class="mt-2 text-gray-700 text-right text-xs">
+          by
+          <a href="https://herotofu.com" class="hover:underline" target="_blank"
+            >HeroTofu</a
+          >
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+<script>
+    const musicToggle = document.getElementById('musicToggle');
+    let django_audio_file = "{% if event.audio_file %}{{ event.audio_file.url }}{% else %}https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3{% endif %}";
+    let audio = new Audio(django_audio_file);
+    audio.loop = true;
+    let isPlaying = false;
+
+    musicToggle.addEventListener('click', function() {
+        if (isPlaying) {
+            audio.pause();
+            musicToggle.innerHTML = '<i class="fas fa-music"></i>';
+        } else {
+            audio.play();
+            musicToggle.innerHTML = '<i class="fas fa-pause"></i>';
+        }
+        isPlaying = !isPlaying;
+    });
+
+
+        function updateCountdown() {
+            const django_date = "{% if invitation.event_date %}{{invitation.event_date|date:'F j, Y H:i:s'}}{% else %}June 21, 2028 16:00:00{% endif %}";
+            const weddingDate = new Date(django_date).getTime();
+            const now = new Date().getTime();
+            const distance = weddingDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById('days').textContent = days.toString().padStart(2, '0');
+            document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+        }
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+</script>
+</body>
+</html>

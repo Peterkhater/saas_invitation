@@ -4,6 +4,7 @@ from invitation.models import Invitation, InvitationType, Invitation_theme
 from .models import Event
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
+from datetime import datetime
 
 def event_create(request):
     invitation_data = request.session.get('invitation_data')
@@ -85,5 +86,44 @@ def event_management(request, invitation_id):
 
     if request.user != invitation.invitation_owner:
         return redirect('home')
+    
+    if request.method == "POST":
+        form_type = request.POST.get('form_type')
+
+        if form_type == "Event_Information":
+            event.name = request.POST.get('event_name')
+            invitation.event_for = request.POST.get('event_for')
+            event_date_str = request.POST.get('event_date')
+            if event_date_str:
+                try:
+                    invitation.event_date = datetime.fromisoformat(event_date_str)
+                    invitation.save()
+                except ValueError:
+                    print("Invalid ISO datetime format:", event_date_str)
+
+            event.location = request.POST.get('location')
+            event.description = request.POST.get('description')
+            event.save()
+            invitation.save()
+            return redirect('event_management', invitation_id=invitation.id)
+
+        elif form_type == "Love_Stories":
+            event.beginningStory = request.POST.get('beginningStory')
+            event.journeyStory = request.POST.get('journeyStory') 
+            event.proposalStory = request.POST.get('proposalStory')
+            event.save()
+            return redirect('event_management', invitation_id=invitation.id)
+
+        elif form_type == "Invitation_Settings":
+            invitation.has_music_file = 'has_music_file' in request.POST
+            invitation.active = 'active' in request.POST
+            invitation_music_file = request.FILES.get('audio_file')
+
+            if invitation_music_file:
+                event.audio_file = invitation_music_file
+                event.save()
+                
+            invitation.save()
+            return redirect('event_management', invitation_id=invitation.id)
 
     return render(request, 'event/event_managment.html', {'invitation': invitation, 'event': event})

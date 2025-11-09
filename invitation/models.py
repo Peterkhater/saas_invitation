@@ -36,6 +36,11 @@ class Invitation_theme(models.Model):
 
     def __str__(self):
         return f'{self.invitation_type} / {self.name}'
+    
+    def save(self, *args, **kwargs):
+        if not self.template_path :
+            self.template_path = ' '
+        super().save(*args, **kwargs)
 
 
 class Invitation(models.Model):

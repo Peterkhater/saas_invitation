@@ -3,8 +3,7 @@
 
 {% block content %}
 <div class="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 py-8">
-    <div class="max-w-7xl mx-auto px-4 mt-40">
-        <!-- Header -->
+    <div class="max-w-7xl mx-auto px-4">
         <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-8">
             <div class="mb-6 lg:mb-0">
                 <div class="flex items-center mb-4">
@@ -85,12 +84,24 @@
                         </svg>
                         Export
                     </button>
-                    <button onclick="sendReminders()" class="px-4 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-xl font-semibold hover:shadow-lg transition-all duration-200 flex items-center">
+                    <a href="{% url 'send_mail_invitation' invitation.id %}">
+                    <button  class="px-4 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-xl font-semibold hover:shadow-lg transition-all duration-200 flex items-center">
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
                         </svg>
-                        Send Reminders
+                        Send Reminders Via Email
                     </button>
+                    </a>
+
+                    <a href="{% url 'send_whatsapp_invitation' invitation.id %}">
+                    <button  class="px-4 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-xl font-semibold hover:shadow-lg transition-all duration-200 flex items-center">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                        </svg>
+                        Send Reminders Via wtsp
+                    </button>
+                    </a>
+                    
                 </div>
             </div>
         </div>
@@ -178,11 +189,13 @@
                                             </svg>
                                         </button>
                                     </a>
-                                    <button onclick="sendInvitation({{ guest.id }})" class="text-green-600 hover:text-green-900 transition-colors duration-200 p-1 rounded hover:bg-green-50">
+                                    <a href="{% url 'send_reminder_email' invitation.id guest.guest_secret_key %}">
+                                    <button class="text-green-600 hover:text-green-900 transition-colors duration-200 p-1 rounded hover:bg-green-50">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
                                         </svg>
                                     </button>
+                                    </a>
                                     <button onclick="deleteGuest('{{ invitation.id }}', '{{ guest.guest_secret_key }}')" class="text-red-600 hover:text-red-900 transition-colors duration-200 p-1 rounded hover:bg-red-50">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
@@ -357,10 +370,9 @@ function exportGuests() {
     console.log('Export guests');
 }
 
-function sendReminders() {
-    // Implementation for sending reminders
-    console.log('Send reminders');
-}
+{% comment %} function sendReminders() {
+    
+} {% endcomment %}
 
 // Bulk selection functionality
 document.getElementById('selectAll').addEventListener('change', function(e) {

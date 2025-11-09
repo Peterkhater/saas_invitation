@@ -9,6 +9,12 @@ from django.http import JsonResponse, HttpResponse
 from django.views.decorators.http import require_POST
 from django.http import Http404
 from event.models import Event
+# mail imports
+from django.core.mail import send_mail
+from django.conf import settings
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+
 
 @login_required
 def invitation_create(request):
@@ -73,13 +79,15 @@ def guest_management(request, invitation_id):
             full_family=full_family,
             notes=notes
         )
+        messages.success(request, f"Guest {guest_name} has been added successfully!")
+        return redirect('guest_management', invitation_id=invitation_id)
     
     # Get guests for this invitation and statistics
     guests = Guest.objects.filter(invitation=invitation)
     confirmed_guests = guests.filter(rsvp=True).count()
     pending_guests = guests.filter(rsvp=False).count()
     total_people = sum(guest.person_count for guest in guests)
-    # sum_of_comming_people = sum(guest.person_count for guest in guests if guest.rsvp)
+    
     sum_of_comming_people = 0
     for guest in rsvp:
         if guest.attending:
@@ -177,7 +185,7 @@ def invitation_preview(request, invitation_id, guest_key):
     guest = get_object_or_404(Guest, invitation=invitation, guest_secret_key=guest_key)
 
     if request.method == 'POST':
-        person_count = request.POST.get('guests_count', 1)
+        person_count = request.POST.get('guests_count')
         attending_value = request.POST.get('attending')
         rsvp = True if attending_value == 'yes' else False
         guest.rsvp = rsvp
@@ -185,6 +193,9 @@ def invitation_preview(request, invitation_id, guest_key):
         guest.save()
 
         print(person_count)
+        print(attending_value)
+        print(rsvp)
+        print(notes)
 
         if not Rsvp.objects.filter(guest=guest, invitation=invitation).exists():
             Rsvp.objects.create(
@@ -200,6 +211,8 @@ def invitation_preview(request, invitation_id, guest_key):
 
     person_range = range(1, guest.person_count + 1)
     template_render = invitation.invitation_theme.template_path
+    if not template_render:
+        template_render = invitation.invitation_theme.html_code
 
     context = {
         'invitation': invitation,
@@ -208,3 +221,163 @@ def invitation_preview(request, invitation_id, guest_key):
         'person_range': person_range, 
     }
     return render(request, template_render, context)
+
+
+
+def send_mail_invitation(request, invitation_id):
+    invitation = get_object_or_404(Invitation, id=invitation_id)
+
+    if request.user != invitation.invitation_owner:
+        return HttpResponse('Permission denied', status=403)
+
+    guests = invitation.guests.all()
+    
+    if not guests.exists():
+        messages.warning(request, "No guests found to send invitations to.")
+        return redirect('guest_management', invitation_id=invitation_id)
+    
+    email_count = 0
+    for guest in guests:
+        if guest.rsvp:
+            pass 
+        elif guest.email:  # Only send if guest has an email
+            subject = f"You're Invited to {invitation.event_for}!"
+            html_message = render_to_string('invitation/emails/email_invitation.html', {
+                'invitation': invitation,
+                'guest': guest,
+                'invitation_link': request.build_absolute_uri(
+                    f"/invitation/{invitation.id}/{guest.guest_secret_key}/" 
+                )
+            })
+            plain_message = strip_tags(html_message)
+            from_email = settings.DEFAULT_FROM_EMAIL
+            to_email = guest.email
+
+            try:
+                send_mail(subject, plain_message, from_email, [to_email], html_message=html_message)
+                email_count += 1
+            except Exception as e:
+                print(f"Failed to send email to {guest.email}: {e}")
+    
+    messages.success(request, f"Successfully sent {email_count} invitation emails!")
+    return redirect('guest_management', invitation_id=invitation_id)
+
+
+
+def send_single_reminder_email(request, invitation_id, guest_key):
+    invitation = get_object_or_404(Invitation,id=invitation_id)
+    guest = get_object_or_404(Guest, invitation=invitation, guest_secret_key=guest_key)
+
+    if request.user != invitation.invitation_owner:
+        return HttpResponse('Permission denied', status=403)
+    
+    if not guest.email:
+        messages.error(request, f"No email found for guest {guest.name}.")
+        return redirect('guest_management', invitation_id=invitation_id)
+    
+    subject = f"Reminder: You're Invited to {invitation.event_for}!"
+    html_message = render_to_string('invitation/emails/email_invitation.html', {
+        'invitation': invitation,
+        'guest': guest,
+        'invitation_link': request.build_absolute_uri(
+            f"/invitation/{invitation.id}/{guest.guest_secret_key}/" 
+        )
+    })
+    plain_message = strip_tags(html_message)
+
+    try:
+        send_mail(subject, plain_message, settings.DEFAULT_FROM_EMAIL, [guest.email], html_message=html_message)
+        print(f"Reminder email sent to {guest.name} at {guest.email}.")
+        messages.success(request, f"Reminder email sent to {guest.name} at {guest.email}.")
+    except Exception as e:
+        messages.error(request, f"Failed to send email to {guest.email}: {e}")
+        print(f"Failed to send email to {guest.email}: {e}")
+
+    messages.success(request, f"Successfully sent invitation email!")
+    return redirect('guest_management', invitation_id=invitation_id)
+
+
+
+# from utils.whatsapp import send_whatsapp_message
+# def send_invitation_whatsapp(request, invitation_id):
+#     invitation = get_object_or_404(Invitation, id=invitation_id)
+#     guests = invitation.guests.all()
+
+#     sent_to = []
+
+#     for guest in guests:
+#         link = request.build_absolute_uri(
+#             f'/invitation/{invitation.id}/{guest.guest_secret_key}/'
+#         )
+#         send_whatsapp_message(
+#             to_number=str(guest.phone_number),  # ✅ convert to string
+#             message=f"🎉 You’re invited! View your invitation: {link}"
+#         )
+#         sent_to.append(str(guest.phone_number))
+
+#     return JsonResponse({"status": "success", "sent": len(sent_to), "recipients": sent_to})
+
+
+# def send_invitation_whatsapp(request, invitation_id):
+#     invitation = get_object_or_404(Invitation, id=invitation_id)
+#     guests = invitation.guests.all()
+
+#     sent_count = 0
+#     for guest in guests:
+#         link = request.build_absolute_uri(
+#             f'/invitation/{invitation.id}/{guest.guest_secret_key}/'
+#         )
+#         message = f"🎉 You’re invited! View your invitation here: {link}"
+
+#         response = send_whatsapp_message(
+#             to_number=guest.phone_number,
+#             message=message
+#         )
+
+#         if response.get("messages"):
+#             sent_count += 1
+        
+
+#     return JsonResponse({"status": "success", "sent": sent_count})
+import requests
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
+from invitation.models import Invitation
+from utils.whatsapp import send_whatsapp_message
+
+
+def send_invitation_whatsapp(request, invitation_id):
+    invitation = get_object_or_404(Invitation, id=invitation_id)
+    guests = invitation.guests.all()
+
+    sent_count = 0
+    recipients = []
+
+    for guest in guests:
+        link = request.build_absolute_uri(
+            f'/invitation/{invitation.id}/{guest.guest_secret_key}/'
+        )
+
+        phone = str(guest.phone_number).strip()
+        if not phone.startswith('+'):
+            phone = '+' + phone
+
+        response = send_whatsapp_message(
+            to_number=phone,
+            guest_name=guest.name,
+            event_name=invitation.event.name,
+            event_date=str(invitation.event_date),
+            invitation_link=link,
+        )
+        print(response)
+
+       
+        if response.get("messages"):
+            sent_count += 1
+            recipients.append(phone)
+
+    return JsonResponse({
+        "status": "success",
+        "sent": sent_count,
+        "recipients": recipients
+    })
