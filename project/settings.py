@@ -1,8 +1,5 @@
-
-
 from pathlib import Path
 import os
-
 import environ
 from pathlib import Path
 
@@ -20,7 +17,8 @@ DEBUG = env('DEBUG')
 
 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['invitationSaas.pythonanywhere.com','www.invitationSaas.pythonanywhere.com','127.0.0.1','localhost']
+
 
 
 INSTALLED_APPS = [
@@ -160,12 +158,25 @@ LOGIN_REDIRECT_URL = 'profile'
 LOGOUT_REDIRECT_URL = 'home'
 
 
-WHATSAPP_ACCESS_TOKEN = "EAARLBjv1kv4BP80ZBN2LsZAXNahxKl8Nh96UCkdIFqqBrfPj277vqZCYJtcuGoysZBqiL8Vne6tKhf74DfofBMbEZApHyzjWH2AvSnmlo9LH8g4Yk2GbbsKVwnZC5M4n2Cm5QxaKnfCokHzCceWdLiZCg6arMCmkfDxTrAKZA9ICnZAiTOIdW3nAaZAG4JGQggJWyrIqfCJzSOwS3Go9TZA3cEK5IzMesd5IQPQn98ED8uJS29DgrjaNcfHvS8zLgNOKAmtIPCLqCd9E8BLUe08FM7wua54BrGrP6r1XZB6R8pAZD"
-WHATSAPP_PHONE_NUMBER_ID = "907716542416142"
-WHATSAPP_API_URL = "https://graph.facebook.com/v22.0/"
+# WHATSAPP_ACCESS_TOKEN = "EAARLBjv1kv4BP80ZBN2LsZAXNahxKl8Nh96UCkdIFqqBrfPj277vqZCYJtcuGoysZBqiL8Vne6tKhf74DfofBMbEZApHyzjWH2AvSnmlo9LH8g4Yk2GbbsKVwnZC5M4n2Cm5QxaKnfCokHzCceWdLiZCg6arMCmkfDxTrAKZA9ICnZAiTOIdW3nAaZAG4JGQggJWyrIqfCJzSOwS3Go9TZA3cEK5IzMesd5IQPQn98ED8uJS29DgrjaNcfHvS8zLgNOKAmtIPCLqCd9E8BLUe08FM7wua54BrGrP6r1XZB6R8pAZD"
+# WHATSAPP_PHONE_NUMBER_ID = "907716542416142"
+# WHATSAPP_API_URL = "https://graph.facebook.com/v22.0/"
 
+# ✅ Security middleware
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = "DENY"
 
+# ✅ HTTPS settings
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
 
-# EMAIL_HOST_USER = 'follow.software.engineer@gmail.com'       
-# EMAIL_HOST_PASSWORD = 'hhzs beiy rqiv ipay'
-# DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+# ✅ HSTS (forces HTTPS for all requests)
+SECURE_HSTS_SECONDS = 31536000  # 1 year
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+
+# ✅ Referrer policy
+SECURE_REFERRER_POLICY = "same-origin"
+
