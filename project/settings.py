@@ -3,13 +3,24 @@
 from pathlib import Path
 import os
 
+import environ
+from pathlib import Path
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-dsrg#fglb-ypf!7rt$!7&68o794#&z8tchvsbj1ojoj1or$z*i'
+env = environ.Env(
+    DEBUG=(bool, False)
+)
 
-DEBUG = True
+environ.Env.read_env(BASE_DIR / '.env')
 
-ALLOWED_HOSTS = ['192.168.1.20','127.0.0.1',]
+
+SECRET_KEY = env('SECRET_KEY')
+DEBUG = env('DEBUG')
+
+
+
+ALLOWED_HOSTS = []
 
 
 INSTALLED_APPS = [
@@ -31,6 +42,7 @@ INSTALLED_APPS = [
     'invitation',
     'event',
     'event_gallery',
+    'payment',
 ]
 
 MIDDLEWARE = [
@@ -139,8 +151,9 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'follow.software.engineer@gmail.com'       
-EMAIL_HOST_PASSWORD = 'hhzs beiy rqiv ipay'
+
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')    
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 LOGIN_REDIRECT_URL = 'profile'
@@ -150,3 +163,9 @@ LOGOUT_REDIRECT_URL = 'home'
 WHATSAPP_ACCESS_TOKEN = "EAARLBjv1kv4BP80ZBN2LsZAXNahxKl8Nh96UCkdIFqqBrfPj277vqZCYJtcuGoysZBqiL8Vne6tKhf74DfofBMbEZApHyzjWH2AvSnmlo9LH8g4Yk2GbbsKVwnZC5M4n2Cm5QxaKnfCokHzCceWdLiZCg6arMCmkfDxTrAKZA9ICnZAiTOIdW3nAaZAG4JGQggJWyrIqfCJzSOwS3Go9TZA3cEK5IzMesd5IQPQn98ED8uJS29DgrjaNcfHvS8zLgNOKAmtIPCLqCd9E8BLUe08FM7wua54BrGrP6r1XZB6R8pAZD"
 WHATSAPP_PHONE_NUMBER_ID = "907716542416142"
 WHATSAPP_API_URL = "https://graph.facebook.com/v22.0/"
+
+
+
+# EMAIL_HOST_USER = 'follow.software.engineer@gmail.com'       
+# EMAIL_HOST_PASSWORD = 'hhzs beiy rqiv ipay'
+# DEFAULT_FROM_EMAIL = EMAIL_HOST_USER

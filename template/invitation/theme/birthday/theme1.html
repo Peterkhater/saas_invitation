@@ -1,0 +1,488 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Birthday Theme</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Sacramento&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-image: url('{% static "images/invitation/theme/birthday/theme1/rockbg.avif" %}');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            position: relative; /* Make body the positioning context */
+            overflow-x: hidden; /* Prevent horizontal scroll */
+        }
+
+        .neon {
+            color: #fff;
+            text-shadow: 
+                0 0 5px #fff,
+                0 0 10px #fff,
+                0 0 20px #ff00de,
+                0 0 30px #ff00de,
+                0 0 40px #ff00de;
+            font-weight: normal;
+        }
+        
+        
+        .sacramento-regular {
+            font-family: "Sacramento", cursive;
+            font-weight: 400;
+            font-style: normal;
+            font-size: 4rem;
+        }
+        
+        .custom-bg {
+            background: transparent !important;
+        }
+        
+        p {
+            font-weight: 200;
+        }
+        
+        .day_style {
+            border: 2px solid white;
+            border-radius: 50%;
+            padding: 5px;
+            box-shadow: 0 0 5px #fff,
+                0 0 10px #fff,
+                0 0 5px #e785da,
+                0 0 10px #e785da,
+                0 0 10px #e785da;
+            height: 50px;
+            width: 50px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .date {
+            font-size: larger;
+            margin-top: 15px;
+        }
+        
+        .balloon {
+        position: fixed;
+        z-index: 55;
+        opacity: 0.9;
+        pointer-events: none;
+        
+        filter: 
+            drop-shadow(0 0 5px rgba(255, 255, 255, 0.8))
+            drop-shadow(0 0 20px rgba(255, 0, 222, 0.6))
+            drop-shadow(0 0 25px rgba(255, 0, 222, 0.4))
+            drop-shadow(0 0 30px rgba(255, 0, 222, 0.2));
+}
+        
+        .balloon-1 {
+            left: 5%; 
+            top: 15%;
+            transform: rotate(30deg);
+        }
+        
+        .balloon-2 {
+            right: 5%;
+            bottom: 20%;
+            transform: rotate(-15deg);
+        }
+        
+        .balloon-3 {
+            right: -5%;
+            bottom: -40%;
+            transform: rotate(-15deg);
+               
+            }
+        /* Responsive balloon sizing */
+        @media (max-width: 768px) {
+            .balloon {
+                width: 200px;
+            }
+            
+            .balloon-1 {
+                left: 2%;
+                top: 10%;
+            }
+            
+            .balloon-2 {
+                right: 2%;
+                bottom: 15%;
+            }
+            .balloon-3 {
+                right: 2%;
+               
+            }
+        }
+        
+:root {
+  --clr-neon: hsl(317 100% 54%);
+  --clr-bg: hsl(323 21% 16%);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+
+.neon-button {
+  font-size: 2rem;
+  
+  display: inline-block;
+  cursor: pointer;
+  text-decoration: none;
+  color: var(--clr-neon);
+  color: white;
+  border: var(--clr-neon) 0.125em solid;
+  padding: 0.20em 0.9em;
+  border-radius: 0.25em;
+  text-shadow: 0 0 0.125em hsl(0 0% 100% / 0.3), 0 0 0.45em currentColor;
+  box-shadow: inset 0 0 0.5em 0 var(--clr-neon), 0 0 0.5em 0 var(--clr-neon);
+  position: relative;
+  margin-top: 50px;
+
+   color: #fff;
+            text-shadow: 
+                0 0 5px #fff,
+                0 0 10px #fff,
+                0 0 20px #ff00de,
+                0 0 30px #ff00de,
+                0 0 40px #ff00de;
+            font-weight: normal;
+}
+
+.neon-button::before {
+  pointer-events: none;
+  content: "";
+  position: absolute;
+  background: var(--clr-neon);
+  top: 120%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  transform: perspective(1em) rotateX(40deg) scale(1, 0.35);
+  filter: blur(1em);
+  opacity: 0.7;
+}
+
+.neon-button::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  box-shadow: 0 0 2em 0.5em var(--clr-neon);
+  opacity: 0;
+  background-color: var(--clr-neon);
+  z-index: -1;
+  transition: opacity 100ms linear;
+}
+
+.neon-button:hover,
+.neon-button:focus {
+  color: var(--clr-bg);
+  text-shadow: none;
+}
+
+.neon-button:hover::before,
+.neon-button:focus::before {
+  opacity: 1;
+}
+.neon-button:hover::after,
+.neon-button:focus::after {
+  opacity: 1;
+}
+
+
+
+.neon-text {
+            color: #fff;
+            text-shadow: 
+                0 0 5px #fff,
+                0 0 10px #fff,
+                0 0 20px var(--neon-blue);
+        }
+        
+        .glass-form {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            box-shadow: 
+                0 4px 30px rgba(0, 0, 0, 0.1),
+                0 0 20px rgba(255, 0, 222, 0.2);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 40px;
+            width: 100%;
+            max-width: 600px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .glass-form::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            
+            background: linear-gradient(45deg, 
+                transparent, 
+                rgba(255, 0, 222, 0.1), 
+                rgba(0, 247, 255, 0.1), 
+                transparent);
+            z-index: -1;
+            border-radius: 20px;
+            animation: borderGlow 3s linear infinite;
+        }
+        
+        @keyframes borderGlow {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        
+        .form-control {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 12px 15px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: var(--neon-pink);
+            box-shadow: 0 0 15px rgba(255, 0, 222, 0.5);
+            color: white;
+        }
+        
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .form-label {
+            color: white;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+        
+        .form-check-label {
+            color: white;
+        }
+        
+        .btn-neon {
+            background: transparent;
+            color: white;
+            border: 2px solid var(--neon-pink);
+            padding: 12px 30px;
+            border-radius: 30px;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            font-weight: bold;
+            letter-spacing: 1px;
+            width: 100%;
+            margin-top: 20px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .btn-neon::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+            z-index: -1;
+        }
+        
+        .btn-neon:hover {
+            background: var(--neon-pink);
+            color: white;
+            box-shadow: 0 0 15px var(--neon-pink), 0 0 30px var(--neon-pink);
+        }
+        
+        .btn-neon:hover::before {
+            left: 100%;
+        }
+        
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .form-check {
+            display: flex;
+            align-items: center;
+        }
+        
+        .form-check-input {
+            background-color: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        
+        .form-check-input:checked {
+            background-color: var(--neon-pink);
+            border-color: var(--neon-pink);
+            box-shadow: 0 0 10px var(--neon-pink);
+        }
+        
+        .guest-count {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .count-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .count-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: var(--neon-pink);
+        }
+        
+        .count-display {
+            min-width: 40px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(255, 0, 222, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(255, 0, 222, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(255, 0, 222, 0);
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .glass-form {
+                padding: 25px;
+            }
+            
+            .radio-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Balloons positioned relative to viewport -->
+    <img src="{% static 'images/invitation/theme/birthday/theme1/ballon.png' %}" alt="Balloon" 
+         class="balloon balloon-1">
+    
+    <img src="{% static 'images/invitation/theme/birthday/theme1/ballon.png' %}" alt="Balloon" 
+         class="balloon balloon-2">
+        
+    <img src="{% static 'images/invitation/theme/birthday/theme1/ballon.png' %}" alt="Balloon" 
+         class="balloon balloon-3">
+
+    <div class="vh-100 d-flex justify-content-center align-items-center custom-bg mb-5">
+        <div class="container text-center">
+            <p class="text-white mb-5">Join us For a</p>
+            <h1 class="neon sacramento-regular"><span style="font-size: 7rem;">Birthday</span><br>Party</h1>
+            <p class="mt-5 text-white">CELEBRATING <span style="font-size: 400;">PETER</span>'S<br> 20th BIRTHDAY</p>
+            <p class="text-white date mt-5">Saturday <span class="day_style">27</span> October</p>
+            <p class="text-white">At <span>Your Venue Here</span></p>
+
+            <a href="#" class="neon-button">RSVP</a>
+        </div>
+    </div>
+
+    <div class="rsvp_section container d-flex justify-content-center align-items-center" style="flex-direction: column;">
+        <h1 class="neon text-center mb-5">RSVP</h1>
+        <form class="glass-form pulse" style="z-index: 10000;">
+            <div class="row">
+                <div class="col-md-12 mb-4">
+                    <label for="name" class="form-label neon-text">Your Name</label>
+                    <input type="text" class="form-control" id="name" placeholder="Enter your name" value="{% if guest.full_family %}Mr-s {{guest.name}} & My Familly{% else %}{{guest.name|default:''}}{% endif %}" readonly name="name">
+                </div>
+            </div>
+            
+            <div class="mb-4">
+                <label class="form-label neon-text">Will you attend?</label>
+                <div class="radio-group">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="attendance" id="yes" value="True" checked >
+                        <label class="form-check-label" for="yes">
+                            <i class="fas fa-check-circle me-2"></i>Yes, I'll be there!
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="attendance" id="no" value="False">
+                        <label class="form-check-label" for="no">
+                            <i class="fas fa-times-circle me-2"></i>Sorry, can't make it
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+        
+            <div class="form-group">
+                <label for="guests" class="form-label neon-text">Number of Guests</label>
+                <select id="guests" class="form-control" required name="guests_count" >
+                        {% for count in person_range %}
+                            <option value="{{ count }}" class="text-light neon-text" style="background-color: grey">
+                                {{ count }} Person's
+                            </option>
+                        {% endfor %}
+                </select>
+            </div>
+
+            <div class="mb-4">
+                <label for="message" class="form-label neon-text">Message (Optional)</label>
+                <textarea class="form-control" id="message" rows="3" placeholder="Leave a message for the birthday person..."></textarea>
+            </div>
+            
+            <button type="submit" class="btn btn-neon">
+                <i class="fas fa-paper-plane me-2"></i>Send RSVP
+            </button>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -15,6 +15,8 @@ from django.conf import settings
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 
+from utils.decorators.check_availability import active_or_not
+
 
 @login_required
 def invitation_create(request):
@@ -51,12 +53,13 @@ def invitation_create(request):
     return render(request,'invitation/invitation_create.html', {'invitation_types': invitation_types})
 
 
-
+@active_or_not
 @login_required
 def guest_management(request, invitation_id):
     invitation = get_object_or_404(Invitation, id=invitation_id)
     event = Event.objects.get(invitation=invitation)
     rsvp = Rsvp.objects.filter(invitation=invitation)
+
 
     if request.user != invitation.invitation_owner:
         messages.error(request, "You don't have permission to access this page.")
@@ -126,12 +129,15 @@ def delete_guest(request, invitation_id, key):
     return HttpResponse('deleted')
 
 
-
+@active_or_not
 def edit_guest(request, invitation_id, guest_key):
     invitation = get_object_or_404(Invitation, id=invitation_id)
     
     if request.user != invitation.invitation_owner:
         return HttpResponse('Permission denied', status=403)
+
+    if not invitation.active:
+        raise Http404("No MyModel matches the given query.")
     
     guest = get_object_or_404(Guest,invitation=invitation,guest_secret_key=guest_key)
     
@@ -184,6 +190,12 @@ def invitation_preview(request, invitation_id, guest_key):
     event = Event.objects.get(invitation=invitation)
     guest = get_object_or_404(Guest, invitation=invitation, guest_secret_key=guest_key)
 
+    if not invitation.active:
+        return redirect("home")
+
+    if not invitation.active:
+        raise Http404("No MyModel matches the given query.")
+
     if request.method == 'POST':
         person_count = request.POST.get('guests_count')
         attending_value = request.POST.get('attending')
@@ -192,10 +204,6 @@ def invitation_preview(request, invitation_id, guest_key):
         notes = request.POST.get('message')
         guest.save()
 
-        print(person_count)
-        print(attending_value)
-        print(rsvp)
-        print(notes)
 
         if not Rsvp.objects.filter(guest=guest, invitation=invitation).exists():
             Rsvp.objects.create(

@@ -11,4 +11,6 @@ urlpatterns = [
     path('',include('invitation.urls')),
     path('events/',include('event.urls')),
     path('gallery/',include('event_gallery.urls')),
+    path('payments/', include('payment.urls')),
+
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

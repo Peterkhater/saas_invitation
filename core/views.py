@@ -41,6 +41,7 @@ def profile(request):
     invitations = Invitation.objects.filter(invitation_owner=request.user)
     events = Event.objects.filter(invitation__in=invitations)
     total_guests = 0
+    
 
     for invitation in invitations:
         total_guests+=invitation.guests.count()
@@ -63,3 +64,7 @@ def profile(request):
 
 def guidelance(request):
     return render(request, 'main/guide.html')
+
+# def mysaas(request):
+#     return render(request, 'main/my_saas.html')
+

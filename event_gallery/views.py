@@ -11,7 +11,6 @@ def gallery_show(request, id,key):
     invitation = get_object_or_404(Invitation, id=id)
 
     if not invitation.event.gallery_event_featured:
-        #we can add the logic to add this feature and pay for it later
         return redirect('home')
     
     if invitation.event.event_secret_key != key:
@@ -21,7 +20,6 @@ def gallery_show(request, id,key):
         images = request.FILES.getlist('image')
         caption = request.POST.get('caption')
         guest_name = request.POST.get('guest_name')
-        print(images)
         for image in images:
             Gallery.objects.create(
                 event=invitation.event,
@@ -36,6 +34,8 @@ def gallery_show(request, id,key):
     contributers = set()
     for image in gallery_images:
         contributers.add(image.image_owner)
+
+    
 
     context = {
         'gallery_images': gallery_images,

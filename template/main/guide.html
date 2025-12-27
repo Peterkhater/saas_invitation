@@ -72,8 +72,8 @@
             box-shadow: var(--shadow);
             padding: 20px;
             margin-bottom: 30px;
-            position: sticky;
-            top: 20px;
+            {% comment %} position: sticky;
+            top: 20px; {% endcomment %}
             z-index: 100;
         }
 
@@ -288,6 +288,9 @@
 
         .quick-link {
             margin-bottom: 12px;
+        }
+        li{
+            margin-left:5px;
         }
 
         .quick-link a {

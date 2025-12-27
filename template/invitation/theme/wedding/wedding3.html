@@ -61,7 +61,138 @@
             font-size: 1.5rem;
         }
 
+        
+        
 
+
+
+        .cta-button {
+            display: inline-block;
+            padding: 1.4rem 3.5rem;
+            background: var(--gold);
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 50px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            font-size: 1.2rem;
+            transition: all 0.4s ease;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s ease 1.7s forwards;
+            border: 2px solid var(--gold);
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: all 0.6s;
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
+        }
+
+        .cta-button:hover {
+            background: transparent;
+            color: var(--gold);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(212, 175, 55, 0.4);
+        }
+
+        
+
+        /* RSVP Form */
+        .rsvp-form {
+            max-width: 700px;
+            margin: 0 auto;
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 25px;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.08);
+            position: relative;
+            border: 1px solid rgba(212, 175, 55, 0.1);
+        }
+
+        .rsvp-form::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            right: 15px;
+            bottom: 15px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 15px;
+            pointer-events: none;
+        }
+
+        .form-group {
+            margin-bottom: 2.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.8rem;
+            font-weight: 500;
+            color: var(--dark-text);
+            font-size: 1.1rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 1.2rem;
+            border: 2px solid var(--pastel-beige);
+            border-radius: 12px;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            background: var(--white);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.1);
+        }
+
+        .attending-toggle {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .toggle-option {
+            flex: 1;
+            text-align: center;
+            padding: 1.5rem;
+            border: 2px solid var(--pastel-beige);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            background: var(--white);
+        }
+
+        .toggle-option:hover {
+            border-color: var(--soft-gold);
+        }
+
+        .toggle-option.active {
+            border-color: var(--gold);
+            background: var(--soft-gold);
+            color: var(--gold);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.2);
+        }
+
+    
+        
 </style>
 </head>
 <body>
@@ -78,14 +209,19 @@
             </p>
         </div>
         
-        <!-- Fixed: Keep in same line on mobile with smaller text -->
-        <div class="flex flex-row gap-1 sm:gap-6 justify-center items-center overflow-x-auto py-4" style="overflow-x: hidden;">
-            <p class="text-white text-lg sm:text-2xl md:text-3xl font-bold px-4 py-2 sm:px-6 sm:py-3 rounded-xl text-center whitespace-nowrap" style="font-weight: 200;">Lebanon<br>West Beqaa</p>
+       
+        <div class="flex flex-row gap-1 sm:gap-6 justify-center items-center overflow-x-hidden py-2">
+            <p class="text-white text-lg sm:text-2xl md:text-3xl font-light px-4 py-2 sm:px-6 sm:py-3 text-center leading-snug max-w-[200px] break-words">{{ event.location|default:"La Belle Garden, Beirut, Lebanon" }}</p>
             <div class="w-0.5 h-6 sm:h-16 bg-white/50"></div>
-            <p class="parisienne-regular text-white text-lg sm:text-2xl md:text-6xl font-bold px-4 py-2 sm:px-6 sm:py-3 rounded-xl text-center whitespace-nowrap">Joseph and Anna</p>
+            <p class="parisienne-regular text-white text-lg sm:text-2xl md:text-6xl font-bold px-4 py-2 sm:px-6 sm:py-3 text-center whitespace-nowrap">
+                {{ invitation.event_for|default:"Sarah & John" }}
+            </p>
             <div class="w-0.5 h-6 sm:h-16 bg-white/50"></div>
-            <p class="text-white text-lg sm:text-2xl md:text-3xl font-bold px-4 py-2 sm:px-6 sm:py-3 rounded-xl text-center whitespace-nowrap" style="font-weight: 200;">Be <br>Ready</p>
+            <p class="text-white text-lg sm:text-2xl md:text-3xl font-light px-4 py-2 sm:px-6 sm:py-3 rounded-xl text-center leading-snug">
+                Be <br> Ready
+            </p>
         </div>
+
     </div>
 </section>
 
@@ -127,24 +263,24 @@
             We are so excited to celebrate our special day with our family and friends. Thank you so much for visiting our wedding website!
         </p>
         
-        <div class="my-16">
+        <div class="my-16 grid grid-cols-1 sm:grid-cols-3 ">
             <h3 class="text-2xl text-white mb-8 text-center">Just some hours...</h3>
             
             <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8 max-w-md mx-auto">
                 <div class="text-center">
-                    <div class="text-4xl font-bold text-amber-300" id="days">19</div>
+                    <div class="text-4xl font-bold text-white" id="days">19</div>
                     <div class="text-lg text-gray-200 mt-2">Days</div>
                 </div>
                 <div class="text-center">
-                    <div class="text-4xl font-bold text-amber-300" id="hours">22</div>
+                    <div class="text-4xl font-bold text-white" id="hours">22</div>
                     <div class="text-lg text-gray-200 mt-2">Hours</div>
                 </div>
                 <div class="text-center">
-                    <div class="text-4xl font-bold text-amber-300" id="minutes">33</div>
+                    <div class="text-4xl font-bold text-white" id="minutes">33</div>
                     <div class="text-lg text-gray-200 mt-2">Minutes</div>
                 </div>
                 <div class="text-center">
-                    <div class="text-4xl font-bold text-amber-300" id="seconds">51</div>
+                    <div class="text-4xl font-bold text-white" id="seconds">51</div>
                     <div class="text-lg text-gray-200 mt-2">Seconds</div>
                 </div>
             </div>
@@ -174,7 +310,7 @@
 
 <section class="grid grid-cols-1 lg:grid-cols-2 gap-5 mx-auto container mb-20">
     <div class="container text-center max-h-[500px]">
-        <img src="https://lirp.cdn-website.com/28cd0bb4/dms3rep/multi/opt/traditional+american+wedding-1920w.jpeg" alt="">
+        <img src="https://lirp.cdn-website.com/28cd0bb4/dms3rep/multi/opt/traditional+american+wedding-1920w.jpeg" alt="" class="rounded-lg">
     </div>
 
     <div class="container flex flex-col justify-center align-center" >
@@ -202,119 +338,50 @@
 
 </section>
 
-
-<div class="w-full md:w-96 md:max-w-full mx-auto">
-  <div class="p-6 border border-gray-300 sm:rounded-md">
-    <form method="POST" action="https://herotofu.com/start">
-      <label class="block mb-6">
-        <span class="text-gray-700">Your name</span>
-        <input
-          name="name"
-          type="text"
-          class="
-            block
-            w-full
-            mt-1
-            border-gray-300
-            rounded-md
-            shadow-sm
-            focus:border-indigo-300
-            focus:ring
-            focus:ring-indigo-200
-            focus:ring-opacity-50
-          "
-          placeholder="Joe Bloggs"
-        />
-      </label>
-      <label class="block mb-6">
-        <span class="text-gray-700">Date and time</span>
-        <input
-          name="datetime"
-          type="datetime-local"
-          class="
-            block
-            w-full
-            mt-1
-            border-gray-300
-            rounded-md
-            shadow-sm
-            focus:border-indigo-300
-            focus:ring
-            focus:ring-indigo-200
-            focus:ring-opacity-50
-          "
-        />
-      </label>
-      <label class="block mb-6">
-        <span class="text-gray-700">Total number of people</span>
-        <input
-          name="people"
-          type="number"
-          class="
-            block
-            w-full
-            mt-1
-            border-gray-300
-            rounded-md
-            shadow-sm
-            focus:border-indigo-300
-            focus:ring
-            focus:ring-indigo-200
-            focus:ring-opacity-50
-          "
-          placeholder="1"
-        />
-      </label>
-      <label class="block mb-6">
-        <span class="text-gray-700">Additional Message</span>
-        <textarea
-          name="message"
-          class="
-            block
-            w-full
-            mt-1
-            border-gray-300
-            rounded-md
-            shadow-sm
-            focus:border-indigo-300
-            focus:ring
-            focus:ring-indigo-200
-            focus:ring-opacity-50
-          "
-          rows="3"
-          placeholder="Additional details?"
-        ></textarea>
-      </label>
-      <div class="mb-6">
-        <button
-          type="submit"
-          class="
-            h-10
-            px-5
-            text-indigo-100
-            bg-indigo-700
-            rounded-lg
-            transition-colors
-            duration-150
-            focus:shadow-outline
-            hover:bg-indigo-800
-          "
-        >
-          Submit RSVP
-        </button>
-      </div>
-      <div>
-        <div class="mt-2 text-gray-700 text-right text-xs">
-          by
-          <a href="https://herotofu.com" class="hover:underline" target="_blank"
-            >HeroTofu</a
-          >
+<!-- RSVP Section -->
+    <section class="section section-light" id="rsvp">
+        <div class="container">
+            <div class="section-title">
+                <h2>RSVP</h2>
+                <div class="divider"></div>
+                <p style="color: var(--light-text); margin-top: 1.5rem;">Kindly respond by May 21, 2025</p>
+            </div>
+            <div class="rsvp-form">
+                <form  method="POST" style="padding:2px"  id="wedding-rsvp">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" class="form-control" required value="{% if guest.full_family %}Mr-s {{guest.name}} & My Familly{% else %}{{guest.name|default:''}}{% endif %}" readonly name="name">
+                    </div>
+                    <div class="form-group">
+                        <label for="guests">Number of Guests</label>
+                        <select id="guests" class="form-control" required name="guests_count">
+                                {% for count in person_range %}
+                                    <option value="{{ count }}">{{ count }} Person's</option>
+                                {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Will you be attending?</label>
+                        <div class="attending-toggle">
+                            <div class="toggle-option" data-value="yes">Yes, I'll be there!</div>
+                            <div class="toggle-option" data-value="no">Sorry, can't make it</div>
+                        </div>
+                        <input type="hidden" id="attending" required name="attending">
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message for the Couple (Optional)</label>
+                        <textarea id="message" class="form-control" rows="4" name="message"></textarea>
+                    </div>
+                    {% if guest.rsvp %}
+                    <button type="button" class="cta-button disable" style="width: 100%; margin-top: 2rem;">Thanks!</button>
+                    {% else %}
+                    <button type="submit" class="cta-button" style="width: 100%; margin-top: 2rem;">Confirm Attendance</button>
+                    {% endif %}
+                </form>
+            </div>
         </div>
-      </div>
-    </form>
-  </div>
-</div>
-
+    </section>
 
 <script>
     const musicToggle = document.getElementById('musicToggle');
@@ -354,6 +421,25 @@
 
         setInterval(updateCountdown, 1000);
         updateCountdown();
+
+        // RSVP Form Handling
+        document.querySelectorAll('.toggle-option').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.toggle-option').forEach(opt => {
+                    opt.classList.remove('active');
+                });
+                this.classList.add('active');
+                document.getElementById('attending').value = this.dataset.value;
+            });
+        });
+
+        document.getElementById('wedding-rsvp').addEventListener('submit', function(e) {
+            alert(`Thank you, ${name}! Your RSVP has been received. We look forward to celebrating with you!`);
+            
+            document.querySelectorAll('.toggle-option').forEach(opt => {
+                opt.classList.remove('active');
+            });
+        });
 </script>
 </body>
 </html>

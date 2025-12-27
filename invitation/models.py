@@ -55,6 +55,11 @@ class Invitation(models.Model):
     active = models.BooleanField(default=True)
     has_music_file = models.BooleanField(default=False)
 
+    groom_name = models.CharField(null=True,blank=True)
+    groom_info = models.TextField(blank=True, null=True)
+    bride_name = models.CharField(blank=True, null=True)
+    bride_info = models.TextField(null=True,blank=True)
+
     def __str__(self):
         return f"Invitation for {self.event_for}"
 
@@ -101,13 +106,3 @@ class Rsvp(models.Model):
         ordering = ['-responded_at']
 
 
-# class Guest_member(models.Model):
-#     guest = models.ForeignKey(Guest, on_delete=models.CASCADE, related_name="members")
-#     name = models.CharField(max_length=255)
-#     age = models.PositiveIntegerField(null=True, blank=True)
-
-#     def __str__(self):
-#         return f"{self.name} (Member of {self.guest.name})"
-
-#     class Meta:
-#         ordering = ['name']

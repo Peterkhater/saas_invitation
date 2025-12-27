@@ -2,6 +2,53 @@
 {% load static %}
 
 {% block content %}
+
+<div id="select-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full" >
+    <div class="relative p-4 w-full max-w-md max-h-full bg-white rounded-2xl" style="background-color: #436491;" >
+        <!-- Modal content -->
+        <div class="relative bg-neutral-primary-soft border border-default rounded-base shadow-sm p-4 md:p-6 " >
+            <!-- Modal header -->
+            <div class="flex items-center justify-between border-b border-default pb-4 md:pb-5" >
+                <h3 class="text-lg font-medium text-heading text-white">
+                    Open positions
+                </h3>
+                <button type="button" class="text-body bg-transparent hover:bg-neutral-tertiary hover:text-heading rounded-base text-sm w-9 h-9 ms-auto inline-flex justify-center items-center" data-modal-hide="select-modal">
+                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/></svg>
+                    <span class="sr-only">Close modal</span>
+                </button>
+            </div>
+            <!-- Modal body -->
+            <div class="pt-4 md:pt-6">
+                <p class="text-body mb-4 text-white">Select your desired position:</p>
+                <ul class="space-y-4 mb-4">
+                    {% for event in user_events %}
+                    {% if event.invitation.active %}
+                    <li class="rounded-2xl" style="border: 2px solid white;">
+                        <a href="{% url 'guest_management' event.invitation.id %}">
+                        <label for="job-1" class="text-white inline-flex items-center w-full p-5 text-body bg-neutral-primary-soft border-1 border-default rounded-base cursor-pointer peer-checked:hover:bg-brand-softer peer-checked:border-brand-subtle peer-checked:bg-brand-softer hover:bg-neutral-secondary-medium peer-checked:text-fg-brand-strong">
+                            <div class="flex items-center justify-center w-9 h-9 rounded bg-brand-soft text-fg-brand-strong">
+                                <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M7.111 20A3.111 3.111 0 0 1 4 16.889v-12C4 4.398 4.398 4 4.889 4h4.444a.89.89 0 0 1 .89.889v12A3.111 3.111 0 0 1 7.11 20Zm0 0h12a.889.889 0 0 0 .889-.889v-4.444a.889.889 0 0 0-.889-.89h-4.389a.889.889 0 0 0-.62.253l-3.767 3.665a.933.933 0 0 0-.146.185c-.868 1.433-1.581 1.858-3.078 2.12Zm0-3.556h.009m7.933-10.927 3.143 3.143a.889.889 0 0 1 0 1.257l-7.974 7.974v-8.8l3.574-3.574a.889.889 0 0 1 1.257 0Z"/></svg>
+                            </div>                           
+                            <div class="block ms-2.5">
+                                <div class="w-full text-base font-medium">{{event.name}}</div>
+                                <div class="w-full font-normal">{{ event.invitation.guests.count }} guests invited</div>
+                            </div>
+                            <svg class="w-5 h-5 ms-3 rtl:rotate-180 ms-auto" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 12H5m14 0-4 4m4-4-4-4"/></svg>
+                        </label>
+                        </a>
+                    </li>
+                    {% endif %}
+                    {% endfor %}
+                </ul>
+                <button type="submit" class="w-full inline-flex items-center justify-center text-white bg-brand hover:bg-brand-strong box-border border border-transparent focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none">
+                    Next step
+                    <svg class="w-4 h-4 ms-1.5 -me-0.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 12H5m14 0-4 4m4-4-4-4"/></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+</div> 
+
 <div class="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 py-8">
     <div class="max-w-6xl mx-auto px-4">
         <!-- Header Section -->
@@ -46,14 +93,14 @@
                     </div>
                 </a>
                 
-                <a href="#" class="flex items-center justify-center p-6 bg-gradient-to-r from-green-500 to-blue-600 text-white rounded-xl hover:shadow-lg transform hover:scale-105 transition-all duration-200">
+                <button data-modal-target="select-modal" data-modal-toggle="select-modal" class="flex items-center justify-center p-6 bg-gradient-to-r from-green-500 to-blue-600 text-white rounded-xl hover:shadow-lg transform hover:scale-105 transition-all duration-200">
                     <div class="text-center">
                         <svg class="w-8 h-8 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
                         </svg>
                         <span class="font-semibold">Manage Guests</span>
                     </div>
-                </a>
+                </button>
                 
                 <a href="#" class="flex items-center justify-center p-6 bg-gradient-to-r from-pink-500 to-red-600 text-white rounded-xl hover:shadow-lg transform hover:scale-105 transition-all duration-200">
                     <div class="text-center">
@@ -83,9 +130,10 @@
             <!-- Events Grid -->
             <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
                 {% for event in user_events %}
+                {% if event.invitation.active %}
                 <div class="group bg-gradient-to-br from-white to-gray-50 rounded-2xl border border-gray-200 hover:border-purple-300 transition-all duration-300 hover:shadow-xl overflow-hidden">
                     <!-- Event Header -->
-                    <div class="bg-gradient-to-r from-purple-500 to-pink-600 p-6 text-white">
+                    <div {% if event.invitation.active %} class="bg-gradient-to-r from-purple-500 to-pink-600 p-6 text-white"{% else %}class="bg-gradient-to-r from-gray-400 to-gray-600 p-6 text-white"{% endif %}>
                         <div class="flex justify-between items-start mb-4">
                             <h3 class="text-xl font-bold truncate">{{ event.name }}</h3>
                             <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-white/20 backdrop-blur-sm">
@@ -132,7 +180,7 @@
                                 <span>{{ event.confirmation_rate }}%</span>
                             </div>
                             <div class="w-full bg-gray-200 rounded-full h-2">
-                                <div class="bg-green-500 h-2 rounded-full" style="width: {{ event.confirmation_rate }}%"></div>
+                                <div {% if event.invitation.active %}class="bg-green-500 h-2 rounded-full"{% else %}class="bg-gray-500 h-2 rounded-full"{% endif %} style="width: {{ confirmation_rate }}%"></div>
                             </div>
                         </div>
                     </div>
@@ -140,6 +188,7 @@
                     <!-- Action Buttons -->
                     <div class="px-6 pb-6">
                         <div class="grid grid-cols-2 gap-3">
+                            {% if event.invitation.active %}
                             <a href="{% url 'guest_management' event.invitation.id %}" 
                                class="flex items-center justify-center px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors duration-200 text-sm font-medium">
                                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -147,7 +196,7 @@
                                 </svg>
                                 Guests
                             </a>
-                            {% comment %} {% url 'event_detail' event.id %} {% endcomment %}
+                        
                             <a href="{% url "event_management" event.invitation.id  %}" 
                                class="flex items-center justify-center px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:border-gray-400 transition-colors duration-200 text-sm font-medium">
                                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -156,9 +205,30 @@
                                 </svg>
                                 View
                             </a>
+                            <a href="{% url "event_gallery_images_show" event.invitation.id event.event_secret_key %}" 
+                               class="flex items-center justify-center px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:border-gray-400 transition-colors duration-200 text-sm font-medium w-100">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                </svg>
+                                Gallery
+                            </a>
+                            {% else %}
+                            <a href="#" 
+                               class="flex items-center justify-center px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:border-gray-400 transition-colors duration-200 text-sm font-medium">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                </svg>
+                                Download Your Data
+                            </a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
+                
+                
+                {%endif%}
                 {% empty %}
                 <!-- Empty State -->
                 <div class="col-span-full text-center py-16">
@@ -189,31 +259,95 @@
             {% endif %}
         </div>
 
-        <!-- Recent Activity -->
-        <div class="bg-white rounded-2xl shadow-lg p-8 mt-8">
-            <h2 class="text-3xl font-bold text-gray-900 mb-6">Recent Activity</h2>
-            <div class="space-y-4">
-                {% for activity in recent_activities %}
-                <div class="flex items-center p-4 bg-gray-50 rounded-lg">
-                    <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 mr-4">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
+        <div class="container bg-white rounded-2xl shadow-lg p-8 mt-40 ">
+             <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4 md:mb-0">Your Event History</h2>
+            </div>
+        
+            <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 ">
+                  
+                {% for event in user_events %}
+                    {% if event.invitation.active %}
+                    
+                    {%else%}
+                <div class="group bg-gradient-to-br from-white to-gray-50 rounded-2xl border border-gray-200 hover:border-purple-300 transition-all duration-300 hover:shadow-xl overflow-hidden">
+                    <!-- Event Header -->
+                    <div {% if event.invitation.active %} class="bg-gradient-to-r from-purple-500 to-pink-600 p-6 text-white"{% else %}class="bg-gradient-to-r from-gray-400 to-gray-600 p-6 text-white"{% endif %}>
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-xl font-bold truncate">{{ event.name }}</h3>
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-white/20 backdrop-blur-sm">
+                                {{ event.invitation.invitation_type.name }}
+                            </span>
+                        </div>
+                        <p class="text-white/90 text-sm">{{ event.location|default:"Location not set" }}</p>
                     </div>
-                    <div class="flex-1">
-                        <p class="text-gray-900 font-medium">{{ activity.message }}</p>
-                        <p class="text-gray-500 text-sm">{{ activity.timestamp|timesince }} ago</p>
+
+                    <!-- Event Details -->
+                    <div class="p-6">
+                        <div class="space-y-4">
+                            <!-- Date & Time -->
+                            <div class="flex items-center text-gray-600">
+                                <svg class="w-5 h-5 mr-3 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                </svg>
+                                <span class="text-sm">{{ event.invitation.event_date|date:"M d, Y" }}</span>
+                            </div>
+
+                            <!-- Guest Count -->
+                            <div class="flex items-center text-gray-600">
+                                <svg class="w-5 h-5 mr-3 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                                </svg>
+                                <span class="text-sm">{{ event.invitation.guests.count }} guests invited</span>
+                            </div>
+
+                            <!-- Gallery Status -->
+                            {% if event.gallery_event_featured %}
+                            <div class="flex items-center text-gray-600">
+                                <svg class="w-5 h-5 mr-3 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                </svg>
+                                <span class="text-sm">Live Gallery Active</span>
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Progress Bar -->
+                        <div class="mt-6">
+                            <div class="flex justify-between text-sm text-gray-600 mb-2">
+                                <span>Confirmed: {{ event.confirmed_guests }}</span>
+                                <span>{{ event.confirmation_rate }}%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div {% if event.invitation.active %}class="bg-green-500 h-2 rounded-full"{% else %}class="bg-gray-500 h-2 rounded-full"{% endif %} style="width: {{ confirmation_rate }}%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="px-6 pb-6">
+                        <div class="grid grid-cols-2 gap-3">
+                            
+                            <a href="#" 
+                               class="flex items-center justify-center px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:border-gray-400 transition-colors duration-200 text-sm font-medium">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                </svg>
+                                Download Your Data
+                            </a>
+                        
+                        </div>
                     </div>
                 </div>
-                {% empty %}
-                <div class="text-center py-8 text-gray-500">
-                    No recent activity
-                </div>
+                {%endif%}
                 {% endfor %}
             </div>
-        </div>
+            </div>
     </div>
 </div>
+
+
 
 <style>
 /* Custom styles for enhanced elegance */
@@ -251,4 +385,7 @@
     backdrop-filter: blur(4px);
 }
 </style>
+
+<script src="https://unpkg.com/flowbite@latest/dist/flowbite.min.js"></script>
+
 {% endblock %}
