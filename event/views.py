@@ -8,57 +8,16 @@ from datetime import datetime
 from django.contrib.auth.decorators import login_required
 from payment.models import Payment
 from django.http import HttpResponseForbidden
-
-# def event_create(request):
-#     invitation_data = request.session.get('invitation_data')
-    
-#     if not invitation_data:
-#         return redirect('invitation_create')
-
-#     if request.method == 'POST':
-#         event_name = request.POST.get('event_name')
-#         location = request.POST.get('location')
-#         description = request.POST.get('description')
-#         event_guest_limit = request.POST.get('event_guest_limit')
-#         gallery_featured = 'gallery_event_featured' in request.POST
-#         total_price = 0
-
-#         request.session['event_data'] = {
-#                 'name': event_name,
-#                 'location': location,
-#                 'description': description,
-#                 'event_guest_limit': event_guest_limit,
-#                 'gallery_event_featured': gallery_featured,
-#         }
-#         if gallery_featured:
-#             total_price += 40
-#         if event_guest_limit:
-#             if int(event_guest_limit) > 1 and int(event_guest_limit) <= 50:
-#                 total_price += 10
-
-#         if request.user.is_superuser:
-#             return redirect('my_event_invitation_activate')
-#         else:
-#             payment = Payment.objects.create(
-#                 user=request.user,
-#                 amount=20,
-#                 status='PENDING'
-#             )
-
-#             request.session['payment_id'] = payment.id
-#             return redirect('payment_checkout')
-
-
-#     return render(request, 'event/event_create.html')
-
 from django.shortcuts import render, redirect
 from .models import Pricing
 from invitation.models import Invitation, InvitationType, Invitation_theme
 from django.contrib.auth.models import User
 
+
+
 def event_create(request):
     invitation_data = request.session.get('invitation_data')
-    
+    pricing_rules = Pricing.objects.all()
     if not invitation_data:
         return redirect('invitation_create')
 
@@ -113,9 +72,9 @@ def event_create(request):
                 status='PENDING'
             )
             request.session['payment_id'] = payment.id
-            # return redirect('payment_checkout')
+            return redirect('payment_checkout')
 
-    return render(request, 'event/event_create.html')
+    return render(request, 'event/event_create.html',{'pricing_rules': pricing_rules,'user': request.user})
 
 
 
@@ -240,3 +199,53 @@ def event_management(request, invitation_id):
     return render(request, 'event/event_managment.html', {'invitation': invitation, 'event': event})
 
 
+
+
+
+
+
+
+
+
+
+# def event_create(request):
+#     invitation_data = request.session.get('invitation_data')
+    
+#     if not invitation_data:
+#         return redirect('invitation_create')
+
+#     if request.method == 'POST':
+#         event_name = request.POST.get('event_name')
+#         location = request.POST.get('location')
+#         description = request.POST.get('description')
+#         event_guest_limit = request.POST.get('event_guest_limit')
+#         gallery_featured = 'gallery_event_featured' in request.POST
+#         total_price = 0
+
+#         request.session['event_data'] = {
+#                 'name': event_name,
+#                 'location': location,
+#                 'description': description,
+#                 'event_guest_limit': event_guest_limit,
+#                 'gallery_event_featured': gallery_featured,
+#         }
+#         if gallery_featured:
+#             total_price += 40
+#         if event_guest_limit:
+#             if int(event_guest_limit) > 1 and int(event_guest_limit) <= 50:
+#                 total_price += 10
+
+#         if request.user.is_superuser:
+#             return redirect('my_event_invitation_activate')
+#         else:
+#             payment = Payment.objects.create(
+#                 user=request.user,
+#                 amount=20,
+#                 status='PENDING'
+#             )
+
+#             request.session['payment_id'] = payment.id
+#             return redirect('payment_checkout')
+
+
+#     return render(request, 'event/event_create.html')

@@ -94,7 +94,7 @@
                         <span class="font-bold text-gray-500 ">Guests Count:</span>
                         <span id="guest_count_display" class="font-bold text-grey-600"></span> 
                     </div>
-                     <input type="range" name="event_guest_limit" min="1" max="500" id="event_guests_count" default="100" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200" > 
+                     <input type="range" name="event_guest_limit" min="1" max="500" id="event_guests_count"  class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200" value="25"> 
                      <ul>
                         <li class="text-sm text-gray-500">
                             <svg class="w-4 h-4 inline-block text-green-500 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -102,30 +102,25 @@
                             </svg>
                             Drag the slider to set the maximum number of guests allowed for your event.
                         </li>
+                        
                         <li class="text-sm text-gray-500">
                             <svg class="w-4 h-4 inline-block text-green-500 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                             </svg>
                             01 to 500 guests can be selected.
                         </li>
+                        
+                        {% for pricing_rules in pricing_rules %}
+                        {% if pricing_rules.feature == 'guest_limit' %}
                         <li class="text-sm text-gray-500">
                             <svg class="w-4 h-4 inline-block text-green-500 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                             </svg>
-                            01 to 50 guests: 20$
+                            {{pricing_rules.min_value}} to {{pricing_rules.max_value}} guests: {{pricing_rules.price}}$
                         </li>
-                        <li class="text-sm text-gray-500">
-                            <svg class="w-4 h-4 inline-block text-green-500 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            51 to 200 guests: 50$
-                        </li>
-                        <li class="text-sm text-gray-500">
-                            <svg class="w-4 h-4 inline-block text-green-500 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            200 to 500 guests: 100$
-                        </li>
+                        {% endif %}
+                        {% endfor %}
+                        
                      </ul>
                     </div>
 
@@ -147,13 +142,14 @@
                                 </div>
                             </div>
                             <label class="relative inline-flex items-center cursor-pointer">
-                                <input type="checkbox" name="gallery_event_featured" value="true" class="sr-only peer">
+                                <input type="checkbox" name="gallery_event_featured" value="true" class="sr-only peer" id="gallery_toggle">
                                 <div class="w-14 h-7 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-blue-600"></div>
                             </label>
                         </div>
                         
                     </div>
-                    <span class="text-xs mt-12" style="font-weight: 800; margin-left: 20px;">Adding this Feature Will Cost <span class="text-red-600">$50</span></span>
+                    <span class="text-xs mt-12" style="font-weight: 800; margin-left: 20px;">Adding this Feature Will Cost <span class="text-red-600">{% for pricing_rules in pricing_rules %}
+                        {% if pricing_rules.feature == 'gallery_featured' %}{{pricing_rules.price}}{% endif %} {% endfor %}$</span></span>
                 </div>
 
                 <!-- Form Actions -->
@@ -192,6 +188,20 @@
     </div>
 </div>
 
+<div class="fixed top-20 right-4">
+    <a href="#" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-3 rounded-full shadow-lg flex items-center space-x-2">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-1.414 1.414A8 8 0 105.05 18.364l-1.414 1.414a10 10 0 1114.728-14.142z"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+        </svg>
+        Price: 
+        {% if user.is_authenticated and user.is_superuser %}
+        <span class="text-sm font-medium" id="">Free</span>
+        {% else %}
+        <span class="text-sm font-medium" id="price_display"></span>
+        {% endif %}
+</div>
+
 <script>
     // Live preview functionality
     document.addEventListener('DOMContentLoaded', function() {
@@ -209,8 +219,62 @@
         });
     });
    
-const rangeInput = document.getElementById('event_guests_count'); const displaySpan = document.getElementById('guest_count_display'); // Initialize with default value 
-displaySpan.textContent = rangeInput.value; 
-rangeInput.addEventListener('input', function() { displaySpan.textContent = this.value; });
+
+
+const rangeInput = document.getElementById('event_guests_count'); 
+const guestDisplay = document.getElementById('guest_count_display');
+const priceDisplay = document.getElementById('price_display');
+const galleryToggle = document.getElementById('gallery_toggle');
+
+// Prepare guest limit price rules from Django
+const priceRules = [];
+{% for rule in pricing_rules %}
+{% if rule.feature == 'guest_limit' %}
+priceRules.push({
+    min: {{ rule.min_value }},
+    max: {{ rule.max_value }},
+    price: {{ rule.price }}
+});
+{% endif %}
+{% if rule.feature == 'gallery_featured' %}
+var galleryPrice = {{ rule.price }};
+{% endif %}
+{% endfor %}
+
+// Function to calculate total price
+function calculateTotalPrice() {
+    const guestCount = parseInt(rangeInput.value);
+    let total = 0;
+
+    // Guest limit price
+    for (let i = 0; i < priceRules.length; i++) {
+        if (guestCount >= priceRules[i].min && guestCount <= priceRules[i].max) {
+            total += priceRules[i].price;
+            break;
+        }
+    }
+
+    // Gallery price
+    if (galleryToggle.checked) {
+        total += galleryPrice || 0;
+    }
+
+    return total;
+}
+
+// Initialize badges
+guestDisplay.textContent = rangeInput.value;
+priceDisplay.textContent = calculateTotalPrice();
+
+// Update badges on input or toggle change
+rangeInput.addEventListener('input', function() {
+    guestDisplay.textContent = this.value;
+    priceDisplay.textContent = calculateTotalPrice();
+});
+
+galleryToggle.addEventListener('change', function() {
+    priceDisplay.textContent = calculateTotalPrice();
+});
+
 </script>
 {% endblock %}
