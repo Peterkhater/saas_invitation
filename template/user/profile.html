@@ -4,11 +4,11 @@
 {% block content %}
 
 <div id="select-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full" >
-    <div class="relative p-4 w-full max-w-md max-h-full bg-white rounded-2xl" style="background-color: #436491;" >
+    <div class="relative p-4 w-full max-w-md max-h-full bg-white rounded-2xl bg-gradient-to-r from-green-500 to-blue-600 text-white shadow-2xl  shadow-white" style="border: 2px solid white; ">
         <!-- Modal content -->
-        <div class="relative bg-neutral-primary-soft border border-default rounded-base shadow-sm p-4 md:p-6 " >
+        <div class="relative bg-neutral-primary-soft  shadow-sm p-4 md:p-6 " >
             <!-- Modal header -->
-            <div class="flex items-center justify-between border-b border-default pb-4 md:pb-5" >
+            <div class="flex items-center justify-between pb-4 md:pb-5" >
                 <h3 class="text-lg font-medium text-heading text-white">
                     Open positions
                 </h3>
@@ -83,7 +83,7 @@
         <!-- Quick Actions -->
         <div class="bg-white rounded-2xl shadow-lg p-6 mb-12">
             <h2 class="text-2xl font-bold text-gray-900 mb-6">Quick Actions</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <a href="{% url 'invitation_create' %}" class="flex items-center justify-center p-6 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-xl hover:shadow-lg transform hover:scale-105 transition-all duration-200">
                     <div class="text-center">
                         <svg class="w-8 h-8 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -102,14 +102,14 @@
                     </div>
                 </button>
                 
-                <a href="#" class="flex items-center justify-center p-6 bg-gradient-to-r from-pink-500 to-red-600 text-white rounded-xl hover:shadow-lg transform hover:scale-105 transition-all duration-200">
+                {% comment %} <a href="#" class="flex items-center justify-center p-6 bg-gradient-to-r from-pink-500 to-red-600 text-white rounded-xl hover:shadow-lg transform hover:scale-105 transition-all duration-200">
                     <div class="text-center">
                         <svg class="w-8 h-8 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
                         </svg>
                         <span class="font-semibold">View Analytics</span>
                     </div>
-                </a>
+                </a> {% endcomment %}
             </div>
         </div>
 
@@ -336,7 +336,15 @@
                                 </svg>
                                 Download Your Data
                             </a>
-                        
+                            
+
+                            <a href="{% url 'guest_management' event.invitation.id %}" 
+                               class="flex items-center justify-center px-4 py-2 border border-gray-300 text-gray-700 hover:text-white-600 rounded-lg hover:bg-gray-600 transition-colors duration-200 text-sm font-medium">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                                </svg>
+                                Guests
+                            </a>
                         </div>
                     </div>
                 </div>

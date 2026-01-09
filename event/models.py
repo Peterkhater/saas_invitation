@@ -9,6 +9,7 @@ def generate_activation_token():
     return get_random_string(50)
 
 
+
 class Event(models.Model):
     invitation = models.OneToOneField(Invitation, on_delete=models.CASCADE, related_name="event",blank=True, null=True, default=None)
     name = models.CharField(max_length=255)
@@ -16,13 +17,15 @@ class Event(models.Model):
     description = models.TextField(blank=True, null=True)
     gallery_event_featured = models.BooleanField(default=False)
     event_secret_key = models.CharField(max_length=100, blank=True, null=True)
+
+    event_guest_limit = models.PositiveIntegerField(blank=True, null=True, help_text="Maximum number of guests allowed for the event.")
     
     audio_file = models.FileField(upload_to='event_audios/', blank=True, null=True)
     beginningStory = models.TextField(blank=True, null=True, help_text="Story displayed at the beginning of the gallery.")
     location_embed = models.TextField(blank=True, null=True, help_text="Embed code for the event location map.")
     journeyStory = models.TextField(blank=True, null=True, help_text="Story displayed during the journey through the gallery.")
     proposalStory = models.TextField(blank=True, null=True, help_text="Story displayed at the proposal section of the gallery.")
-
+    event_main_image = models.ImageField(upload_to='event_main_images/', blank=True, null=True, help_text="Main image for the event gallery.")
     
 
     def __str__(self):
@@ -98,3 +101,16 @@ class EventGalleryImage(models.Model):
 
     def __str__(self):
         return f"Image for {self.event.name}"
+
+class Pricing(models.Model):
+    FEATURE_CHOICES = [
+        ('guest_limit', 'Guest Limit'),
+        ('gallery_featured', 'Gallery Featured'),
+    ]
+    feature = models.CharField(max_length=50, choices=FEATURE_CHOICES)
+    min_value = models.IntegerField(null=True, blank=True)
+    max_value = models.IntegerField(null=True, blank=True)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def __str__(self):
+        return f"{self.feature} - {self.price}$"

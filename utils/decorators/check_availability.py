@@ -31,3 +31,21 @@ def active_or_not(function):
         return function(request, *args, **kwargs)
 
     return wrap
+
+# def active_or_not(function):
+#     @wraps(function)
+#     def wrap(request, *args, **kwargs):
+#         invitation_id = kwargs.get('invitation_id')
+#         invitation = get_object_or_404(Invitation, id=invitation_id)
+#         invitation_date_end = invitation.event_date + timedelta(days=7)
+
+#         now = timezone.now()  
+
+#         if now > invitation_date_end:
+#             pass
+#         else:
+#             pass
+
+#         return function(request, *args, **kwargs)
+
+#     return wrap

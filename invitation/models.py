@@ -54,7 +54,7 @@ class Invitation(models.Model):
     notes = models.TextField(blank=True)
     active = models.BooleanField(default=True)
     has_music_file = models.BooleanField(default=False)
-
+    
     groom_name = models.CharField(null=True,blank=True)
     groom_info = models.TextField(blank=True, null=True)
     bride_name = models.CharField(blank=True, null=True)

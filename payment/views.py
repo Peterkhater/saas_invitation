@@ -5,6 +5,12 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, HttpResponseForbidden
 from django.urls import reverse
 
+#verify_wishmoney_callback
+import hmac
+import hashlib
+from django.conf import settings
+
+
 
 @login_required
 def payment_checkout(request):
@@ -36,11 +42,38 @@ def payment_checkout(request):
     return redirect(wish_money_url)
 
 
+
+def verify_wishmoney_callback(request):
+    """
+    Verify that the callback comes from Wish Money.
+    """
+    signature = request.headers.get("X-Signature")  # check Wish Money docs
+    payload = request.body  # raw POST body
+
+    if not signature:
+        return False
+
+    expected_signature = hmac.new(
+        settings.WISHMONEY_SECRET_KEY.encode(),
+        payload,
+        hashlib.sha256
+    ).hexdigest()
+
+    return hmac.compare_digest(signature, expected_signature)
+
+
+
+
+
 @csrf_exempt
 def wishmoney_callback(request):
     """
     Wish Money server calls this endpoint to confirm payment.
     """
+
+    if not verify_wishmoney_callback(request):
+        return HttpResponseForbidden("Invalid callback")
+
     reference = request.POST.get('reference')
     status = request.POST.get('status')
 
@@ -52,12 +85,12 @@ def wishmoney_callback(request):
     except Payment.DoesNotExist:
         return HttpResponse("Invalid payment reference", status=400)
 
-    # Only mark SUCCESS if status is 'SUCCESS' from Wish Money
-    if status.upper() == 'SUCCESS':
+    if status.upper() == 'SUCCESS' and payment.status != 'SUCCESS':
         payment.status = 'SUCCESS'
         payment.save()
 
     return HttpResponse("OK")
+
 
 
 @login_required
@@ -86,3 +119,33 @@ def payment_success(request):
 
     # Redirect to event activation
     return redirect('my_event_invitation_activate')
+
+
+
+
+
+
+
+
+# @csrf_exempt
+# def wishmoney_callback(request):
+#     """
+#     Wish Money server calls this endpoint to confirm payment.
+#     """
+#     reference = request.POST.get('reference')
+#     status = request.POST.get('status')
+
+#     if not reference or not status:
+#         return HttpResponse("Missing parameters", status=400)
+
+#     try:
+#         payment = Payment.objects.get(id=reference)
+#     except Payment.DoesNotExist:
+#         return HttpResponse("Invalid payment reference", status=400)
+
+#     if status.upper() == 'SUCCESS' and payment.status != 'SUCCESS':
+#         payment.status = 'SUCCESS'
+#         payment.save()
+
+
+#     return HttpResponse("OK")

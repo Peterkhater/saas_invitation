@@ -27,8 +27,8 @@
                 {% else %}
                 <a href="{%url 'account_login'%}" class="text-gray-700 hover:text-elegant-purple transition-colors font-medium hidden md:block">Sign In</a>
                 {% endif %}
-                <a href="#pricing" class="bg-gradient-to-r from-elegant-purple to-elegant-pink text-white px-6 py-2.5 rounded-full font-medium hover:shadow-lg transition-all duration-300 hover:scale-105">
-                    Get Started 
+                <a href="{% url 'profile' %}" class="bg-gradient-to-r from-elegant-purple to-elegant-pink text-white px-6 py-2.5 rounded-full font-medium hover:shadow-lg transition-all duration-300 hover:scale-105">
+                    <i class="fa-solid fa-user"></i>
                 </a>
                 
                 <!-- Mobile Menu Button -->
@@ -42,6 +42,7 @@
 
         <!-- Mobile Menu -->
         <div class="md:hidden hidden pt-4" id="mobile-menu">
+
             <div class="flex flex-col space-y-4">
                 <a href="#features" class="text-gray-700 hover:text-elegant-purple transition-colors font-medium">Features</a>
                 <a href="#templates" class="text-gray-700 hover:text-elegant-purple transition-colors font-medium">Templates</a>
@@ -52,8 +53,8 @@
                 {% else %}
                  <a href="{%url 'account_login'%}" class="text-gray-700 hover:text-elegant-purple transition-colors font-medium">Sign In</a>
                 {% endif %}
-                
             </div>
+            
         </div>
     </nav>
 </header>

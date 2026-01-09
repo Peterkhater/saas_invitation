@@ -47,8 +47,13 @@
         /* Hero Section */
         .hero {
             height: 100vh;
+            {% if event.event_main_image %}
             background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,233,233,0.85) 100%), 
-                        url('https://images.unsplash.com/photo-1519225421980-715cb0215aed?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+                        url('{{ event.event_main_image.url }}');
+            {% else %}
+            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,233,233,0.85) 100%), 
+                        url('https://lirp.cdn-website.com/28cd0bb4/dms3rep/multi/opt/traditional+american+wedding-1920w.jpeg');
+            {% endif %}
             background-size: cover;
             background-position: center;
             display: flex;
@@ -920,10 +925,11 @@
                 <div class="divider"></div>
             </div>
             <div class="gallery-grid">
-                <div class="gallery-item fade-in"></div>
-                <div class="gallery-item fade-in"></div>
-                <div class="gallery-item fade-in"></div>
-                <div class="gallery-item fade-in"></div>
+                {% for gallery in event.gallery_image.all %}
+                <div class="gallery-item fade-in">
+                    <img src="{{ gallery.image.url }}" alt="" width="100%" height="100%" style="object-fit: cover; overflow: hidden;">
+                </div>
+               {% endfor %}
             </div>
         </div>
     </section>

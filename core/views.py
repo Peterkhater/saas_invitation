@@ -51,7 +51,8 @@ def profile(request):
     active_events = Invitation.objects.filter(event_end_date__gt=now)
     upcoming_events = Invitation.objects.filter(event_end_date__lt=now)
     
-    # active_events = Invitation.objects.filter(event_end_date<now)
+    # peter
+    active_events = Invitation.objects.filter(event_end_date__lt=now)
 
     return render(request, 'user/profile.html', {
         "user_events": events,
@@ -61,6 +62,7 @@ def profile(request):
         "active_events":active_events.count(),
         "upcoming_events":upcoming_events.count(),
     })
+
 
 def guidelance(request):
     return render(request, 'main/guide.html')

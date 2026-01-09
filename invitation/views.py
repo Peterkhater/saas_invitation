@@ -16,12 +16,14 @@ from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 
 from utils.decorators.check_availability import active_or_not
-
+from datetime import timedelta
+from datetime import datetime
+from django.utils import timezone
 
 @login_required
 def invitation_create(request):
     invitation_types = InvitationType.objects.all()
-
+    
     if request.method == 'POST':
         invitation_type_id = request.POST.get('invitation_type')
         event_for = request.POST.get('event_for')
@@ -53,13 +55,17 @@ def invitation_create(request):
     return render(request,'invitation/invitation_create.html', {'invitation_types': invitation_types})
 
 
-@active_or_not
+# @active_or_not
 @login_required
 def guest_management(request, invitation_id):
     invitation = get_object_or_404(Invitation, id=invitation_id)
     event = Event.objects.get(invitation=invitation)
     rsvp = Rsvp.objects.filter(invitation=invitation)
+    invitation_date_end = invitation.event_date + timedelta(days=7)
 
+    now = timezone.now()  
+
+        
 
     if request.user != invitation.invitation_owner:
         messages.error(request, "You don't have permission to access this page.")
@@ -72,7 +78,12 @@ def guest_management(request, invitation_id):
         person_count = request.POST.get('person_count')
         full_family = True if request.POST.get('full_family') == 'on' else False
         notes = request.POST.get('notes')
-        
+
+        print(invitation_date_end, now)
+        if now > invitation_date_end:
+            messages.error(request, "Cannot add guest. Invitation has expired.")
+            return redirect('guest_management', invitation_id=invitation_id)
+
         Guest.objects.create(
             invitation=invitation,
             name=guest_name,
@@ -190,8 +201,8 @@ def invitation_preview(request, invitation_id, guest_key):
     event = Event.objects.get(invitation=invitation)
     guest = get_object_or_404(Guest, invitation=invitation, guest_secret_key=guest_key)
 
-    if not invitation.active:
-        return redirect("home")
+    # if not invitation.active:
+    #     return redirect("home")
 
     if not invitation.active:
         raise Http404("No MyModel matches the given query.")
@@ -235,6 +246,10 @@ def invitation_preview(request, invitation_id, guest_key):
 def send_mail_invitation(request, invitation_id):
     invitation = get_object_or_404(Invitation, id=invitation_id)
 
+    if not invitation.active:
+        messages.error(request, "Invitation is not active. Cannot send emails.")
+        return redirect('guest_management', invitation_id=invitation_id)
+
     if request.user != invitation.invitation_owner:
         return HttpResponse('Permission denied', status=403)
 
@@ -275,6 +290,10 @@ def send_mail_invitation(request, invitation_id):
 def send_single_reminder_email(request, invitation_id, guest_key):
     invitation = get_object_or_404(Invitation,id=invitation_id)
     guest = get_object_or_404(Guest, invitation=invitation, guest_secret_key=guest_key)
+
+    if not invitation.active:
+        messages.error(request, "Invitation is not active. Cannot send emails.")
+        return redirect('guest_management', invitation_id=invitation_id)
 
     if request.user != invitation.invitation_owner:
         return HttpResponse('Permission denied', status=403)
@@ -347,6 +366,7 @@ def send_single_reminder_email(request, invitation_id, guest_key):
         
 
 #     return JsonResponse({"status": "success", "sent": sent_count})
+
 import requests
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404

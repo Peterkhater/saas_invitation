@@ -129,15 +129,12 @@ h1{
             <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
           </div>
           <div class="carousel-inner">
+
+            {% for gallery in event.gallery_image.all %}
             <div class="carousel-item active">
-              <img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2070" class="d-block w-100" alt="Slide 1">
+              <img src="{{ gallery.image.url }}" class="d-block w-100" alt="Slide {{ forloop.counter }}">
             </div>
-            <div class="carousel-item">
-              <img src="https://plus.unsplash.com/premium_photo-1663076211121-36754a46de8d?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1170" class="d-block w-100" alt="Slide 2">
-            </div>
-            <div class="carousel-item">
-              <img src="https://images.unsplash.com/photo-1460978812857-470ed1c77af0?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1295" class="d-block w-100" alt="Slide 3">
-            </div>
+          {% endfor %}  
           </div>
           <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -178,13 +175,16 @@ h1{
             <h2 class="dancing-script text-center" style="font-size: 50px;">{% if invitation.event_date %}{{invitation.event_date|date:"jS F Y"}} <br> {{invitation.event_date|time:"H:i A"}} {% else %}June 21, 2025{% endif %}</h2>
             <h5 class="text-center mt-3" style="font-size: small;">{{event.location|default:"La Belle Garden, Beirut, Lebanon"}}</h5>
             <div class="container mt-5">
-                {% comment %} <a href="{%url 'main' id=person.id%}#rsvpid" style="text-decoration: none; color: inherit;"> {% endcomment %}
+               
                     <button type="button" class="btn btn-light  w-100 dancing-script">RSVP</button>
-                {% comment %} </a> {% endcomment %}
+                
             </div>
             <div class="container mt-3 rounded" >
+              {% if event.event_main_image %}<img src="{{ event.event_main_image.url }}" alt="" width="100%" style="border-radius: 10px;">
+              {% else %}
                 <img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2070" alt="" width="100%" style="border-radius: 10px;">
-            </div>
+            {% endif %}
+              </div>
         </div>
         <div class="schedual_section" style="margin-top: 100px;">
             <!-- <h1 class="dancing-script text-center">جدول</h1> -->

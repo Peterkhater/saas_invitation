@@ -40,7 +40,7 @@
                     </div>
                 </div>
             </div>
-            
+            {% if invitation.active %}
             <div class="flex flex-col sm:flex-row gap-4">
                 <button onclick="openBulkInviteModal()" class="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-xl font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-200 flex items-center">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -55,6 +55,7 @@
                     Add Guest
                 </button>
             </div>
+            {% endif %}
         </div>
 
         <!-- Action Bar -->
@@ -84,6 +85,7 @@
                         </svg>
                         Export
                     </button>
+                    {% if invitation.active %}
                     <a href="{% url 'send_mail_invitation' invitation.id %}">
                     <button  class="px-4 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-xl font-semibold hover:shadow-lg transition-all duration-200 flex items-center">
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -101,7 +103,9 @@
                         Send Reminders Via wtsp
                     </button>
                     </a>
+                    {% else %}
                     
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -224,9 +228,11 @@
                                 </div>
                                 <h3 class="text-lg font-medium text-gray-900 mb-2">No guests added yet</h3>
                                 <p class="text-gray-500 mb-4">Start by adding guests to your invitation</p>
+                                {% if invitation.active %}
                                 <button onclick="openAddGuestModal()" class="px-6 py-2 bg-gradient-to-r from-green-500 to-blue-600 text-white rounded-lg font-semibold hover:shadow-lg transition-all duration-200">
                                     Add Your First Guest
                                 </button>
+                                {% endif %}
                             </td>
                         </tr>
                         {% endfor %}
@@ -258,7 +264,7 @@
     </div>
 </div>
 
-<!-- Add Guest Modal -->
+<!--  Modal -->
 <div id="addGuestModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden">
     <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
         <div class="p-6 border-b border-gray-200">
@@ -307,7 +313,7 @@
                     Cancel
                 </button>
                 <button type="submit" class="px-6 py-3 bg-gradient-to-r from-green-500 to-blue-600 text-white rounded-xl font-semibold hover:shadow-lg transition-all duration-200">
-                    Add Guest
+                    
                 </button>
             </div>
         </form>

@@ -86,6 +86,52 @@
                         <p class="text-sm text-gray-500 mt-2">This description will be visible to your guests</p>
                     </div>
 
+
+                    <div> <label class="block text-sm font-semibold text-gray-700 mb-3">
+                         <span class="flex items-center"> <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"></path> </svg> Event Guest Count </span> 
+                    </label> 
+                    <div class="">
+                        <span class="font-bold text-gray-500 ">Guests Count:</span>
+                        <span id="guest_count_display" class="font-bold text-grey-600"></span> 
+                    </div>
+                     <input type="range" name="event_guest_limit" min="1" max="500" id="event_guests_count" default="100" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200" > 
+                     <ul>
+                        <li class="text-sm text-gray-500">
+                            <svg class="w-4 h-4 inline-block text-green-500 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Drag the slider to set the maximum number of guests allowed for your event.
+                        </li>
+                        <li class="text-sm text-gray-500">
+                            <svg class="w-4 h-4 inline-block text-green-500 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            01 to 500 guests can be selected.
+                        </li>
+                        <li class="text-sm text-gray-500">
+                            <svg class="w-4 h-4 inline-block text-green-500 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            01 to 50 guests: 20$
+                        </li>
+                        <li class="text-sm text-gray-500">
+                            <svg class="w-4 h-4 inline-block text-green-500 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            51 to 200 guests: 50$
+                        </li>
+                        <li class="text-sm text-gray-500">
+                            <svg class="w-4 h-4 inline-block text-green-500 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            200 to 500 guests: 100$
+                        </li>
+                     </ul>
+                    </div>
+
+
+
+
                     <!-- Gallery Feature Toggle -->
                     <div class="bg-gradient-to-r from-gray-50 to-blue-50 rounded-2xl p-6 border border-gray-200">
                         <div class="flex items-center justify-between">
@@ -105,7 +151,9 @@
                                 <div class="w-14 h-7 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-blue-600"></div>
                             </label>
                         </div>
+                        
                     </div>
+                    <span class="text-xs mt-12" style="font-weight: 800; margin-left: 20px;">Adding this Feature Will Cost <span class="text-red-600">$50</span></span>
                 </div>
 
                 <!-- Form Actions -->
@@ -160,5 +208,9 @@
             previewLocation.textContent = this.value || 'Location';
         });
     });
+   
+const rangeInput = document.getElementById('event_guests_count'); const displaySpan = document.getElementById('guest_count_display'); // Initialize with default value 
+displaySpan.textContent = rangeInput.value; 
+rangeInput.addEventListener('input', function() { displaySpan.textContent = this.value; });
 </script>
 {% endblock %}
